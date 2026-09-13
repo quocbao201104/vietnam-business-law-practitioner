@@ -38,6 +38,12 @@ APPLICABILITY_STATUSES = {
 }
 
 STATE_DELTA_RESULTS = {"APPLIED", "REJECTED", "RECONCILED"}
+CONFLICT_EVENT_STATUSES = {"ACTIVE", "TERMINAL_UNRESOLVED"}
+TERMINAL_CONFLICT_READINESS = {
+    "VERIFY_BEFORE_ACTION",
+    "LEGAL_REVIEW_REQUIRED",
+    "DO_NOT_PROCEED",
+}
 
 
 def git_bytes(repo: Path, *args: str) -> bytes:
@@ -215,6 +221,140 @@ def validate_state_deltas(events: list[dict[str, Any]], errors: list[str]) -> No
                 current_revision = committed_revision
 
 
+def validate_composition_conflicts(events: list[dict[str, Any]], errors: list[str]) -> None:
+    """Enforce observable composition-conflict lifecycle and convergence semantics."""
+
+    conflict_status: dict[str, str] = {}
+    terminal_actions: dict[str, tuple[int, list[str]]] = {}
+    latest_readiness: dict[str, tuple[int, dict[str, Any]]] = {}
+
+    for e in events:
+        event = e.get("event")
+        seq = e.get("seq")
+
+        if event == "ACTION_READINESS":
+            action_id = e.get("action_id")
+            if isinstance(action_id, str) and action_id:
+                latest_readiness[action_id] = (seq, e)
+
+        elif event == "COMPOSITION_CONFLICT":
+            conflict_id = e.get("conflict_id")
+            status = e.get("status")
+            affected_actions = e.get("affected_actions")
+
+            if not isinstance(conflict_id, str) or not conflict_id:
+                errors.append(f"COMPOSITION_CONFLICT missing conflict_id at seq {seq}")
+                continue
+            if status not in CONFLICT_EVENT_STATUSES:
+                errors.append(f"COMPOSITION_CONFLICT invalid/missing status at seq {seq}: {status!r}")
+                continue
+            if not isinstance(affected_actions, list) or not affected_actions or not all(
+                isinstance(x, str) and x for x in affected_actions
+            ):
+                errors.append(
+                    f"COMPOSITION_CONFLICT invalid/missing affected_actions at seq {seq}: {affected_actions!r}"
+                )
+                continue
+
+            previous = conflict_status.get(conflict_id)
+
+            if status == "ACTIVE":
+                if previous in {"TERMINAL_UNRESOLVED", "RESOLVED"}:
+                    errors.append(
+                        f"composition conflict {conflict_id} reactivated after terminal/resolved state at seq {seq}"
+                    )
+                conflict_status[conflict_id] = "ACTIVE"
+
+            elif status == "TERMINAL_UNRESOLVED":
+                if previous != "ACTIVE":
+                    errors.append(
+                        f"TERMINAL_UNRESOLVED conflict must transition from ACTIVE at seq {seq}: "
+                        f"conflict={conflict_id}, previous={previous!r}"
+                    )
+                terminal_reason = e.get("terminal_reason")
+                remaining_ids = e.get("remaining_uncertainty_ids")
+                external_need = e.get("required_external_input_or_review")
+                state_revision = e.get("state_revision")
+
+                if not isinstance(terminal_reason, str) or not terminal_reason.strip():
+                    errors.append(f"terminal conflict missing terminal_reason at seq {seq}: {conflict_id}")
+                has_remaining_ids = isinstance(remaining_ids, list) and bool(remaining_ids) and all(
+                    isinstance(x, str) and x for x in remaining_ids
+                )
+                has_external_need = isinstance(external_need, str) and bool(external_need.strip())
+                if not (has_remaining_ids or has_external_need):
+                    errors.append(
+                        f"terminal conflict missing remaining uncertainty/external review need at seq {seq}: {conflict_id}"
+                    )
+                if not isinstance(state_revision, int) or state_revision < 0:
+                    errors.append(
+                        f"terminal conflict invalid/missing state_revision at seq {seq}: {state_revision!r}"
+                    )
+
+                conflict_status[conflict_id] = "TERMINAL_UNRESOLVED"
+                terminal_actions[conflict_id] = (seq, affected_actions)
+
+        elif event == "CONFLICT_RESOLVED":
+            conflict_id = e.get("conflict_id")
+            if not isinstance(conflict_id, str) or not conflict_id:
+                errors.append(f"CONFLICT_RESOLVED missing conflict_id at seq {seq}")
+                continue
+
+            previous = conflict_status.get(conflict_id)
+            if previous != "ACTIVE":
+                errors.append(
+                    f"CONFLICT_RESOLVED must transition from ACTIVE at seq {seq}: "
+                    f"conflict={conflict_id}, previous={previous!r}"
+                )
+            resolution_basis = e.get("resolution_basis")
+            state_revision = e.get("state_revision")
+            if not isinstance(resolution_basis, str) or not resolution_basis.strip():
+                errors.append(f"CONFLICT_RESOLVED missing resolution_basis at seq {seq}: {conflict_id}")
+            if not isinstance(state_revision, int) or state_revision < 0:
+                errors.append(
+                    f"CONFLICT_RESOLVED invalid/missing state_revision at seq {seq}: {state_revision!r}"
+                )
+            conflict_status[conflict_id] = "RESOLVED"
+            terminal_actions.pop(conflict_id, None)
+
+        elif event == "RUN_CONVERGED":
+            active = sorted(cid for cid, status in conflict_status.items() if status == "ACTIVE")
+            if active:
+                errors.append(f"RUN_CONVERGED with ACTIVE composition conflict(s) at seq {seq}: {active}")
+
+            for conflict_id, (terminal_seq, affected_actions) in terminal_actions.items():
+                if conflict_status.get(conflict_id) != "TERMINAL_UNRESOLVED":
+                    continue
+                for action_id in affected_actions:
+                    readiness_record = latest_readiness.get(action_id)
+                    if readiness_record is None:
+                        errors.append(
+                            f"terminal conflict {conflict_id} affected action {action_id} has no ACTION_READINESS before convergence"
+                        )
+                        continue
+                    readiness_seq, readiness_event = readiness_record
+                    readiness_state = readiness_event.get("state")
+                    if readiness_seq <= terminal_seq:
+                        errors.append(
+                            f"terminal conflict {conflict_id} requires recomputed readiness after terminalization "
+                            f"for action {action_id}"
+                        )
+                    if readiness_state not in TERMINAL_CONFLICT_READINESS:
+                        errors.append(
+                            f"terminal conflict {conflict_id} affected action {action_id} has invalid converged readiness: "
+                            f"{readiness_state!r}"
+                        )
+                    conflict_ref = readiness_event.get("conflict_id")
+                    conflict_refs = readiness_event.get("conflict_ids")
+                    linked = conflict_ref == conflict_id or (
+                        isinstance(conflict_refs, list) and conflict_id in conflict_refs
+                    )
+                    if not linked:
+                        errors.append(
+                            f"ACTION_READINESS for {action_id} does not identify terminal conflict {conflict_id}"
+                        )
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--repo-root", default=".")
@@ -318,9 +458,10 @@ def main() -> None:
         if e.get("event") in {"SPECIALIST_CALL", "SPECIALIST_RETURN"} and not e.get("owner"):
             errors.append(f"specialist event missing owner at seq {e.get('seq')}")
 
-    # Generic authority vocabulary and revision-safe state-write invariants.
+    # Generic authority vocabulary, revision-safe state-write, and conflict convergence invariants.
     validate_authority_events(events, errors)
     validate_state_deltas(events, errors)
+    validate_composition_conflicts(events, errors)
 
     result = {
         "fixture": fixture,
