@@ -2,9 +2,9 @@
 
 ## Owns
 
-Determining how an existing or threatened dispute should be procedurally handled under a resolved or explicitly conditioned forum/regime, including invocation of a dispute-resolution clause, filing/escalation posture, urgent protection, settlement posture, and coordination of preserved claims/remedies.
+Determining how an existing or threatened dispute should be procedurally handled under a resolved or explicitly conditioned forum/regime, including invocation of a dispute-resolution clause, filing mechanics/sequence, urgent protection, settlement posture, and coordination of preserved claims/remedies.
 
-This unit owns **dispute posture and procedure**, not the contractual existence/content of the dispute clause and not cross-border governing-law/treaty/international-enforcement overlay.
+This unit owns **dispute posture and procedure**, not the contractual existence/content of the dispute clause, not the deadline proposition itself, and not cross-border governing-law/treaty/international-enforcement overlay.
 
 ## Does not own
 
@@ -12,7 +12,7 @@ This unit owns **dispute posture and procedure**, not the contractual existence/
 - dispute-clause existence/content and its contract-law formation/incorporation/validity/effect as a contractual term — BL3;
 - breach/excuse/liability — `breach-excuse-liability.md`;
 - remedy/loss/mitigation — `remedies-loss-mitigation.md`;
-- notice/evidence/limitation preservation state — `notice-evidence-deadlines.md`;
+- notice/evidence-preservation/limitation/deadline timing state — `notice-evidence-deadlines.md`;
 - foreign governing-law/treaty/international-enforcement overlay — BL8;
 - regulatory enforcement/compliance — BL7.
 
@@ -23,12 +23,12 @@ Use when the user needs to decide how to act in an existing or imminent dispute,
 - whether/how to invoke a resolved dispute-resolution clause;
 - pre-action negotiation/escalation procedure;
 - arbitration/court/other forum procedure under the resolved regime;
-- filing posture and sequence;
+- filing mechanics and procedural sequence using an already resolved/conditioned filing window where material;
 - urgent/interim protection;
 - preserving options while negotiating;
 - settlement posture;
 - procedural consequence of a committed BL3 waiver/change/settlement term;
-- coordinating claim/remedy strategy with known deadlines/evidence state.
+- coordinating claim/remedy strategy with committed deadline/evidence-preservation state.
 
 Skip when no dispute/procedural decision is material to the requested action.
 
@@ -41,7 +41,7 @@ Where material, consume:
 - BL8 governing-law/treaty/international-enforcement overlay where cross-border;
 - committed/conditioned BL4 breach/liability state;
 - available/conditioned remedies;
-- notice/deadline/evidence-preservation state;
+- committed notice/deadline/evidence-preservation state where material;
 - parties and relevant procedural actors;
 - dispute objective;
 - settlement/change state from BL3 where terms were actually agreed;
@@ -59,9 +59,42 @@ BL4 owns what to do procedurally with that resolved/conditioned clause:
 
 - invocation;
 - preconditions to filing;
+- filing mechanics;
 - procedural sequence;
-- deadlines;
 - posture/remedies in the forum.
+
+### WHEN to file ≠ HOW/WHERE to file
+
+`notice-evidence-deadlines.md` owns the temporal/deadline proposition:
+
+```text
+trigger
+→ clock
+→ tolling/suspension/extension
+→ expiry / filing window
+→ preservation state
+```
+
+This unit consumes that committed timing state and owns the procedural action:
+
+```text
+where to file
+how to invoke
+what sequence to follow
+what filing/defense/interim step to take
+```
+
+Example:
+
+```text
+Deadline expires on D.
+→ committed deadline proposition from notice-evidence-deadlines.md
+
+How do we commence arbitration before D?
+→ dispute-posture-procedure-settlement.md
+```
+
+Do not reopen the notice/deadline unit merely because a procedural step consumes its committed proposition. Reopen only when timing itself becomes unresolved, disputed, stale, contradictory, or material to recalculate.
 
 ### Forum/procedure ≠ governing-law/treaty overlay
 
@@ -84,7 +117,7 @@ A strong merits position may still require notice, evidence preservation, deadli
 
 Settlement discussions do not automatically suspend deadlines, waive objections, or change contractual rights.
 
-Consume `notice-evidence-deadlines.md` and BL3 change/waiver propositions where material.
+Consume committed timing state from `notice-evidence-deadlines.md` and BL3 change/waiver propositions where material.
 
 ### Settlement posture ≠ settlement transaction state
 
@@ -107,12 +140,12 @@ A procedure may be legally available but commercially irrational. BL4 may explai
 
 1. **State the dispute objective.** Preserve performance, collect, exit, defend, stop conduct, protect assets/evidence, settle, or obtain a ruling.
 2. **Consume clause/forum state.** Use committed BL3 dispute-clause proposition and BL8 overlay where material. Do not reconstruct them.
-3. **Consume preservation state.** Check notice, evidence, limitation/deadline, cure, and reservation prerequisites.
+3. **Consume preservation/timing state.** Use committed notice, evidence-preservation, limitation/deadline, cure, and reservation propositions. Reopen the timing unit only if that state is itself unresolved/stale/material to recalculate.
 4. **Consume remedy state.** Identify what relief is actually available/conditioned rather than pleading every conceivable remedy.
-5. **Resolve procedural prerequisites.** Negotiation/escalation/mediation/arbitration/court or other steps only under current/historical authority where material.
+5. **Resolve procedural prerequisites and mechanics.** Negotiation/escalation/mediation/arbitration/court or other steps only under current/historical authority where material.
 6. **Assess urgent protection.** Identify whether immediate evidence/asset/status-quo preservation is material; do not promise availability without authority.
 7. **Choose posture.** Negotiate, demand, reserve rights, file, defend, seek interim relief, pause pending verification, or other action supported by state.
-8. **Protect against silent waiver/deadline loss.** Coordinate with `notice-evidence-deadlines.md`.
+8. **Protect against silent waiver/deadline loss.** Consume committed timing/preservation state; do not own/recalculate the clock unless returned to the timing owner.
 9. **Handle settlement loop correctly.** If settlement produces agreed contractual change, return it to BL3; resume BL4 only after BL3 commits the changed state.
 10. **Commit procedural state.** Ready, conditional, verification-required, legally review-required, blocked, or unresolved as appropriate for the action.
 
@@ -125,7 +158,7 @@ clause_dependency: P-BL3-...
 bl8_overlay_dependency: <if cross-border>
 remedy_dependency: P-BL4-REM-...
 deadline_dependency: P-BL4-DEADLINE-...
-procedural_step: <notice / negotiation / filing / interim / defense / settlement>
+procedural_step: <negotiation / filing / interim / defense / settlement / other>
 status: READY / CONDITIONAL / VERIFY / REVIEW_REQUIRED / BLOCKED / UNRESOLVED
 ```
 
@@ -157,14 +190,16 @@ BL4 negotiates settlement
 Potential evidence includes:
 
 - committed dispute-resolution clause and source document;
-- notices/reservations/cure records;
+- committed notices/reservations/cure and deadline propositions;
 - proof of service/transmission where relevant;
 - procedural correspondence;
 - filing/registration records;
-- evidence inventory from preservation unit;
+- evidence-preservation inventory from the timing/preservation unit;
 - settlement offers/communications with appropriate confidentiality/privilege caution where applicable;
 - evidence of agreed settlement terms returned to BL3;
 - authority for forum/procedural requirements.
+
+This unit may consume preserved evidence but does not become the merits owner merely because evidence is used procedurally.
 
 Do not confuse a negotiation communication with a formed settlement agreement.
 
@@ -173,13 +208,14 @@ Do not confuse a negotiation communication with a formed settlement agreement.
 Use Authority Resolver where the result depends on:
 
 - procedural prerequisites;
-- filing/invocation rules;
-- limitation/deadline interaction;
+- filing/invocation mechanics and sequence;
 - interim/urgent relief availability;
 - arbitration/court/forum procedure;
 - settlement procedural effect;
 - historical procedure at the relevant date;
-- current enforceability/procedural treatment under the resolved forum/regime.
+- current invocation/procedural treatment under the resolved/conditioned clause/forum.
+
+Deadline/limitation/tolling calculations remain owned by `notice-evidence-deadlines.md`. If procedure exposes a new timing question, return that proposition to the timing owner.
 
 Do not hardcode filing deadlines, arbitration/court procedures, limitation periods, fee schedules, or forum-specific mechanics as stable knowledge.
 
@@ -194,6 +230,12 @@ Consume:
 - settlement/change propositions.
 
 BL4 must not reinterpret a disputed clause stack without returning the term/content question to BL3.
+
+### From notice/evidence/deadlines
+
+Consume committed temporal/deadline/preservation propositions. Use them to choose and sequence procedural actions.
+
+Do not duplicate the trigger/clock/expiry/tolling proposition here.
 
 ### From BL8
 
@@ -210,7 +252,9 @@ If the dispute reveals a regulatory enforcement/reporting/public-law issue, rout
 ## Failure modes
 
 - arbitration/court/forum selected from clause keywords without resolving clause state;
-- clause content reconstructed inside BL4 instead of consumed from BL3;
+- clause content or contractual validity/effect reconstructed inside BL4 instead of consumed from BL3;
+- deadline trigger/clock/expiry duplicated inside dispute procedure;
+- committed deadline proposition unnecessarily reopened when user only asks how/where to file;
 - governing law, forum, procedure, and enforcement collapsed;
 - claim merits treated as procedural readiness;
 - negotiation assumed to toll deadlines;
