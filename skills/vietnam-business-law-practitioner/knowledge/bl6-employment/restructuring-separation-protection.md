@@ -1,0 +1,260 @@
+# BL6 — Restructuring / Separation / Business Protection
+
+## Owns
+
+Determining the employment-law pathway and resulting employment-state consequences for organizational change, redundancy/restructuring, negotiated exit, termination/separation, and post-employment business-protection obligations.
+
+This unit owns **employment separation/restructuring pathway and post-employment protection propositions**. It does not invent a performance/misconduct ground, decide dispute remedies/procedure, or convert confidentiality into a universal non-compete right.
+
+## Does not own
+
+- employee/contractor/employer classification — `relationship-classification.md`;
+- ongoing employment terms/current state — `engagement-terms-work-state.md`;
+- performance/misconduct/employer-management pathway — `performance-conduct-employer-action.md`;
+- corporate decision-maker authority/approval — BL2;
+- dispute remedies/procedure/deadlines — BL4;
+- tax/withholding/BHXH/contribution consequences — BL5;
+- privacy/data/monitoring or sector-regulatory compliance — BL7;
+- cross-border/investment/FX/trade overlay — BL8.
+
+## Activate when
+
+Use when a material decision depends on:
+
+- organizational restructuring, redundancy, role elimination, workforce reduction, transfer/reorganization, or another structural employment change;
+- unilateral termination/separation or expiry/end-state questions;
+- mutual/negotiated separation;
+- whether a committed performance/conduct pathway can legally support final separation;
+- post-employment confidentiality, trade-secret protection, non-solicit, non-compete, return-of-property, access revocation, or other business-protection measures;
+- what employment obligations survive or arise at separation.
+
+Skip when the matter is only relationship classification, current terms, performance management, tax, privacy, or dispute procedure.
+
+## Required state
+
+Where material, consume:
+
+- committed relationship/employer classification;
+- committed current employment terms/state;
+- committed performance/conduct/action-path proposition where separation relies on it;
+- organizational facts for any restructuring/redundancy pathway;
+- proposed separation mechanism and chronology;
+- contractual/statutory confidentiality/business-protection terms;
+- assets/data/access/property held by the worker;
+- protected/high-risk conditions where material;
+- BL2 authority/approval state for the employer-side decision;
+- BL7 privacy/data state for monitoring/access/data handling where material;
+- BL5 consequence only after employment state is committed;
+- relevant temporal anchors and current/historical employment authority.
+
+Do not reverse-engineer a separation ground from the employer's preferred outcome.
+
+## Core distinctions
+
+### Desired exit ≠ lawful separation ground
+
+An employer preference to remove, replace, downsize, or quickly exit a worker does not establish the legal pathway.
+
+Use:
+
+```text
+committed facts/state
+→ candidate employment pathway
+→ current legal requirements
+→ separation readiness
+```
+
+not:
+
+```text
+want employee gone
+→ choose convenient label
+```
+
+### Restructuring ≠ poor performance ≠ misconduct
+
+Organizational change, capability/performance, and misconduct are different propositions with different factual bases and potentially different procedures.
+
+Do not relabel one as another merely because one route appears easier.
+
+If separation relies on performance/conduct, consume the committed proposition from `performance-conduct-employer-action.md`; do not reconstruct it here.
+
+### Organizational change ≠ automatic termination right
+
+A genuine business reorganization may create an employment-law pathway, but the legal consequence depends on the actual organizational facts, affected roles/workers, process, available alternatives, timing, and current authority.
+
+Do not infer:
+
+```text
+company reorganizes
+→ termination automatically valid
+```
+
+### Mutual exit ≠ unilateral termination
+
+A negotiated/mutual separation is a distinct pathway from an employer's unilateral action.
+
+Preserve:
+
+- voluntary/agreed status;
+- scope of agreed terms;
+- authority of signatories;
+- timing and completion state;
+- continuing obligations;
+- any disputed formation/content issue.
+
+Do not use `mutual` as a label to hide coercive or unresolved facts.
+
+### Employment termination ≠ all obligations end
+
+After separation, propositions may remain about:
+
+- final employment payments/benefits;
+- return of company property;
+- confidentiality/trade secrets;
+- access/security shutdown;
+- handover/cooperation;
+- data handling;
+- non-solicit/non-compete or other restrictive obligations where legally supportable;
+- tax/contribution consequences owned by BL5.
+
+### Confidentiality ≠ non-compete ≠ non-solicit
+
+These protect different interests and can have different legal requirements/effects.
+
+Do not infer:
+
+```text
+NDA exists
+→ worker cannot compete
+```
+
+or:
+
+```text
+business wants protection
+→ broad post-employment restraint valid
+```
+
+Resolve each mechanism separately under live authority and facts.
+
+### Business interest ≠ unlimited restriction
+
+Legitimate protection of confidential information, customer relationships, workforce stability, systems/access, or other business interests does not automatically justify the broadest restraint.
+
+Use the narrow legally supported mechanism appropriate to the actual interest.
+
+### Employment separation ≠ dispute procedure
+
+BL6 owns whether/how the employment relationship may lawfully end and what employment state follows. BL4 owns claim/remedy/procedure/deadline posture if the separation is challenged or disputed.
+
+## Decision procedure
+
+1. **State the exact separation/protection proposition.** Example: `What lawful employment pathway supports ending Employee E's relationship, if any?`
+2. **Consume relationship/current-state propositions.** Do not reconstruct employee/employer or material employment terms unless contradictory evidence requires review.
+3. **Classify the proposed pathway from facts.** Organizational change/restructuring, performance/conduct-dependent separation, mutual exit, expiry/end-state, another lawful route, or unresolved.
+4. **Reject outcome-first routing.** If facts do not support the proposed ground, do not manufacture one.
+5. **Consume upstream performance/conduct state where relied upon.** Do not duplicate that analysis here.
+6. **Resolve current legal requirements live.** Identify material process, notice, consultation/plan/approval/evidence or other requirements under the applicable pathway without relying on stale checklists.
+7. **Check protected/high-risk conditions.** Identify any condition that can change or block the proposed action.
+8. **Commit separation readiness/state.** Supported, conditional, verification-required, blocked, disputed, or unresolved.
+9. **Map continuing obligations.** Final employment state, property/access, confidentiality, restrictive obligations, handover, and other supported post-employment propositions.
+10. **Hand consequences outward.** BL5 receives tax/contribution facts; BL7 receives privacy/data issues; BL4 receives dispute/remedy/procedure issues.
+
+## Separation-state pattern
+
+```text
+P-BL6-SEP-01
+relationship_dependency: P-BL6-REL-...
+current_state_dependency: P-BL6-STATE-...
+upstream_action_dependency: P-BL6-ACT-... <if applicable>
+pathway: RESTRUCTURING / PERFORMANCE_DEPENDENT / CONDUCT_DEPENDENT / MUTUAL / OTHER / UNRESOLVED
+process_dependencies: [...]
+protected_state: <if material>
+status: SUPPORTED / CONDITIONAL / VERIFY / BLOCKED / DISPUTED / UNRESOLVED
+```
+
+For business protection:
+
+```text
+P-BL6-PROT-01
+interest: CONFIDENTIALITY / TRADE_SECRET / CUSTOMER / WORKFORCE / ACCESS / PROPERTY / OTHER
+mechanism: <candidate>
+source: <term/policy/statute/other>
+temporal_scope: <...>
+status: SUPPORTED / CONDITIONAL / DISPUTED / UNRESOLVED
+```
+
+These are reasoning states, not statutory labels.
+
+## Evidence requirements
+
+Potential evidence includes:
+
+- committed employment terms/current state;
+- organizational charts/business plans/role-change records for genuine restructuring facts;
+- performance/conduct proposition if relied upon;
+- notices, consultation/process records, proposed agreements;
+- separation/settlement communications;
+- authority/approval evidence for decision-makers;
+- confidentiality/IP/access/property records;
+- customer/workforce protection evidence where a restraint is claimed;
+- handover/return-of-property/access-revocation records;
+- protected-state evidence where legally material.
+
+Do not create post hoc restructuring/performance records to justify a predetermined exit.
+
+## Live authority triggers
+
+Use Authority Resolver where current/historical law materially determines:
+
+- restructuring/redundancy/organizational-change pathways;
+- unilateral/mutual termination requirements;
+- required process/notice/consultation/plan/payment conditions;
+- protected/high-risk separation conditions;
+- final-employment obligations;
+- confidentiality/restrictive-covenant/post-employment protection effect;
+- historical rules at the relevant separation date.
+
+Do not hardcode notice periods, severance/payment formulas, consultation steps, protected categories, validity rules for restraints, or article numbers.
+
+## Cross-track handoffs
+
+### From performance/conduct unit
+
+Consume committed issue/action-path state only where separation genuinely depends on it. This unit must not convert an unresolved performance/misconduct allegation into a termination ground.
+
+### To BL4
+
+If separation is challenged, provide the committed employment pathway/state and evidence dependencies. BL4 owns dispute posture, remedies, limitation/deadline, and procedure.
+
+### To BL5
+
+Provide committed separation/payment/employment-state facts. BL5 owns tax/withholding/BHXH/contribution consequences and must not use tax cost to rewrite the separation pathway.
+
+### To BL7
+
+Route employee-data retention/deletion, monitoring evidence, device/data access, privacy, or sector-regulatory post-employment issues to BL7.
+
+### To BL2
+
+Consume corporate authority/approval for material employer decisions/signatures where required; do not infer authority from HR/manager title alone.
+
+## Failure modes
+
+- employer preference treated as legal ground;
+- restructuring used as a label for performance/misconduct termination;
+- performance/misconduct reconstructed inside separation unit;
+- genuine organizational change treated as automatic termination right;
+- mutual separation assumed voluntary from document title alone;
+- termination treated as ending all obligations;
+- NDA treated as non-compete;
+- non-compete/non-solicit always treated as valid or invalid without live authority;
+- broad restraint recommended without a specific legitimate interest;
+- tax savings used to choose/relabel the employment pathway;
+- dispute procedure absorbed into BL6 instead of BL4;
+- current notice/payment/procedure rules recalled from memory.
+
+## Escalation
+
+Increase verification for mass/workforce restructuring, protected workers, senior executives, high-value separation, disputed mutual exits, restrictive covenants, cross-border employees, whistleblowing/retaliation-type risk signals, or any irreversible separation step.
