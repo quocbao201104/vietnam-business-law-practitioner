@@ -78,24 +78,36 @@ Do not load all four BL3 units by default.
 
 ## BL4 — Breach / Remedies / Evidence / Disputes
 
+Start with:
+
 `bl4-remedies-disputes/core.md`
 
-Activate after BL3 has established a material obligation/performance proposition, or when invocation/procedure under a committed dispute-resolution clause is material, for:
+Then JIT-load only the capability needed:
 
-- breach/excuse/materiality;
-- remedy availability;
-- loss/proof/mitigation;
-- notice/evidence preservation;
-- limitation/deadline;
-- dispute posture;
-- invocation/procedure/remedies under a resolved forum/regime;
-- consequences of committed BL3 contractual waiver/change for claims/remedies/procedural rights.
+- `bl4-remedies-disputes/breach-excuse-liability.md` — breach/materiality/attribution, excuse/defense, force-majeure/hardship-type questions, and liability state after committed BL3 performance state;
+- `bl4-remedies-disputes/remedies-loss-mitigation.md` — remedy availability, termination/performance/payment relief, penalty/damages/interest, loss/causation/proof/mitigation, and remedy limits;
+- `bl4-remedies-disputes/notice-evidence-deadlines.md` — notice/cure/objection/reservation, evidence preservation, limitation/time bars/deadlines, and preservation of claims/options;
+- `bl4-remedies-disputes/dispute-posture-procedure-settlement.md` — invocation/procedure under a committed dispute-resolution clause/forum, dispute posture, urgent protection, and settlement posture.
+
+Activate BL4 after BL3 has established a material obligation/performance proposition, or when remedy preservation, claim procedure, or invocation under a committed dispute-resolution clause is material.
+
+BL4 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
+
+BL4 does **not** reconstruct transaction/obligation/change state (BL3), dispute-clause contractual existence/content/effect (BL3), statutory tax consequences (BL5), public-law permission/compliance/enforcement (BL7), or governing-law/treaty/international-enforcement overlay (BL8).
 
 For dispute-resolution clauses:
 
 - BL3 owns clause existence/content and contract-law formation/incorporation/validity/effect as a contractual term;
 - BL8 owns cross-border governing-law/treaty/international-enforcement overlay;
 - BL4 owns invocation, dispute posture, procedure, deadlines, and remedies under the resolved/conditioned clause/forum.
+
+For settlement:
+
+- BL4 owns settlement posture, claim/remedy preservation, and procedural consequences;
+- when parties actually agree terms that create/change contractual obligations, BL3 owns formation/content/changed transaction state;
+- BL4 then consumes the committed BL3 state for remaining claims/remedies/procedure.
+
+Do not load all four BL4 units by default.
 
 ## BL5 — Tax / Financial Legal Consequences
 
