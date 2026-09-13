@@ -1,0 +1,208 @@
+{
+  "schema_version": "0.3",
+  "candidate_sha": "75135e67223c488bdecb9b2f753186bd2bab4601",
+  "fixtures": {
+    "RF-01": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/core.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL3"},
+        {"event": "LATE_ROUTE_SIGNAL", "track": "BL7"},
+        {"event": "ACTIVATE", "track": "BL7"},
+        {"event": "ACTION_READINESS", "action_id": "SIGN"},
+        {"event": "ACTION_READINESS", "action_id": "OPERATE"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "required_events": [
+        {"event": "SKIP", "target": "BL5"},
+        {"event": "SKIP", "target": "BL8"}
+      ],
+      "forbidden_events": [
+        {"event": "ACTIVATE", "track": "BL5"},
+        {"event": "ACTIVATE", "track": "BL8"}
+      ]
+    },
+    "RF-02": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/core.md",
+        "skills/vietnam-business-law-practitioner/schemas/authority-resolver.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL6"},
+        {"event": "AUTHORITY_CALL", "owner": "BL6"},
+        {"event": "AUTHORITY_RESULT"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL6"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "AUTHORITY_RESULT", "applicability_owner": "RESOLVER"}
+      ]
+    },
+    "RF-03": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL6"},
+        {"event": "CLASSIFICATION_SIGNAL"},
+        {"event": "RECLASSIFICATION_REVIEW", "owner": "BL6"},
+        {"event": "ACTIVATE", "track": "BL5"},
+        {"event": "ACTION_READINESS", "action_id": "TERMINATE", "state": "VERIFY_BEFORE_ACTION"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "RECLASSIFICATION_COMMITTED"},
+        {"event": "INVALIDATE"}
+      ]
+    },
+    "RF-04": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "RECLASSIFICATION_COMMITTED", "owner": "BL6"},
+        {"event": "INVALIDATE", "proposition_id": "P-BL5-TAX"},
+        {"event": "RECOMPUTE", "owner": "BL5"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "INVALIDATE", "owner": "BL2"}
+      ]
+    },
+    "RF-05": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/schemas/legal-work-state.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "PROPOSITION_STATUS", "proposition_id": "F-PAYMENT", "status": "DISPUTED"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "required_events": [
+        {"event": "STATE_DELTA", "evidence_id": "E-USER"},
+        {"event": "STATE_DELTA", "evidence_id": "E-DOC"},
+        {"event": "STATE_DELTA", "evidence_id": "E-COUNTERPARTY"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "proposition_id": "F-PAYMENT", "status": "RESOLVED"}
+      ]
+    },
+    "RF-06": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/schemas/authority-resolver.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "AUTHORITY_CALL"},
+        {"event": "AUTHORITY_RESULT"},
+        {"event": "PROPOSITION_STATUS"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "required_events": [
+        {"event": "AUTHORITY_CALL", "temporal_anchor": "FORMATION"},
+        {"event": "AUTHORITY_CALL", "temporal_anchor": "BREACH"}
+      ],
+      "forbidden_events": [
+        {"event": "AUTHORITY_CALL", "temporal_anchor": "GLOBAL_RELEVANT_DATE"}
+      ]
+    },
+    "RF-07": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/core.md",
+        "skills/vietnam-business-law-practitioner/schemas/authority-resolver.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "AUTHORITY_CHANGE_SIGNAL"},
+        {"event": "AUTHORITY_RERESOLVE", "owner": "BL7"},
+        {"event": "STALE"},
+        {"event": "ACTION_READINESS", "action_id": "LAUNCH", "state": "VERIFY_BEFORE_ACTION"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "ACTION_READINESS", "action_id": "LAUNCH", "state": "READY"}
+      ]
+    },
+    "RF-08": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL3"},
+        {"event": "ACTIVATE", "track": "BL5"},
+        {"event": "DEPENDENCY_ADD", "edge_type": "FEEDBACK"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "INVALIDATE", "proposition_id": "P-BL3-VALIDITY"}
+      ]
+    },
+    "RF-09": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md",
+        "skills/vietnam-business-law-practitioner/schemas/specialist-handoff.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "SPECIALIST_CALL", "owner": "BL8"},
+        {"event": "SPECIALIST_RETURN", "owner": "BL8"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "SPECIALIST_CALL", "owner": "BL1"},
+        {"event": "ACTION_READINESS", "owner": "SPECIALIST"}
+      ]
+    },
+    "RF-10": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/core.md",
+        "skills/vietnam-business-law-practitioner/schemas/decision-output.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "COMPOSITION_CONFLICT"},
+        {"event": "ACTION_READINESS", "action_id": "SIGN", "state": "READY"},
+        {"event": "ACTION_READINESS", "action_id": "COMMENCE", "state": "VERIFY_BEFORE_ACTION"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "ACTION_READINESS", "action_id": "GLOBAL"},
+        {"event": "ACTION_READINESS", "action_id": "COMMENCE", "state": "READY"}
+      ]
+    }
+  }
+}
