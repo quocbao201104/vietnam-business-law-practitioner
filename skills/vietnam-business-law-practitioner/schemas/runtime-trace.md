@@ -1,4 +1,4 @@
-# Runtime Trace — Observable Event Contract v0.3
+# Runtime Trace — Observable Event Contract v0.4
 
 This contract exists to prove execution path independently of final prose.
 
@@ -71,8 +71,20 @@ Typed dependency edges use:
 - `AUTHORITY_RESULT`
 - `AUTHORITY_RERESOLVE`
 - `AUTHORITY_CHANGE_SIGNAL`
+- `AUTHORITY_IDENTITY_LOCK`
+- `AUTHORITY_SOURCE_DRIFT`
+- `AUTHORITY_SOURCE_UNAVAILABLE`
 
-Where material include proposition ID, owner, temporal anchors, resolver status, and authority IDs.
+Where material include proposition ID, owner, temporal anchors, source IDs/authority IDs, document identity, provision locator, and freshness data.
+
+Authority source-attempt events must use `attempt_status` for attempt-local conditions such as `SOURCE_DRIFT` or `SOURCE_UNAVAILABLE`. `AUTHORITY_RESULT` must use proposition-level `resolution_status`. A failed source attempt followed by successful fallback must preserve both events rather than collapsing them.
+
+Example:
+
+```text
+AUTHORITY_SOURCE_DRIFT source=VN-VBPL attempt_status=SOURCE_DRIFT
+→ AUTHORITY_RESULT resolution_status=RESOLVED
+```
 
 ## Specialist events
 
@@ -132,4 +144,4 @@ The trace checker should reject:
 
 A trace proves only events that are actually observable in it. It does not prove hidden model reasoning.
 
-Therefore the freeze gate should rely on observable path properties such as file reads, event order, owner/route transitions, resolver calls, invalidation targets, and readiness outputs rather than chain-of-thought.
+Therefore the freeze gate should rely on observable path properties such as file reads, event order, owner/route transitions, resolver calls, source-attempt/fallback events, invalidation targets, and readiness outputs rather than chain-of-thought.
