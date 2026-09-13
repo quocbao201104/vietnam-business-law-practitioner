@@ -1,0 +1,126 @@
+{
+  "schema_version": "0.1",
+  "candidate_sha": "1ce89ad5f624d541b8ebeb4673b10b0ef4ae95ba",
+  "fixtures": {
+    "BL3-JIT-01": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/formation-transaction-state.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/document-stack-terms.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/obligations-conditions-performance.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/variation-waiver-settlement.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL3"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "proposition_id": "P-BL3-FORMATION"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "basis": "NO_SIGNATURE_IMPLIES_NO_CONTRACT"}
+      ]
+    },
+    "BL3-JIT-02": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/document-stack-terms.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/formation-transaction-state.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/obligations-conditions-performance.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/variation-waiver-settlement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/authority-applicability.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL3"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "proposition_id": "P-BL3-TERM"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "OWNER_ASSIGN", "owner": "BL1", "proposition_id": "P-BL3-CONTRACT-LAW"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "basis": "PRECEDENCE_CLAUSE_UNIVERSAL"}
+      ]
+    },
+    "BL3-JIT-03": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/obligations-conditions-performance.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/formation-transaction-state.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/document-stack-terms.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/variation-waiver-settlement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/core.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL3"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "proposition_id": "P-BL3-PERFORMANCE"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "status": "BREACH"}
+      ]
+    },
+    "BL3-JIT-03-PERTURB": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/obligations-conditions-performance.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/core.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/formation-transaction-state.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/document-stack-terms.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/variation-waiver-settlement.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL3"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "proposition_id": "P-BL3-PERFORMANCE", "status": "LATE"},
+        {"event": "LATE_ROUTE_SIGNAL", "track": "BL4"},
+        {"event": "ACTIVATE", "track": "BL4"},
+        {"event": "OWNER_ASSIGN", "owner": "BL4", "proposition_id": "P-BL4-BREACH"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL4-BREACH"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "status": "BREACH"},
+        {"event": "OWNER_ASSIGN", "owner": "BL3", "proposition_id": "P-BL4-BREACH"}
+      ]
+    },
+    "BL3-JIT-04": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/variation-waiver-settlement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/core.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/formation-transaction-state.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/document-stack-terms.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL4"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL4-SETTLEMENT-POSTURE"},
+        {"event": "ACTIVATE", "track": "BL3"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "proposition_id": "P-BL3-CHANGE"},
+        {"event": "DEPENDENCY_ADD", "edge_type": "DEPENDS_ON", "owner": "BL4"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL4-CLAIM-POSTURE"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "basis": "REWROTE_BL3_TRANSACTION_STATE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "domain": "CLAIM_REMEDY_PROCEDURE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "status": "CLAIM_WAIVED"}
+      ]
+    }
+  }
+}
