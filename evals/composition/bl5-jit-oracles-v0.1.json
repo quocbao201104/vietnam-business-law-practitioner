@@ -1,0 +1,120 @@
+{
+  "schema_version": "0.1",
+  "candidate_sha": "108d7292df27aeec9fbc265a2a224a900cf7178c",
+  "fixtures": {
+    "BL5-JIT-01": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/characterization-events-roles.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/base-method-rate-timing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/documentation-invoice-evidence.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/incentives-structuring-economics.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL5"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "proposition_id": "P-BL5-CHAR"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "basis": "BUSINESS_LABEL_EQUALS_TAX_CHARACTERIZATION"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "basis": "RECONSTRUCTED_UPSTREAM_BUSINESS_EVENT"}
+      ]
+    },
+    "BL5-JIT-01-PERTURB": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/characterization-events-roles.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL5"},
+        {"event": "LATE_ROUTE_SIGNAL", "track": "BL8"},
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-PAYMODE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "proposition_id": "P-BL5-CHAR"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "OWNER_ASSIGN", "owner": "BL5", "proposition_id": "P-BL8-PAYMODE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "basis": "GUESSED_FOREIGN_PAYMENT_MODE"}
+      ]
+    },
+    "BL5-JIT-02": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/base-method-rate-timing.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/characterization-events-roles.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/documentation-invoice-evidence.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/incentives-structuring-economics.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL5"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "proposition_id": "P-BL5-CALC"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "RECOMPUTE", "proposition_id": "P-BL5-CHAR"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "basis": "PAYMENT_DATE_EQUALS_UNIVERSAL_TAX_DATE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "basis": "CONTRACT_AMOUNT_EQUALS_TAX_BASE"}
+      ]
+    },
+    "BL5-JIT-03": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/documentation-invoice-evidence.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/characterization-events-roles.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/base-method-rate-timing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/incentives-structuring-economics.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL5"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "proposition_id": "P-BL5-DOC"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "basis": "INVOICE_IMPLIES_DEDUCTIBILITY"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "basis": "TAX_DOCUMENT_DEFECT_ERASES_TRANSACTION"}
+      ]
+    },
+    "BL5-JIT-04": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/incentives-structuring-economics.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/characterization-events-roles.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/base-method-rate-timing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/documentation-invoice-evidence.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL5"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "proposition_id": "P-BL5-ECON"},
+        {"event": "DEPENDENCY_ADD", "edge_type": "FEEDBACK", "owner": "BL5"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "INVALIDATE", "proposition_id": "P-UPSTREAM-OPTION"},
+        {"event": "RECLASSIFICATION_COMMITTED", "basis": "TAX_ECONOMICS"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "basis": "INVENTED_TAX_OPTION"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "basis": "LOWEST_TAX_AUTOMATICALLY_BEST"}
+      ]
+    }
+  }
+}
