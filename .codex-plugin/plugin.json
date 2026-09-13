@@ -1,0 +1,28 @@
+{
+  "name": "vietnam-business-law-practitioner",
+  "version": "0.1.0",
+  "description": "Research-first Vietnamese business-law analysis with live-law verification.",
+  "author": {
+    "name": "quocbao201104",
+    "url": "https://github.com/quocbao201104"
+  },
+  "homepage": "https://github.com/quocbao201104/vietnam-business-law-practitioner",
+  "repository": "https://github.com/quocbao201104/vietnam-business-law-practitioner",
+  "license": "MIT",
+  "keywords": ["vietnam", "business-law", "legal-research", "contracts", "compliance"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Vietnam Business Law Practitioner",
+    "shortDescription": "Research-first Vietnam business-law analysis with live-law verification.",
+    "longDescription": "Analyze Vietnamese business and commercial legal questions using stable practitioner reasoning, proposition ownership, controlled specialist routing, preserved uncertainty, and current or historically applicable authority verification.",
+    "developerName": "quocbao201104",
+    "category": "Productivity",
+    "capabilities": [],
+    "websiteURL": "https://github.com/quocbao201104/vietnam-business-law-practitioner",
+    "defaultPrompt": [
+      "Analyze this Vietnamese business-law question and verify the current controlling authority.",
+      "Review this contract situation and separate facts, legal classifications, unresolved propositions, and practical options.",
+      "Help me identify the legally relevant risks and next actions for this business decision in Vietnam."
+    ]
+  }
+}
