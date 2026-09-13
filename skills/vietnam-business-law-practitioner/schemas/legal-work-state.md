@@ -1,4 +1,4 @@
-# Legal Work State — Semantic Contract v0.3
+# Legal Work State — Semantic Contract v0.4
 
 This is a semantic contract, not a requirement to emit JSON or persist every field for every request.
 
@@ -188,20 +188,30 @@ Only `DEPENDS_ON` automatically propagates `STALE` / `INVALIDATED` when the upst
 
 ## Authorities
 
-Each material authority result should have stable identity:
+Authority resolution and owner applicability are separate state layers.
 
-- `authority_id`;
-- proposition it supports;
-- source provenance;
+### Authority result
+
+Each material resolver result should have stable identity and enough context to determine whether it can be reused safely:
+
+- `authority_result_id`;
+- `request_id`;
+- requested `proposition_id`;
+- exact legal authority question;
+- requesting/accountable BL owner;
+- jurisdiction(s);
+- source provenance and source-set IDs;
 - authority/legal-force type;
+- document identity;
+- provision locator where material;
 - lifecycle status;
 - temporal anchor(s);
-- effective period;
+- effective period/version/amendment/consolidation context;
+- `resolution_status`;
+- material source-attempt statuses where relevant;
 - `verified_at`;
-- source version/amendment/replacement context;
-- relevant passage/provenance;
-- freshness requirement where material;
-- case-applicability status assigned by the accountable proposition owner.
+- freshness requirement / `fresh_until` or semantic equivalent;
+- authority-change signal state where material.
 
 Lifecycle status may include:
 
@@ -226,7 +236,41 @@ Authority/legal-force type may include:
 - academic/secondary material;
 - research-only lead.
 
-**Lifecycle is not applicability.** `CURRENT_BINDING` does not automatically mean the authority governs this transaction or proposition.
+Resolver `resolution_status` and source-attempt status are separate. A failed/lagging adapter may coexist with a final `RESOLVED` authority result through fallback.
+
+### Proposition-to-authority support link
+
+Do not embed another proposition's applicability conclusion into a reusable authority record.
+
+For each material proposition that relies on an authority result, preserve a support/applicability link containing:
+
+- `proposition_id`;
+- `authority_result_id`;
+- accountable owner;
+- applicability status;
+- material facts/conditions used for applicability;
+- temporal anchor(s);
+- `state_revision` at which applicability was decided;
+- reuse basis if the authority result was reused rather than re-resolved.
+
+Applicability status:
+
+- `APPLICABLE_TO_CASE`
+- `NOT_APPLICABLE_TO_CASE`
+- `APPLICABILITY_CONDITIONAL`
+- `APPLICABILITY_UNRESOLVED`
+
+**Lifecycle is not applicability.** `CURRENT_BINDING` and resolver `RESOLVED` do not automatically mean the authority governs this transaction or proposition.
+
+A reused authority result still requires a proposition-specific applicability decision unless the exact same proposition, material facts, temporal anchors and owner decision remain current at the relevant state revision.
+
+### Freshness and stale support
+
+If a required authority result fails freshness or receives an authority-change signal, mark only the exact proposition support links that materially depend on it as stale/review-required.
+
+The affected proposition may become `STALE` or `AUTHORITY_UNCERTAIN` until re-resolution + owner applicability review are complete. Do not globally invalidate unrelated propositions merely because one authority result aged or changed.
+
+If re-resolution restores freshness without materially changing the owned proposition, update the support/applicability link and recompute readiness. If the owned proposition materially changes, propagate through exact `DEPENDS_ON` edges only.
 
 ## Conditions
 
@@ -263,7 +307,9 @@ Readiness states:
 - `LEGAL_REVIEW_REQUIRED`
 - `DO_NOT_PROCEED`
 
-`READY` means all material prerequisites have been positively resolved, no unresolved material condition remains, no blocking proposition exists, and required authority freshness is satisfied. Absence of a known blocker is not enough.
+`READY` means all material prerequisites have been positively resolved, no unresolved material condition remains, no blocking proposition exists, required authority results are sufficiently fresh, required proposition-to-authority applicability decisions are current, and the readiness calculation uses the current state revision. Absence of a known blocker is not enough.
+
+A material unresolved authority/applicability question normally prevents `READY` / `READY_WITH_CONDITIONS` for an action that depends on it. Preserve the uncertainty explicitly rather than inferring permission from missing contrary authority.
 
 ## Risks
 
