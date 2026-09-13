@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3",
-  "candidate_sha": "75135e67223c488bdecb9b2f753186bd2bab4601",
+  "candidate_sha": "c4fe8200f67adf6fa44fdbb95612836d817f3574",
   "fixtures": {
     "RF-01": {
       "required_reads": [
