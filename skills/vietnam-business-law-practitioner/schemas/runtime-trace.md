@@ -1,4 +1,4 @@
-# Runtime Trace — Observable Event Contract v0.6
+# Runtime Trace — Observable Event Contract v0.7
 
 This contract exists to prove execution path independently of final prose.
 
@@ -217,7 +217,41 @@ If re-resolution changes the owned proposition materially, downstream `INVALIDAT
 - `ACTION_READINESS`
 - `RUN_CONVERGED`
 
-`ACTION_READINESS` must include `action_id`, state, and explicit prerequisite proposition/condition IDs.
+### Composition conflict lifecycle
+
+`COMPOSITION_CONFLICT` must identify where material:
+
+- `conflict_id`;
+- involved proposition IDs;
+- owners;
+- affected action IDs;
+- reason;
+- `status`.
+
+Allowed conflict status:
+
+- `ACTIVE`
+- `TERMINAL_UNRESOLVED`
+
+Emit `COMPOSITION_CONFLICT status=ACTIVE` when the conflict is first created.
+
+If the same conflict is later terminalized without substantive resolution, emit another `COMPOSITION_CONFLICT` event with the same `conflict_id` and:
+
+- `status=TERMINAL_UNRESOLVED`;
+- `terminal_reason`;
+- remaining uncertainty IDs or a non-empty `required_external_input_or_review` description;
+- affected action IDs;
+- current `state_revision`.
+
+`TERMINAL_UNRESOLVED` means no material internal resolution step remains in the current run. It must not be emitted while a material late-route, contradiction/reclassification, stale-state repair, authority re-resolution, or available specialist step could still resolve the conflict.
+
+Emit `CONFLICT_RESOLVED` only for substantive resolution. It must identify:
+
+- `conflict_id`;
+- resolution basis;
+- current `state_revision`.
+
+`ACTION_READINESS` must include `action_id`, state, and explicit prerequisite proposition/condition IDs. When readiness is capped by a terminal unresolved conflict, it should also identify the relevant `conflict_id`.
 
 When a new/re-resolved authority result is material to readiness, the trace should make it possible to connect:
 
@@ -263,7 +297,11 @@ Use this event when the decision whether to call/reuse/re-resolve authority is c
 
 ## Convergence
 
-`RUN_CONVERGED` may be emitted only when all requested actions satisfy the stop condition in `runtime-composition.md`, including authority-aware convergence.
+`RUN_CONVERGED` may be emitted only when all requested actions satisfy the stop condition in `runtime-composition.md`, including authority-aware convergence and composition-conflict lifecycle.
+
+No conflict may remain `ACTIVE` at convergence.
+
+A run may converge with a `TERMINAL_UNRESOLVED` conflict only when the terminal event is explicit and each affected action is subsequently recorded as `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or independently supported `DO_NOT_PROCEED`.
 
 A run may converge with an unresolved authority result only when the unresolved authority/applicability state is explicit and reflected in non-READY readiness.
 
@@ -284,10 +322,13 @@ The trace checker should reject, where the applicable oracle encodes the require
 - a `STATE_DELTA` missing revision/owner/object metadata;
 - a stale `STATE_DELTA` recorded as `APPLIED`;
 - non-monotonic `committed_state_revision` values;
+- malformed composition-conflict lifecycle or terminalization metadata;
+- `RUN_CONVERGED` while any conflict remains `ACTIVE`;
+- terminal unresolved conflict followed by `READY` / `READY_WITH_CONDITIONS` for an affected action;
 - readiness before unresolved required conflict/stale state/authority applicability or freshness issue is reflected in the action state.
 
 ## Evidence status
 
 A trace proves only events that are actually observable in it. It does not prove hidden model reasoning.
 
-Therefore the freeze gate should rely on observable path properties such as file reads, event order, owner/route transitions, resolver calls/reuse/re-resolution, owner applicability decisions, revision-aware state-delta outcomes, source-attempt/fallback events, invalidation targets, and readiness outputs rather than chain-of-thought.
+Therefore the freeze gate should rely on observable path properties such as file reads, event order, owner/route transitions, resolver calls/reuse/re-resolution, owner applicability decisions, revision-aware state-delta outcomes, composition-conflict lifecycle, source-attempt/fallback events, invalidation targets, and readiness outputs rather than chain-of-thought.
