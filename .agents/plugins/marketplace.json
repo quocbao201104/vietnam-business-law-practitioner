@@ -1,0 +1,20 @@
+{
+  "name": "vietnam-business-law-practitioner",
+  "interface": {
+    "displayName": "Vietnam Business Law Practitioner"
+  },
+  "plugins": [
+    {
+      "name": "vietnam-business-law-practitioner",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

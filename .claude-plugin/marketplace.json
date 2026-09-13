@@ -1,0 +1,16 @@
+{
+  "name": "vietnam-business-law-practitioner",
+  "owner": {
+    "name": "quocbao201104"
+  },
+  "metadata": {
+    "description": "Research-first Vietnamese business-law practitioner skill with live-law verification."
+  },
+  "plugins": [
+    {
+      "name": "vietnam-business-law-practitioner",
+      "source": "./",
+      "description": "Analyze Vietnamese business-law questions using stable legal reasoning, controlled routing, and current authority verification."
+    }
+  ]
+}
