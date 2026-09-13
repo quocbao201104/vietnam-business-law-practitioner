@@ -1,4 +1,4 @@
-# Runtime Composition — Semantic Contract v0.3
+# Runtime Composition — Semantic Contract v0.4
 
 This contract defines how BL1–BL8, live authority, and JIT specialists compose at runtime. It is normative for routing, ownership, invalidation, convergence, and synthesis.
 
@@ -189,6 +189,106 @@ Before a material irreversible or current action, any authority whose freshness 
 
 A cached result may not keep an action `READY` merely because it was current when first retrieved.
 
+## 11A. Authority orchestration behavior
+
+This section connects the frozen retrieval subsystem to proposition ownership, shared state, composition, and action readiness. It does not redesign search/retrieval.
+
+### Owner decides whether authority work is needed
+
+For each material owned proposition, the accountable owner decides whether it can proceed from already sufficient authority support or whether live/historical authority resolution is material.
+
+Use the canonical materiality gate. A resolver call is justified when a current/historical authority result can change the proposition result/status, applicable version/lifecycle, option set, required procedure/evidence/deadline, dependency, or action readiness.
+
+Do not call the resolver merely to decorate prose with citations.
+
+When the call/no-call decision is contestable, emit `MATERIALITY_DECISION` with the affected proposition/action.
+
+### Construct proposition-specific requests
+
+A material authority request must identify the exact legal proposition/question, accountable owner, jurisdiction(s), proposition-specific temporal anchor(s), required authority class when known, freshness requirement, and known candidate authorities/sources when useful.
+
+Do not send a whole case as one undifferentiated request when different propositions have different owners, temporal anchors, or authority needs.
+
+### Reuse gate
+
+An existing authority result may be reused instead of searched again only when all material reuse conditions remain satisfied:
+
+- its legal question/scope is sufficient for the current proposition;
+- jurisdiction and required authority class still match;
+- temporal anchor(s) and effective-period/version context remain compatible;
+- document identity, lifecycle and provision resolution are sufficient for the current proposition;
+- its freshness requirement is still satisfied;
+- no unresolved `AUTHORITY_CHANGE_SIGNAL` affects it;
+- no material fact/classification change has changed what authority must be resolved.
+
+Reuse the **authority result**, not another proposition's applicability conclusion. The current accountable owner must still decide applicability for the current proposition unless the exact same proposition, material facts, temporal anchors and owner decision remain current at the same or a later reconciled state revision.
+
+If any material reuse condition fails, re-resolve rather than silently extending the old result.
+
+### Resolver stop versus owner stop
+
+The resolver stops according to `authority-resolver.md`; the owner then decides what the result permits.
+
+- `RESOLVED` means the authority set is sufficient to proceed to owner applicability review for the requested authority question.
+- `PARTIALLY_RESOLVED` may support only the resolved sub-proposition. If the unresolved part is material to the owned proposition/action, it remains unresolved for runtime purposes.
+- unresolved statuses such as `CURRENTNESS_UNRESOLVED`, `PROVISION_UNRESOLVED`, `CONFLICTING_AUTHORITY`, `INSUFFICIENT_AUTHORITY`, or `TEMPORAL_SCOPE_UNRESOLVED` must be preserved rather than converted into a convenient legal conclusion.
+- one failed/lagging source attempt does not prevent a usable final result when another sufficient official path yields `RESOLVED`.
+
+Do not loop indefinitely on the same unresolved request. Re-call the resolver only when a new material source/fallback, temporal anchor, fact/classification, authority-change signal, or other material input can change the result.
+
+### Writeback and owner applicability
+
+Write the resolver result into shared Legal Work State before using it to promote an owned proposition.
+
+The result remains resolver-owned evidence/authority support. The accountable BL owner then records a separate applicability decision for the proposition using one of:
+
+- `APPLICABLE_TO_CASE`
+- `NOT_APPLICABLE_TO_CASE`
+- `APPLICABILITY_CONDITIONAL`
+- `APPLICABILITY_UNRESOLVED`
+
+The applicability decision must identify the proposition, accountable owner, authority result(s), relevant material facts/conditions, temporal anchor(s), and state revision.
+
+`CURRENT_BINDING`, `RESOLVED`, or discovery of a provision never substitutes for this owner decision.
+
+### Unresolved authority and readiness
+
+If a material owned proposition requires authority support and the final authority/applicability state remains unresolved, the proposition must remain `AUTHORITY_UNCERTAIN`, `AMBIGUOUS`, or otherwise unresolved/conditional rather than being promoted to a supported conclusion.
+
+For an action that depends on that proposition:
+
+- unresolved material authority normally prevents `READY` and `READY_WITH_CONDITIONS` and yields at most `VERIFY_BEFORE_ACTION`;
+- use `LEGAL_REVIEW_REQUIRED` when the runtime can state the issue/options but authoritative conflict, unresolved primary authority, or specialist legal judgment cannot be safely resolved for a high-impact/irreversible action;
+- use `DO_NOT_PROCEED` only when a supported current blocking proposition exists, not merely because authority is unresolved.
+
+An unresolved authority issue that is not material to a particular action does not cap that action's readiness.
+
+### Freshness, change signals, and re-resolution
+
+When a required authority result fails freshness or receives `AUTHORITY_CHANGE_SIGNAL`:
+
+1. identify the exact authority-supported proposition(s) affected;
+2. mark those proposition(s) `STALE` or review-required where the authority is material;
+3. recompute readiness for actions whose dependency closure includes them;
+4. emit `AUTHORITY_RERESOLVE` when re-resolution starts;
+5. write back the new resolver result;
+6. require owner applicability review again before restoring the proposition as current.
+
+Do not globally invalidate unrelated propositions.
+
+If re-resolution restores freshness and the owned proposition result/conditions do not materially change, no substantive downstream invalidation is required; recompute readiness from the refreshed current proposition. If the owned proposition materially changes, propagate `STALE` / `INVALIDATED` only through exact `DEPENDS_ON` edges and recompute affected propositions/actions.
+
+### Authority-aware convergence
+
+For a requested action, authority orchestration has converged only when:
+
+- every material authority-backed prerequisite has either a sufficiently fresh usable result plus owner applicability decision, or an explicit unresolved authority/applicability state reflected in non-READY readiness;
+- no pending material `AUTHORITY_RERESOLVE` or unresolved authority-change signal affects the action;
+- there is no repeated identical resolver call with no new material input;
+- authority result and applicability decisions are attached to the current state revision used for readiness.
+
+A run may therefore converge with unresolved authority only when that uncertainty is explicit in proposition state and readiness.
+
 ## 12. Specialist ownership
 
 A JIT specialist may only be invoked under an owning BL track.
@@ -285,7 +385,8 @@ The controlled loop has converged for a requested action only when all of the fo
 4. no unresolved `COMPOSITION_CONFLICT` affects the action;
 5. all authority results required for readiness satisfy their freshness requirement or are explicitly marked unresolved and reflected in readiness;
 6. every material proposition in the action's dependency closure has an accountable owner and current status;
-7. the action has an explicit readiness state derived from those prerequisites.
+7. the action has an explicit readiness state derived from those prerequisites;
+8. every material authority-backed prerequisite satisfies the authority-aware convergence rule in Section 11A.
 
 A run may converge with `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`; convergence does not mean permission.
 
@@ -302,7 +403,8 @@ Path evidence should prove, where material:
 - intentionally skipped tracks;
 - late-route activation;
 - accountable owner for each proposition;
-- authority calls and temporal anchors;
+- authority call/reuse/re-resolution decisions and temporal anchors;
+- resolver result followed by owner applicability decision;
 - specialist invocation and return path;
 - contradiction/reclassification transition;
 - dependency invalidation;
@@ -310,6 +412,6 @@ Path evidence should prove, where material:
 - per-action readiness;
 - convergence.
 
-A substantively plausible final answer produced through the wrong ownership/routing path is an architecture failure.
+A substantively plausible final answer produced through the wrong ownership/routing/authority path is an architecture failure.
 
 Use `runtime-trace.md` for the observable event contract.
