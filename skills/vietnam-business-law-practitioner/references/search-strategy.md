@@ -1,8 +1,22 @@
-# Search Strategy v0.2
+# Search Strategy v0.3
 
 Search is a designed runtime dependency for volatile legal authority. The Authority Resolver is a **callable service**, not a fixed pipeline stage.
 
 Any accountable BL owner may call it while resolving a proposition. Composition may request re-resolution when temporal anchors, authority freshness, or downstream reclassification changes.
+
+## Core resolution invariant
+
+Keep these states separate:
+
+```text
+DISCOVERED
+!= IDENTIFIED
+!= CURRENT
+!= APPLICABLE_TO_CASE
+!= INTERPRETED
+```
+
+A search hit is a discovery lead, not proof of document identity, lifecycle, provision currentness, or case applicability.
 
 ## Search when the proposition is materially time-sensitive or action-facing
 
@@ -35,20 +49,65 @@ Do not assume one universal relevant date for the whole case.
 
 Possible temporal anchors include formation, closing, performance, breach, notice, tax event, customs entry, and planned action date.
 
+## Discovery may be broad; legal verification must converge
+
+Discovery may use multiple source families when that improves recall or speed, including web search, official portals, specialist regulator portals, and reputable secondary legal indexes.
+
+Do not force every discovery step through one portal.
+
+For a material binding-law assertion, however, converge on appropriate official authority before treating the proposition as resolved. Secondary indexes may identify likely instruments or provisions but must not silently become the controlling source when primary authority is available and material.
+
+For recently changing, conflicting, or high-consequence rules, fan out across appropriate official sources when useful to detect a later amendment, replacement, transition rule, or source-index lag. Source count does not determine legal force.
+
 ## Search sequence
 
 1. Define the exact proposition requiring verification.
 2. Identify its temporal anchor(s).
 3. Identify jurisdiction and likely authority/legal-force type.
-4. Locate the highest appropriate official source for the proposition.
-5. Record source provenance separately from legal force.
-6. Check lifecycle: effective date, amendment, replacement, suspension, repeal, consolidation, future effect.
-7. Check transition rules and whether multiple versions are needed for different anchors.
-8. Read the controlling passage in context.
-9. Record `verified_at`, source/version context, and freshness requirement.
-10. Return the authority result to the accountable owner.
-11. The owner decides **case applicability**; the resolver does not silently promote `CURRENT_BINDING` to `APPLICABLE_TO_CASE`.
-12. Reuse the resolved authority across tracks when the proposition, temporal anchor, and freshness remain valid.
+4. Discover candidate instruments broadly enough to avoid single-index blind spots.
+5. **Lock document identity** before relying on a provision: verify, as available, number, title, instrument type, issuer, promulgation date, and canonical official record/identifier.
+6. Acquire the controlling text from an appropriate official source or official fallback.
+7. Check lifecycle/currentness: effective date, amendment, partial effect, replacement, suspension, repeal, consolidation, future effect, and transition rules.
+8. For current-law questions, prefer an appropriate official current consolidated text where it actually resolves the wording needed; do not reconstruct consolidated wording when an official consolidation is available and sufficient.
+9. For historical questions, resolve the wording and authority set **as of the proposition's temporal anchor**, not by reading today's consolidated text backward.
+10. Resolve the exact provision after document identity/currentness are sufficiently controlled: Chapter/Article/Clause/Point where material.
+11. Read the controlling passage in context and preserve the provenance of both document identity and provision text.
+12. Record `verified_at`, source/version context, and freshness requirement.
+13. Return the authority result to the accountable owner.
+14. The owner decides **case applicability**; the resolver does not silently promote `CURRENT_BINDING` to `APPLICABLE_TO_CASE`.
+15. Reuse the resolved authority across tracks when the proposition, temporal anchor, document/version identity, and freshness remain valid.
+
+## Document identity before provision retrieval
+
+Do not search a generic phrase such as `Điều 12 người đại diện` and treat the first matching page as the controlling provision.
+
+Resolve the instrument first, then retrieve the provision inside that instrument/version.
+
+An internal portal ID, `ItemID`, UUID, search-session token, or backend identifier is an implementation locator, not legal identity by itself. If one is used, cross-check the returned official record against stable instrument attributes such as number/title/issuer/date before locking identity.
+
+A discovery query disappearing from the destination URL is not a legal problem if the destination instrument identity is independently resolved.
+
+## Provision structure
+
+Prefer official structural data for Article/Clause/Point boundaries when available and trustworthy.
+
+If deterministic parsing is required as a fallback, mark the structure as derived rather than silently treating regex/chunk boundaries as official legal structure.
+
+Do not use arbitrary vector chunks as legal citation identity when a provision-level locator is available or can be deterministically resolved.
+
+## Source-shape drift
+
+Undocumented portal endpoints, frontend Server Actions, HTML layouts, and backend payloads may change.
+
+If an adapter expects a field/shape and the source no longer matches it:
+
+```text
+unexpected source shape
+→ SOURCE_DRIFT
+→ fail closed / use an official fallback
+```
+
+Do **not** reinterpret a changed payload as an empty legal result, missing provision, or proof that no amendment exists.
 
 ## Four dimensions of authority
 
@@ -72,11 +131,12 @@ Distinguish at least:
 - currently binding;
 - historical version;
 - amended;
+- partially effective;
 - superseded/repealed;
 - suspended;
 - uncertain/transitioning.
 
-A current law may still be inapplicable to a pre-effective transaction because of a transition rule. A past law may still govern a historical proposition.
+A document-level status does not prove that every provision has the same lifecycle state. A current law may still be inapplicable to a pre-effective transaction because of a transition rule. A past law may still govern a historical proposition.
 
 ## Authority freshness
 
@@ -89,7 +149,8 @@ For material irreversible/current actions, re-resolve authority when:
 - a relevant effective date has passed;
 - the temporal anchor changed;
 - a reclassification changes the proposition being supported;
-- the applicable regime becomes uncertain.
+- the applicable regime becomes uncertain;
+- a later amendment/replacement/consolidation candidate is discovered.
 
 Cached authority cannot support `READY` when freshness is unsatisfied.
 
@@ -116,10 +177,11 @@ Better: identify product classification/origin issue, relevant FTA, current tari
 When sources conflict:
 
 1. compare legal force;
-2. compare lifecycle/effective period;
-3. compare scope and case applicability;
-4. check amendment/replacement/transition context;
-5. preserve ambiguity if conflict remains material.
+2. compare document identity;
+3. compare lifecycle/effective period;
+4. compare scope and case applicability;
+5. check amendment/replacement/transition context;
+6. preserve ambiguity if conflict remains material.
 
 Do not resolve conflict by citation count.
 
@@ -139,6 +201,6 @@ A proposition may require one controlling instrument, or a set such as:
 
 ## Search stop condition
 
-Stop when the accountable owner has enough fresh, applicable authority to support the material proposition at the level needed for the action.
+Stop when the accountable owner has enough fresh, identified, provision-specific, applicable authority to support the material proposition at the level needed for the action.
 
 Do not continue collecting sources merely to make the answer look researched.

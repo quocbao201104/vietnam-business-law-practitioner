@@ -1,4 +1,4 @@
-# Authority Resolver — Service Contract v0.3
+# Authority Resolver — Service Contract v0.4
 
 This contract defines the callable authority-resolution service used by proposition owners. It does not decide substantive case applicability.
 
@@ -33,6 +33,60 @@ Call the resolver when the authority result can change at least one of:
 
 Do not call merely to decorate an answer with citations.
 
+## Resolution stages
+
+The resolver must not collapse these states:
+
+```text
+DISCOVERED
+→ IDENTIFIED
+→ LIFECYCLE_RESOLVED
+→ PROVISION_RESOLVED
+```
+
+`APPLICABLE_TO_CASE` remains owned by the accountable BL proposition owner.
+
+### Discovery
+
+Discovery may fan out across official and reputable secondary sources to maximize recall and speed.
+
+A search hit is only a candidate.
+
+### Document identity lock
+
+Before a material provision is relied on, lock the instrument identity using stable attributes where available:
+
+- number/symbol;
+- title;
+- instrument type;
+- issuer;
+- promulgation date;
+- canonical official record/locator.
+
+Portal/internal IDs may be retained for retrieval but do not replace the legal identity fields.
+
+### Lifecycle/currentness resolution
+
+Resolve, as material:
+
+- effective-from / effective-to;
+- future effect;
+- amendment;
+- partial effect;
+- replacement/repeal;
+- suspension/resumption;
+- consolidation;
+- transition rules;
+- historically applicable version for the temporal anchor.
+
+Do not infer provision-level currentness solely from a document-level status when partial effect or amendment is material.
+
+### Provision resolution
+
+Resolve the controlling provision at the narrowest useful legal locator, for example Article/Clause/Point.
+
+Prefer official structural data when available. If structure is deterministically derived, preserve that fact in provenance.
+
 ## Result
 
 A resolver result must separate:
@@ -45,6 +99,14 @@ Examples: official legal database, competent regulator, court/judiciary, treaty 
 
 Examples: legislation/regulation, treaty, binding judicial authority where applicable, official interpretive/administrative guidance, non-binding practice material, secondary research.
 
+### Document identity
+
+Record stable identity fields actually verified, plus any retrieval locator used. Do not treat a backend ID alone as sufficient legal identity.
+
+### Provision locator
+
+When the proposition depends on a specific provision, record the resolved Article/Clause/Point or equivalent locator and whether the structure is official or derived.
+
 ### Lifecycle
 
 Use as applicable:
@@ -54,6 +116,7 @@ Use as applicable:
 - `CURRENT_BINDING`
 - `HISTORICAL`
 - `AMENDED`
+- `PARTIALLY_EFFECTIVE`
 - `SUPERSEDED`
 - `SUSPENDED`
 - `UNCERTAIN`
@@ -79,6 +142,11 @@ Use one of:
 - `PARTIALLY_RESOLVED`
 - `CONFLICTING_AUTHORITY`
 - `SOURCE_UNAVAILABLE`
+- `SOURCE_DRIFT`
+- `DOCUMENT_IDENTITY_UNRESOLVED`
+- `CURRENTNESS_UNRESOLVED`
+- `PROVISION_UNRESOLVED`
+- `CONSOLIDATION_UNRESOLVED`
 - `INSUFFICIENT_AUTHORITY`
 - `TEMPORAL_SCOPE_UNRESOLVED`
 
@@ -88,7 +156,7 @@ Return the **minimum sufficient authority set**, not a citation quota. A proposi
 
 ## Applicability boundary
 
-The resolver may report lifecycle, scope text, transition text, and source context. It does **not** decide `APPLICABLE_TO_CASE` as a substantive legal conclusion.
+The resolver may report lifecycle, scope text, transition text, source context, document identity, and provision locator. It does **not** decide `APPLICABLE_TO_CASE` as a substantive legal conclusion.
 
 The accountable BL proposition owner must decide case applicability and record that decision separately.
 
@@ -105,12 +173,33 @@ If the preferred official source cannot be accessed:
 3. if only secondary material is available, use it only as a discovery/interpretive lead and mark the proposition unresolved or conditional if primary authority is material;
 4. do not silently downgrade the authority requirement.
 
+### Source drift
+
+If an undocumented endpoint, frontend action, HTML layout, or expected payload changes shape:
+
+1. return `SOURCE_DRIFT` for that adapter/source attempt;
+2. do not reinterpret the unexpected response as an empty legal result;
+3. use an official fallback route where possible;
+4. require re-resolution before a dependent material proposition can be `READY`.
+
+### Document identity unresolved
+
+If a candidate instrument cannot be reliably matched to an official record, return `DOCUMENT_IDENTITY_UNRESOLVED`. Do not retrieve a same-numbered/similarly titled provision from another document and continue silently.
+
+### Currentness unresolved
+
+If amendment, replacement, partial effect, consolidation, or temporal applicability cannot be resolved to the level needed by the proposition, return `CURRENTNESS_UNRESOLVED` or `TEMPORAL_SCOPE_UNRESOLVED` rather than assuming the discovered text is current.
+
+### Provision unresolved
+
+If the correct instrument/version is known but the exact controlling provision cannot be reliably located, return `PROVISION_UNRESOLVED` and identify what is missing.
+
 ### Conflicting authority
 
 If authoritative sources conflict:
 
 1. preserve both sources;
-2. compare legal force, scope, temporal status, amendment/replacement, and transition rules;
+2. compare legal force, identity, scope, temporal status, amendment/replacement, and transition rules;
 3. return `CONFLICTING_AUTHORITY` if the conflict remains material;
 4. the owner may not force `READY` for an affected action merely by choosing the more convenient source.
 
@@ -141,5 +230,7 @@ An instrumented runtime should emit:
 - `AUTHORITY_RESULT`
 - `AUTHORITY_RERESOLVE`
 - `AUTHORITY_CHANGE_SIGNAL`
+- `AUTHORITY_IDENTITY_LOCK`
+- `AUTHORITY_SOURCE_DRIFT`
 
-with `proposition_id`, owner, temporal anchors, resolution status, source IDs/authority IDs, and freshness data where material.
+with `proposition_id`, owner, temporal anchors, resolution status, source IDs/authority IDs, resolved document identity, provision locator, and freshness data where material.

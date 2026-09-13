@@ -1,4 +1,4 @@
-# Authority Source Registry v0.1
+# Authority Source Registry v0.2
 
 This registry gives stable source IDs and fallback roles for runtime authority discovery. It is not a legal database and does not imply that every statement on an official site is binding law.
 
@@ -7,28 +7,43 @@ Use together with `../schemas/authority-resolver.md`, `authority-sources.md`, `s
 ## Registry principles
 
 - Source identity/provenance is separate from legal force.
+- **Discovery may be multi-source; verification requirements depend on the proposition.**
 - Prefer the source that actually publishes the controlling instrument or official record.
-- If one official source is unavailable, use another official source where the same instrument/record can be independently verified.
+- If one official source is unavailable or appears stale/incomplete, use another official source where the same instrument/record can be independently verified.
 - Practitioner/academic/secondary sources may discover or interpret but do not silently replace primary authority when primary authority is material.
 - Record the actual URL/document identity used at runtime; registry IDs are routing aids only.
+- Portal backend IDs, `ItemID`s, UUIDs, frontend action hashes, and undocumented API routes are transport/locator details, not legal authority by themselves.
+- If an undocumented adapter changes shape, emit `SOURCE_DRIFT` and use an official fallback instead of treating the result as legally empty.
 
 ## General legal instruments
 
 ### `VN-VBPL`
 
-Role: national/competent-authority legal-document databases under `vbpl.vn`.
+Role: national/competent-authority legal-document databases under `vbpl.vn` and official Ministry of Justice VBPL services.
 
-Use for: official text, historical versions, legal-document metadata, consolidation/replacement research where available.
+Use for: official text, legal-document identity/metadata, lifecycle/history, amendment/replacement/consolidation relationships, and provision structure where available.
 
-Fallback: `VN-GOV-LAW` or competent ministry/regulator legal-document portal.
+Runtime note: portal frontend/backend endpoints may be useful as adapters, but undocumented endpoint shapes or Next.js action identifiers are not stable contracts. Cross-check returned instrument identity and fail closed on source-shape drift.
+
+Fallback: `VN-GOV-LAW`, original official attachment/publication, or competent ministry/regulator legal-document portal.
 
 ### `VN-GOV-LAW`
 
 Role: Government legal-document publication portal under `vanban.chinhphu.vn` / official Government domains.
 
-Use for: promulgated laws/decrees/resolutions/circular metadata and official text where available.
+Use for: promulgated laws/decrees/resolutions/circular metadata, official text/attachments, and independent identity/effective-date verification where available.
 
 Fallback: `VN-VBPL` or competent issuing authority.
+
+### `VN-SECONDARY-LEGAL-INDEX`
+
+Role: reputable non-official Vietnamese legal indexes/search services, for example Thư Viện Pháp Luật or LuatVietnam.
+
+Use for: fast discovery, keyword search, candidate instrument/provision identification, and navigation to likely primary authority.
+
+Constraint: discovery/interpretive aid only for material binding-law propositions. Verify controlling text, lifecycle, and amendment state against appropriate official authority before treating the proposition as resolved.
+
+Fallback: direct web search plus `VN-VBPL`, `VN-GOV-LAW`, or the competent regulator.
 
 ## Corporate / investment
 
@@ -36,7 +51,7 @@ Fallback: `VN-VBPL` or competent issuing authority.
 
 Role: National Business Registration Portal / competent business-registration authority (`dangkykinhdoanh.gov.vn` and successor official services).
 
-Use for: business-registration procedures/forms/official registration guidance and current implementing materials.
+Use for: business-registration procedures/forms/official registration guidance, current implementing materials, and domain-specific change signals.
 
 Fallback: competent provincial/ministerial official source plus governing legal instrument.
 
@@ -146,6 +161,18 @@ Use for: CISG text/status and treaty discovery.
 
 Fallback: official treaty publication/contracting-state materials.
 
+## Official convergence rule
+
+For a material binding-law proposition:
+
+1. secondary/web discovery may nominate candidate instruments;
+2. resolve the instrument against an appropriate official source;
+3. check lifecycle and later-change signals;
+4. when the rule is recent, disputed, high-consequence, or one official index may lag, use another appropriate official source or original official attachment as a cross-check;
+5. preserve conflicts instead of averaging sources.
+
+`Official convergence` is a verification discipline, not a fixed two-source quota.
+
 ## Registry fallback rule
 
 When a registry source is unavailable:
@@ -157,4 +184,4 @@ When a registry source is unavailable:
 
 ## Maintenance
 
-This registry routes source discovery. It may be updated when official portals or institutional responsibilities change without changing the BL1–BL8 ownership architecture.
+This registry routes source discovery and verification. It may be updated when official portals, transport mechanisms, or institutional responsibilities change without changing the BL1–BL8 ownership architecture.
