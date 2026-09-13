@@ -255,15 +255,15 @@ Use:
 - LEGAL_REVIEW_REQUIRED
 - DO_NOT_PROCEED
 
-`READY` requires positive closure of all material prerequisites, sufficiently fresh required authority, no unresolved material condition/conflict, and no stale/invalidated dependency. Absence of a known blocker is not enough.
+`READY` requires positive closure of all material prerequisites, sufficiently fresh required authority, no unresolved material condition, no `ACTIVE` or `TERMINAL_UNRESOLVED` composition conflict affecting the action, and no stale/invalidated dependency. Absence of a known blocker is not enough.
 
-`READY_WITH_CONDITIONS` requires explicit objectively identifiable conditions whose legal pathway is sufficiently resolved.
+`READY_WITH_CONDITIONS` requires explicit objectively identifiable conditions whose legal pathway is sufficiently resolved; it is not available while an `ACTIVE` or `TERMINAL_UNRESOLVED` composition conflict affects the action.
 
 `VERIFY_BEFORE_ACTION` is for unresolved material fact/classification/authority/route/conflict issues that could change the action.
 
 `LEGAL_REVIEW_REQUIRED` is for materially high-impact/irreversible actions or specialist human judgment beyond safe runtime resolution; it is not a substitute for analysis.
 
-`DO_NOT_PROCEED` requires a supported blocking proposition or a definitively absent prerequisite that cannot be cured before the proposed action.
+`DO_NOT_PROCEED` requires a supported blocking proposition or a definitively absent prerequisite that cannot be cured before the proposed action. Unresolved conflict alone is not a blocker.
 
 ## Shared Legal Work State
 
@@ -378,7 +378,9 @@ The synthesizer derives the business-facing composition from resolved propositio
 
 It may not create legal propositions, decide authority applicability, resolve owner conflicts, infer blockers from unlinked constraints, or silently repair a missed route.
 
-If owners conflict materially, create `COMPOSITION_CONFLICT` and return to them.
+If owners conflict materially, create `COMPOSITION_CONFLICT` with status `ACTIVE` and return it to them.
+
+Keep the conflict `ACTIVE` while a material internal resolution step remains available. After owner review, either mark it `RESOLVED`, or mark the same conflict `TERMINAL_UNRESOLVED` only when no material internal resolution step remains in the current run and the remaining external fact/authority/human judgment is explicit. Terminal unresolved is not substantive resolution and affected actions must be non-READY.
 
 ### Step 10 — Compute per-action readiness
 
@@ -391,12 +393,13 @@ The loop may stop for a requested action only when:
 - no pending late-route signal affects it;
 - no pending contradiction/reclassification review affects a prerequisite;
 - no stale/invalidated proposition remains in its dependency closure;
-- no unresolved composition conflict affects it;
+- no `ACTIVE` composition conflict affects it;
+- every `TERMINAL_UNRESOLVED` conflict affecting it has explicit remaining verification/review needs and is reflected in `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or independently supported `DO_NOT_PROCEED`;
 - authority freshness requirements are satisfied or explicitly reflected in non-READY readiness;
 - every material prerequisite has an accountable owner/current status;
 - explicit readiness has been derived.
 
-A run can converge at `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`; convergence does not mean permission.
+A run can converge at `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`; convergence does not mean permission or that a terminal unresolved conflict was substantively resolved.
 
 ## High-level activation contract
 
@@ -514,11 +517,11 @@ Where material, verify:
 - specialist invocation + return to owner;
 - contradiction/reclassification transition;
 - typed dependency invalidation;
-- composition/conflict handling;
+- composition-conflict creation and `RESOLVED` / `TERMINAL_UNRESOLVED` lifecycle where material;
 - per-action readiness;
 - convergence.
 
-Use `schemas/runtime-trace.md` for observable trace evidence. A plausible answer produced through the wrong ownership/routing path is a failure.
+Use `schemas/runtime-trace.md` for observable trace evidence. A plausible answer produced through the wrong ownership/routing/conflict path is a failure.
 
 ## Architecture freeze
 
