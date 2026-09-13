@@ -194,25 +194,26 @@ Start with:
 
 Then JIT-load only the capability needed:
 
-- `bl7-regulatory/regulatory-perimeter-role.md` — regulatory perimeter, public-law regulated role, regime triggers, overlap, material route changes, and owner-controlled specialist activation;
-- `bl7-regulatory/permission-entry-ongoing-compliance.md` — prohibition, market-entry/operating permission, license/approval/registration/notification, product/service domestic market placement, permission scope/lifecycle, and ongoing/event-triggered compliance;
-- `bl7-regulatory/market-conduct-consumer-claims.md` — consumer/customer mandatory protections, advertising/claims/promotions/pricing, e-commerce selling conduct, unfair/deceptive practices, and competition/market-conduct propositions;
-- `bl7-regulatory/data-privacy-digital-operations.md` — personal-data processing, monitoring/tracking/profiling, employee/customer data, vendor/group sharing, retention/security/access, and other privacy/digital-operation propositions.
+- `bl7-regulatory/regulatory-perimeter-role.md` — regulatory perimeter plus **coarse BL7 routing role/regime trigger** sufficient to decide which BL7 capability is material; it does not pre-decide operation-specific data roles or proposition-specific competition status;
+- `bl7-regulatory/permission-entry-ongoing-compliance.md` — prohibition, market-entry/operating permission, license/approval/registration/notification, product/service domestic market placement, permission scope/lifecycle, and **permission-maintenance** conditions such as renewal or permission-linked reporting/records/inspection/event duties;
+- `bl7-regulatory/market-conduct-consumer-claims.md` — consumer/customer mandatory protections, advertising/claims/promotions/pricing, e-commerce selling conduct, unfair/deceptive practices, and competition/market-conduct propositions including proposition-specific competition status where material;
+- `bl7-regulatory/data-privacy-digital-operations.md` — personal-data processing, monitoring/tracking/profiling, employee/customer data, operation-specific controller/processor or other data-role propositions, vendor/group sharing, retention/security/access, and other privacy/digital-operation propositions.
 
-Activate BL7 when a decision depends on a material public-law regulatory perimeter, permission/ongoing-compliance state, market/customer conduct, privacy/data/digital operation, or sector specialist finding.
+Activate BL7 when a decision depends on a material public-law regulatory perimeter, permission/permission-maintenance state, market/customer conduct, privacy/data/digital operation, or sector specialist finding.
 
 BL7 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
 Within BL7:
 
-- `regulatory-perimeter-role.md` owns BL7 regulated-role/regime-trigger propositions; dependent siblings consume committed/conditioned perimeter state rather than silently inventing a role;
+- `regulatory-perimeter-role.md` owns only BL7 perimeter plus coarse routing-role/regime-trigger propositions; dependent siblings consume that state and resolve their own proposition-specific data/competition roles where needed;
 - business registration/registered business line never substitutes for activity/product/service permission;
+- `permission-entry-ongoing-compliance.md` owns recurring duties only when they maintain/renew/amend/preserve or materially condition the permission state; ongoing claim/consumer/competition duties stay market-conduct, and ongoing processing/retention/sharing/security duties stay data/privacy;
 - permission to operate/place a product does not establish that every claim, promotion, customer practice or competition restriction is lawful;
 - BL3 owns private contract/consent content; BL7 separately resolves mandatory public-law permission, conduct and data propositions;
 - BL8 owns border/customs/trade/foreign-investment propositions; BL7 owns domestic product/service market permission and domestic conduct after/beside those results;
 - BL6 owns employment merits/pathway; BL7 owns privacy/data/monitoring legality even when the same evidence is relevant to employment action;
 - market-conduct and privacy/data propositions may coexist for one digital practice and must not be collapsed into one generic `digital compliance` result;
-- a specialist is invoked only under BL7 ownership after a concrete material trigger; specialist findings remain candidate depth until BL7 accepts/conditions/rejects them.
+- **any active BL7 capability that owns the material proposition** may invoke specialist depth after the materiality gate; perimeter is not a specialist gateway. Specialist findings remain candidate depth until the same owning BL7 capability accepts/conditions/rejects them.
 
 BL7 does **not** own private contract formation/content (BL3), private dispute remedies/procedure (BL4), tax (BL5), employment merits/classification (BL6), or foreign-investment/trade/customs/payment classification (BL8).
 
@@ -255,9 +256,9 @@ Examples:
 
 - BL8 → HS classification / preferential origin specialist;
 - BL5 → transfer-pricing specialist;
-- BL7 → privacy / food / medical / product-safety / competition / sector-licensing specialist.
+- BL7 active owning capability → privacy / food / medical / product-safety / competition / sector-licensing specialist.
 
-The specialist returns candidate depth to the owner; the owner promotes/conditions/rejects the result.
+The specialist returns candidate depth to the owner; the owner promotes/conditions/rejects the result. Within BL7, no capability needs to reload `regulatory-perimeter-role.md` solely to authorize a specialist call for its own material proposition.
 
 ## Composition reminders
 
