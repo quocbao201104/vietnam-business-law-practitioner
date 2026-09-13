@@ -1,4 +1,4 @@
-# Source / Authority Status v0.2
+# Source / Authority Status v0.3
 
 Use four separate dimensions to prevent authority inflation and temporal drift.
 
@@ -41,9 +41,12 @@ Recommended labels:
 - `FUTURE_EFFECTIVE`
 - `HISTORICAL`
 - `AMENDED`
+- `PARTIALLY_EFFECTIVE`
 - `SUPERSEDED`
 - `SUSPENDED`
 - `UNCERTAIN`
+
+`PARTIALLY_EFFECTIVE` means document-level effect is mixed or some provisions have been amended/repealed/superseded while others remain operative. It requires proposition/provision-level resolution rather than treating the entire instrument as uniformly current or historical.
 
 Lifecycle describes the instrument/version at the relevant time. It does not prove the instrument applies to the specific case.
 
