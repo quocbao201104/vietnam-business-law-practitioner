@@ -36,18 +36,22 @@ Do not load all four BL1 units by default.
 
 ## BL2 — Entity / Authority / Ownership / Governance
 
+Start with:
+
 `bl2-corporate/core.md`
 
-Activate for:
+Then JIT-load only the capability needed:
 
-- entity identity;
-- legal representation/signing authority;
-- delegation/ratification;
-- required corporate approvals;
-- conflicts/related-party state;
-- corporate cap table, voting/control, ownership state, corporate-state changes.
+- `bl2-corporate/entity-actor-state.md` — resolve legal entity identity, actor role/state, group/branch/business-unit distinctions, and historical/current corporate identity;
+- `bl2-corporate/authority-representation.md` — representation/signing authority, delegation scope, disputed authority, ratification/acceptance/course-of-dealing effects;
+- `bl2-corporate/approval-conflict-governance.md` — reserved matters, corporate approvals, conflicts/related-party governance, quorum/voting/disclosure/approval defects;
+- `bl2-corporate/ownership-control-state-change.md` — legal ownership, cap table, voting/control, transfer/subscription/contribution completion, and corporate-state changes.
 
-Do not use BL2 to resolve foreign-investment control tests or market access; route those propositions to BL8.
+Activate BL2 when a decision depends on who the legal actor is, who may bind it, what internal approval is required, who owns/controls it, or whether corporate state changed.
+
+BL2 does **not** decide foreign-investor status, foreign-investment control tests, market access, or investment procedures. Route those propositions to BL8 using BL2's resolved corporate facts.
+
+Do not load all four BL2 units by default.
 
 ## BL3 — Contracts / Commercial Transactions
 
