@@ -1,4 +1,4 @@
-# Runtime Trace — Observable Event Contract v0.7
+# Runtime Trace — Observable Event Contract v0.8
 
 This contract exists to prove execution path independently of final prose.
 
@@ -64,6 +64,8 @@ Typed dependency edges use:
 - `CONSTRAINS`
 - `SIGNALS`
 - `FEEDBACK`
+
+When a current supported proposition is used as an independent action blocker, its `PROPOSITION_STATUS` should be observable before readiness is finalized.
 
 ## Authority events
 
@@ -204,7 +206,9 @@ RECONCILED
 
 A delta based on a stale revision must never appear as `write_result=APPLIED`.
 
-Where reclassification, contradiction repair, authority writeback, or another state transition mutates material shared state, the trace should connect that semantic transition to a revision-aware `STATE_DELTA` with the affected object IDs.
+Where reclassification, contradiction repair, authority writeback, composition-conflict status/scope change, or another state transition mutates material shared state, the trace must connect that semantic transition to a revision-aware `STATE_DELTA` with the affected object IDs.
+
+For `ACTIVE → RESOLVED`, `ACTIVE → TERMINAL_UNRESOLVED`, or explicit conflict reopen, the lifecycle event must carry `state_delta_seq` pointing to an earlier accepted/reconciled `STATE_DELTA` whose `affected_object_ids` includes the same `conflict_id`. The lifecycle event's `state_revision` must equal that delta's `committed_state_revision`.
 
 Authority freshness/change may make an exact authority-backed proposition `STALE` or review-required. Do not emit global invalidation merely because one authority result aged or changed.
 
@@ -214,6 +218,7 @@ If re-resolution changes the owned proposition materially, downstream `INVALIDAT
 
 - `COMPOSITION_CONFLICT`
 - `CONFLICT_RESOLVED`
+- `CONFLICT_REOPENED`
 - `ACTION_READINESS`
 - `RUN_CONVERGED`
 
@@ -235,13 +240,17 @@ Allowed conflict status:
 
 Emit `COMPOSITION_CONFLICT status=ACTIVE` when the conflict is first created.
 
+The initial affected-action set becomes the current conflict scope. A later lifecycle event must preserve that set unless a revision-safe state/dependency change explicitly changes scope. When scope changes, expose non-empty `scope_change_basis_ids`; the linked state delta must include the conflict and at least one cited scope/dependency object.
+
 If the same conflict is later terminalized without substantive resolution, emit another `COMPOSITION_CONFLICT` event with the same `conflict_id` and:
 
 - `status=TERMINAL_UNRESOLVED`;
 - `terminal_reason`;
 - remaining uncertainty IDs or a non-empty `required_external_input_or_review` description;
 - affected action IDs;
-- current `state_revision`.
+- current committed `state_revision`;
+- `state_delta_seq` for the revision-safe conflict mutation;
+- `scope_change_basis_ids` if and only if the affected-action scope materially changed.
 
 `TERMINAL_UNRESOLVED` means no material internal resolution step remains in the current run. It must not be emitted while a material late-route, contradiction/reclassification, stale-state repair, authority re-resolution, or available specialist step could still resolve the conflict.
 
@@ -249,9 +258,36 @@ Emit `CONFLICT_RESOLVED` only for substantive resolution. It must identify:
 
 - `conflict_id`;
 - resolution basis;
-- current `state_revision`.
+- current committed `state_revision`;
+- `state_delta_seq` for the revision-safe conflict mutation.
 
-`ACTION_READINESS` must include `action_id`, state, and explicit prerequisite proposition/condition IDs. When readiness is capped by a terminal unresolved conflict, it should also identify the relevant `conflict_id`.
+After `CONFLICT_RESOLVED`, every action in the conflict's current affected-action scope must have a later `ACTION_READINESS` recomputation before convergence.
+
+### Reopening terminal unresolved conflict
+
+If new material evidence, authority, external input, or human review arrives after terminalization and can change the conflict, emit `CONFLICT_REOPENED` for the same `conflict_id` rather than silently emitting a new `ACTIVE` event.
+
+Required fields:
+
+- `conflict_id`;
+- `reopen_basis_ids` — non-empty IDs for the new material evidence/authority/input/review;
+- affected action IDs;
+- current committed `state_revision`;
+- `state_delta_seq` for the revision-safe reopen mutation;
+- `prior_terminal_state_revision` when the terminal event belongs to a prior run/episode and is not visible in the current trace;
+- `scope_change_basis_ids` when affected-action scope changes.
+
+The reopen revision must be newer than the terminal revision. `CONFLICT_REOPENED` returns the same conflict to `ACTIVE`; prior terminal readiness is no longer current and must be recomputed after subsequent resolution/reterminalization.
+
+A plain `COMPOSITION_CONFLICT status=ACTIVE` after terminalization is invalid. Reopening requires explicit new material basis.
+
+### Action readiness linkage
+
+`ACTION_READINESS` must include `action_id`, state, and explicit prerequisite proposition/condition IDs.
+
+When readiness is capped by a terminal unresolved conflict, it must also identify the relevant `conflict_id` or `conflict_ids`.
+
+If such readiness is `DO_NOT_PROCEED`, it must additionally identify at least one independent `blocking_proposition_id` or `blocking_proposition_ids`. The current trace must make the blocker support observable; unresolved conflict itself is not a blocker.
 
 When a new/re-resolved authority result is material to readiness, the trace should make it possible to connect:
 
@@ -301,7 +337,9 @@ Use this event when the decision whether to call/reuse/re-resolve authority is c
 
 No conflict may remain `ACTIVE` at convergence.
 
-A run may converge with a `TERMINAL_UNRESOLVED` conflict only when the terminal event is explicit and each affected action is subsequently recorded as `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or independently supported `DO_NOT_PROCEED`.
+A run may converge with a `TERMINAL_UNRESOLVED` conflict only when the terminal event is explicit, revision-safe, and each affected action is subsequently recorded as `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or independently supported `DO_NOT_PROCEED`.
+
+A conflict resolved in the current run may converge only after every action in its affected scope has a post-resolution `ACTION_READINESS` event.
 
 A run may converge with an unresolved authority result only when the unresolved authority/applicability state is explicit and reflected in non-READY readiness.
 
@@ -322,13 +360,19 @@ The trace checker should reject, where the applicable oracle encodes the require
 - a `STATE_DELTA` missing revision/owner/object metadata;
 - a stale `STATE_DELTA` recorded as `APPLIED`;
 - non-monotonic `committed_state_revision` values;
-- malformed composition-conflict lifecycle or terminalization metadata;
+- conflict terminalization/resolution/reopen not linked to an accepted revision-safe `STATE_DELTA` affecting that conflict;
+- terminal/resolved/reopen event whose `state_revision` differs from the linked committed revision;
+- silent affected-action-scope shrink/change without an explicit revision-safe scope/dependency basis;
+- silent `TERMINAL_UNRESOLVED → ACTIVE` reactivation;
+- reopen without new material basis or without a newer committed revision;
 - `RUN_CONVERGED` while any conflict remains `ACTIVE`;
 - terminal unresolved conflict followed by `READY` / `READY_WITH_CONDITIONS` for an affected action;
+- terminal unresolved conflict followed by `DO_NOT_PROCEED` without an independent current supported blocker;
+- resolved conflict with no post-resolution readiness recomputation for an affected action;
 - readiness before unresolved required conflict/stale state/authority applicability or freshness issue is reflected in the action state.
 
 ## Evidence status
 
 A trace proves only events that are actually observable in it. It does not prove hidden model reasoning.
 
-Therefore the freeze gate should rely on observable path properties such as file reads, event order, owner/route transitions, resolver calls/reuse/re-resolution, owner applicability decisions, revision-aware state-delta outcomes, composition-conflict lifecycle, source-attempt/fallback events, invalidation targets, and readiness outputs rather than chain-of-thought.
+Therefore the freeze gate should rely on observable path properties such as file reads, event order, owner/route transitions, resolver calls/reuse/re-resolution, owner applicability decisions, revision-aware state-delta outcomes, composition-conflict lifecycle/reopen/scope transitions, source-attempt/fallback events, invalidation targets, and readiness outputs rather than chain-of-thought.
