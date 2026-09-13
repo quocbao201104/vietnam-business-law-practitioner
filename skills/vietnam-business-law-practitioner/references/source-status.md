@@ -1,4 +1,4 @@
-# Source / Authority Status v0.3
+# Source / Authority Status v0.4
 
 Use four separate dimensions to prevent authority inflation and temporal drift.
 
@@ -54,13 +54,14 @@ Lifecycle describes the instrument/version at the relevant time. It does not pro
 
 Applicability is decided by the accountable proposition owner, not automatically by the resolver.
 
-Suggested states:
+Canonical runtime states:
 
-- `APPLICABLE`
-- `APPLICABLE_WITH_CONDITIONS`
-- `POSSIBLY_APPLICABLE`
-- `NOT_APPLICABLE`
+- `APPLICABLE_TO_CASE`
+- `NOT_APPLICABLE_TO_CASE`
+- `APPLICABILITY_CONDITIONAL`
 - `APPLICABILITY_UNRESOLVED`
+
+These are the state values used by `../schemas/legal-work-state.md` and `../schemas/runtime-trace.md`. Human-facing prose may say "applies", "applies if condition C is satisfied", or "does not apply", but those phrases are aliases only and must not introduce a second machine/runtime vocabulary.
 
 A currently effective rule may be inapplicable because of scope, transaction classification, treaty interaction, or transition provisions. A historical rule may remain the governing rule for a past event.
 
@@ -68,7 +69,7 @@ A currently effective rule may be inapplicable because of scope, transaction cla
 
 Material authority results should preserve:
 
-- `authority_id`;
+- `authority_id` or `authority_result_id` as appropriate;
 - `verified_at`;
 - temporal anchor(s);
 - effective period;
