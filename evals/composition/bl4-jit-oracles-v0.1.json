@@ -1,0 +1,118 @@
+{
+  "schema_version": "0.1",
+  "candidate_sha": "bd456e45ab50c72e7a073c91d7120979312a50e5",
+  "fixtures": {
+    "BL4-JIT-01": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/breach-excuse-liability.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/remedies-loss-mitigation.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/notice-evidence-deadlines.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/dispute-posture-procedure-settlement.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL4"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL4-BREACH"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "proposition_id": "P-BL4-BREACH"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "basis": "LATE_IMPLIES_BREACH"}
+      ]
+    },
+    "BL4-JIT-02": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/remedies-loss-mitigation.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/breach-excuse-liability.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/notice-evidence-deadlines.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/dispute-posture-procedure-settlement.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL4"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL4-REM"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "RECOMPUTE", "proposition_id": "P-BL4-LIAB"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "basis": "INVOICE_AMOUNT_EQUALS_RECOVERABLE_LOSS"}
+      ]
+    },
+    "BL4-JIT-03": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/notice-evidence-deadlines.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/breach-excuse-liability.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/remedies-loss-mitigation.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/dispute-posture-procedure-settlement.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL4"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL4-DEADLINE"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "basis": "NEGOTIATION_IMPLIES_TOLLING"},
+        {"event": "OWNER_ASSIGN", "owner": "DISPUTE_PROCEDURE", "proposition_id": "P-BL4-DEADLINE"}
+      ]
+    },
+    "BL4-JIT-03-PERTURB": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/dispute-posture-procedure-settlement.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/notice-evidence-deadlines.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/breach-excuse-liability.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/remedies-loss-mitigation.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL4"},
+        {"event": "DEPENDENCY_ADD", "edge_type": "DEPENDS_ON"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL4-DISP"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "RECOMPUTE", "proposition_id": "P-BL4-DEADLINE"},
+        {"event": "PROPOSITION_STATUS", "proposition_id": "P-BL4-DEADLINE", "basis": "DUPLICATED_BY_DISPUTE_UNIT"}
+      ]
+    },
+    "BL4-JIT-04": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/dispute-posture-procedure-settlement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/variation-waiver-settlement.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL4"},
+        {"event": "LATE_ROUTE_SIGNAL", "track": "BL3"},
+        {"event": "ACTIVATE", "track": "BL3"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL3", "proposition_id": "P-BL3-CHANGE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL4-DISP"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "OWNER_ASSIGN", "owner": "BL4", "proposition_id": "P-BL3-CHANGE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL3-CHANGE"}
+      ]
+    }
+  }
+}
