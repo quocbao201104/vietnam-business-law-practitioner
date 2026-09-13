@@ -1,4 +1,4 @@
-# Decision Output — Semantic Contract v0.2
+# Decision Output — Semantic Contract v0.3
 
 The final answer should solve the user's business decision without turning the synthesizer into a hidden ninth legal owner.
 
@@ -22,7 +22,7 @@ Explain material legal, tax, regulatory, procedural, evidentiary, or operational
 
 ### Unresolved
 
-Expose only unresolved facts, authority, classification, conflict, or condition capable of changing an affected action.
+Expose only unresolved facts, authority, classification, route, conflict, or condition capable of changing an affected action.
 
 ### Next action
 
@@ -44,28 +44,50 @@ Each material action receives one state:
 - `LEGAL_REVIEW_REQUIRED`
 - `DO_NOT_PROCEED`
 
-Example:
+### READY
 
-```text
-ACTION A — sign contract
-READY
-
-ACTION B — commence regulated service
-DO_NOT_PROCEED until required approval exists
-```
-
-### READY positive-closure rule
-
-`READY` means:
+Use only when:
 
 - all material prerequisite propositions are positively resolved;
 - no unresolved material condition remains for that action;
 - no blocking proposition exists;
 - no unresolved composition conflict affects the action;
+- no stale/invalidated dependency remains in the action's dependency closure;
 - required authority freshness is satisfied;
-- action readiness is based on the current state revision.
+- readiness is based on the current state revision.
 
 `No known blocker` is not enough.
+
+### READY_WITH_CONDITIONS
+
+Use only when:
+
+- the action is not presently blocked by an unresolved legal question;
+- one or more explicit, objectively identifiable preconditions remain;
+- the legal effect/pathway for satisfying those conditions is sufficiently resolved;
+- the action becomes READY once those named conditions are satisfied and no new material issue appears.
+
+Do not use this state when the condition itself is legally uncertain or its applicability is unresolved; use `VERIFY_BEFORE_ACTION` instead.
+
+### VERIFY_BEFORE_ACTION
+
+Use when a material fact, classification, route, authority applicability/freshness question, stale dependency, or composition conflict remains unresolved and could change whether/how the action may proceed.
+
+### LEGAL_REVIEW_REQUIRED
+
+Use when the runtime can state the current position/options but the action is materially high-impact/irreversible or requires specialist human judgment beyond safe runtime resolution. This is an action outcome, not a generic disclaimer and not a substitute for analysis.
+
+### DO_NOT_PROCEED
+
+Use when a current supported proposition prohibits the action, or a required legal prerequisite is definitively absent and cannot be cured before the proposed action.
+
+## Constraints and readiness
+
+A `CONSTRAINS` edge limits options but does not automatically change readiness.
+
+A constraint affects readiness only when an accountable owner explicitly links the constrained proposition/condition to the action as a prerequisite or blocker.
+
+The synthesizer may not create that link by inference merely because a constraint appears important.
 
 ## Synthesizer permissions
 
@@ -74,7 +96,7 @@ The synthesizer may **derive** composition; it may not perform new specialist le
 It MAY:
 
 - project resolved propositions onto user actions;
-- follow explicit dependency/constraint edges;
+- follow explicit dependency/constraint-to-action links;
 - apply deterministic readiness rules;
 - expose blockers and conditions;
 - detect unresolved dependencies;
@@ -88,46 +110,36 @@ It MAY NOT:
 - decide case applicability of authority;
 - resolve a proposition owned by BL1–BL8;
 - choose between conflicting specialist/owner conclusions;
-- invent a permission, exception, remedy, obligation, or legal test;
+- invent a permission, exception, remedy, obligation, legal test, blocker, or action prerequisite;
 - silently repair a missing route.
 
 ## Composition conflicts
 
 When owned propositions conflict materially, create/retain a `COMPOSITION_CONFLICT` and return it to the relevant owners.
 
-Affected actions become `VERIFY_BEFORE_ACTION` or stricter as appropriate. The synthesizer must not select the conclusion that seems more reasonable.
-
-Example conflict record:
-
-```text
-COMPOSITION_CONFLICT
-conflict_id: CC-01
-proposition_a: P-BL3-04
-proposition_b: P-BL7-02
-owners: BL3, BL7
-reason: incompatible conditions for commencing service
-affected_actions: A-02
-```
+Affected actions become `VERIFY_BEFORE_ACTION` or stricter according to an explicit current blocker. The synthesizer must not select the conclusion that seems more reasonable or business-friendly.
 
 ## Cross-track synthesis example
 
 ```text
 P-BL2-01: company has authority to enter agreement — supported
 P-BL3-02: agreement can be formed — supported
-P-BL7-03: required operating approval is missing — supported
+P-BL7-03: operating approval required before commencement — supported
 
 ACTION A: sign agreement
 → dependencies satisfied
 → READY
 
 ACTION B: begin regulated operation
-→ blocked by P-BL7-03
-→ DO_NOT_PROCEED / READY_WITH_CONDITIONS depending on whether the missing approval is a current legal blocker or a resolvable precondition
+→ explicit prerequisite P-BL7-03 not yet satisfied
+→ READY_WITH_CONDITIONS if the approval pathway/effect is fully resolved
+→ VERIFY_BEFORE_ACTION if approval applicability/path remains unresolved
+→ DO_NOT_PROCEED if a supported prohibition/blocker applies to the proposed commencement
 ```
 
 The final prose may say:
 
-`The company can enter the agreement, but should not begin the regulated activity until the required approval is obtained.`
+`The company can enter the agreement, but it should not begin the regulated activity until the required approval position is resolved and, if required, the approval is obtained.`
 
 This is deterministic projection of owned propositions, not a new substantive legal conclusion.
 
@@ -135,7 +147,13 @@ This is deterministic projection of owned propositions, not a new substantive le
 
 If an action depends on volatile current law, readiness must reference authority results whose freshness requirement is satisfied at the action's `as_of` date/state revision.
 
-A cached authority result that is stale, superseded, suspended, or affected by an authority-change signal cannot support `READY` until re-resolved.
+A cached authority result that is stale, superseded, suspended, source-unavailable where primary authority is material, or affected by an authority-change signal cannot support `READY` until re-resolved or explicitly reflected in non-READY readiness.
+
+## Convergence
+
+Do not render final readiness as if the reasoning loop has converged while a material late-route signal, contradiction/reclassification review, stale dependency, unresolved composition conflict, or required authority freshness failure still affects the action.
+
+A run may legitimately converge to `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`.
 
 ## Proportionality
 
