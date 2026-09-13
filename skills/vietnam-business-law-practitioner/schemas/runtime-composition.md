@@ -1,4 +1,4 @@
-# Runtime Composition — Semantic Contract v0.6
+# Runtime Composition — Semantic Contract v0.7
 
 This contract defines how BL1–BL8, live authority, and JIT specialists compose at runtime. It is normative for routing, ownership, invalidation, convergence, and synthesis.
 
@@ -148,6 +148,8 @@ Owners emit owner-scoped state deltas. They do not replace the entire shared sta
 A stale write based on an older state revision must be rejected or reconciled before it can overwrite newer owner state.
 
 Owner-scoped does not mean agent-scoped. In a single-runtime implementation the same model may emit deltas on behalf of different currently active semantic owners, but every delta must still identify the correct owner and obey revision/mutation boundaries.
+
+A material `COMPOSITION_CONFLICT` status or affected-action-scope transition is a shared-state mutation. `ACTIVE → RESOLVED`, `ACTIVE → TERMINAL_UNRESOLVED`, and any explicit reopen must be committed through the same revision-safe state-delta machinery; a stale owner view may not resolve, terminalize, reopen, or silently shrink the scope of a conflict.
 
 ## 7. Contradiction protocol
 
@@ -388,9 +390,15 @@ A new conflict starts as `ACTIVE` and is returned to the accountable owners. Whi
 
 Owner re-review may occur by switching semantic role within the same runtime; it does not require dispatching another agent.
 
+The affected-action scope is part of the conflict's current shared state. It must not silently shrink between lifecycle events. Adding or removing an affected action requires an explicit scope/dependency change basis committed at the current state revision, followed by readiness recomputation for the resulting scope.
+
 ### Resolved conflict
 
-Set the conflict to `RESOLVED` only when the relevant owners have made the state coherent enough that the conflict no longer controls affected actions. Record the resolution basis and recompute affected readiness.
+Set the conflict to `RESOLVED` only when the relevant owners have made the current shared state coherent enough that the conflict no longer controls affected actions.
+
+`ACTIVE → RESOLVED` is a material shared-state mutation. Commit it through a revision-safe state delta affecting the existing `conflict_id`; a stale view may not resolve the conflict. Record the resolution basis and the committed revision.
+
+After resolution, recompute readiness for every action in the conflict's current affected-action scope before convergence. Resolution of the conflict does not preserve a pre-resolution readiness result automatically.
 
 ### Terminal unresolved conflict
 
@@ -398,15 +406,36 @@ Set the conflict to `RESOLVED` only when the relevant owners have made the state
 
 A conflict may enter `TERMINAL_UNRESOLVED` only when:
 
-1. the relevant owners have reviewed the conflict against the current shared state;
+1. the relevant owners have reviewed the conflict against the current reconciled shared state;
 2. no pending late-route, contradiction, reclassification, stale/invalidated dependency, authority re-resolution, or available specialist step can still materially resolve it in the current run;
 3. the remaining uncertainty, missing external fact/authority, or required human judgment is explicit;
 4. the affected action IDs are explicit; and
 5. every affected action is recomputed to `VERIFY_BEFORE_ACTION` or `LEGAL_REVIEW_REQUIRED`, unless an independent supported blocker justifies `DO_NOT_PROCEED`.
 
+`ACTIVE → TERMINAL_UNRESOLVED` is also a material shared-state mutation. Commit it through a revision-safe state delta affecting the existing `conflict_id`; the committed transition revision must be the revision used for terminalization and subsequent readiness.
+
 A `TERMINAL_UNRESOLVED` conflict cannot support `READY` or `READY_WITH_CONDITIONS` and does not authorize the synthesizer to choose a preferred owner conclusion.
 
+If an affected action is `DO_NOT_PROCEED`, its readiness basis must identify a current supported blocking proposition independent of the unresolved conflict. Unresolved conflict alone cannot become a prohibition.
+
 Do not terminalize a conflict merely to stop a difficult loop. If a material internal resolution step is still available, the conflict remains `ACTIVE`.
+
+### Reopening after new material input
+
+`TERMINAL_UNRESOLVED` is terminal only for the inputs/state available when it was recorded.
+
+If later material evidence, authority, external input, or human review arrives and can change the conflict:
+
+```text
+TERMINAL_UNRESOLVED
+→ new material input committed to shared state
+→ explicit conflict reopen
+→ ACTIVE
+```
+
+Reopen the same `conflict_id` only through an explicit auditable transition that identifies the new material basis and a newer committed `state_revision`. The reopen itself is revision-safe shared-state mutation and must be linked to a state delta affecting that conflict.
+
+Silent `TERMINAL_UNRESOLVED → ACTIVE` reactivation is invalid. If no qualifying new material input exists, the conflict remains terminal unresolved. A previously `RESOLVED` conflict is not silently reactivated either; a materially new incompatibility after substantive resolution must be represented explicitly rather than erasing the prior resolution history.
 
 ## 15. Per-action readiness semantics
 
@@ -446,7 +475,7 @@ A `TERMINAL_UNRESOLVED` conflict may converge here when the unresolved conflict 
 
 Use when a currently supported blocking proposition prohibits the action or a required legal prerequisite is definitively absent and cannot be cured before the proposed action.
 
-Unresolved conflict alone does not justify `DO_NOT_PROCEED`.
+Unresolved conflict alone does not justify `DO_NOT_PROCEED`. When terminal conflict and `DO_NOT_PROCEED` coexist, keep the independent blocker identity explicit in readiness state/evidence.
 
 The synthesizer may derive readiness only from explicit proposition/condition links to the action. It may not invent blockers or conditions.
 
@@ -463,6 +492,8 @@ The controlled loop has converged for a requested action only when all of the fo
 7. every material proposition in the action's dependency closure has an accountable owner and current status;
 8. the action has an explicit readiness state derived from those prerequisites;
 9. every material authority-backed prerequisite satisfies the authority-aware convergence rule in Section 11A.
+
+For every conflict that becomes `RESOLVED` in the current run, affected actions must have readiness recomputed after the resolution transition before `RUN_CONVERGED`.
 
 A run may converge with `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`; convergence does not mean permission or substantive resolution of a terminal unresolved conflict.
 
@@ -484,7 +515,7 @@ Path evidence should prove, where material:
 - specialist invocation and return path;
 - contradiction/reclassification transition;
 - dependency invalidation;
-- composition-conflict creation plus `RESOLVED` or `TERMINAL_UNRESOLVED` lifecycle where convergence depends on it;
+- composition-conflict creation, revision-safe terminalization/resolution, explicit reopening where material, and affected-action scope changes;
 - per-action readiness;
 - convergence.
 
