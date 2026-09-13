@@ -4,12 +4,14 @@
 
 Reconstructing the transaction's governing document stack, identifying what terms are part of the transaction, and resolving the content/relationship of contractual terms within BL3 ownership.
 
-This unit owns **what the agreement says and which transaction documents/terms govern**. It does not own signatory authority, statutory tax liability, regulatory permission, or cross-border governing-law/treaty applicability.
+This unit owns **what the agreement says and which transaction documents/terms govern**, including the contract-law formation/incorporation/validity/effect of a dispute-resolution clause as a contractual term.
+
+It does not own signatory authority, statutory tax liability, regulatory permission, cross-border governing-law/treaty applicability, or dispute invocation/procedure.
 
 ## Does not own
 
 - entity/signing authority or corporate approval — BL2;
-- breach/remedy/dispute procedure — BL4;
+- breach/remedy/dispute invocation/procedure/deadlines — BL4;
 - statutory tax consequences — BL5;
 - public-law permission/mandatory compliance — BL7;
 - governing-law/treaty/CISG/international-enforcement overlay — BL8.
@@ -23,7 +25,7 @@ Use when the decision depends on:
 - precedence among several documents;
 - negotiated versus standard terms;
 - interpretation of a material clause;
-- whether a dispute-resolution clause exists and what it says;
+- whether a dispute-resolution clause exists, what it says, or whether it was contractually formed/incorporated/effective;
 - whether different language/version copies conflict;
 - whether external references/linked terms were actually part of the transaction.
 
@@ -33,7 +35,7 @@ Skip or compress when the relevant term is undisputed and the document stack can
 
 Where material, capture:
 
-- committed/conditioned formation state from `formation-transaction-state.md`;
+- committed/conditioned formation/effectiveness proposition from shared state when formation matters;
 - full candidate document list and versions;
 - chronology;
 - signatures/acceptance/incorporation evidence;
@@ -45,6 +47,8 @@ Where material, capture:
 - relevant communications/conduct;
 - language versions;
 - temporal anchor and applicable contract regime where material.
+
+Do not load `formation-transaction-state.md` merely because this unit consumes a formation proposition. Load it only when formation/effectiveness is unresolved, disputed, stale, contradictory, or material to reopen.
 
 ## Core distinctions
 
@@ -91,28 +95,52 @@ Examples:
 - `DDP`/trade term ≠ statutory customs responsibility automatically transferred;
 - `Vietnam law` clause ≠ BL8 governing-law proposition resolved in every cross-border case.
 
-### Dispute-resolution clause content ≠ forum/procedure/enforcement conclusion
+### Dispute-resolution clause: contractual effect ≠ procedure/enforcement
 
 BL3 owns:
 
 - whether a dispute-resolution clause exists;
 - the clause text/content;
 - its document location/version;
-- contractual conditions/steps expressed in the clause.
+- whether the clause was contractually formed/incorporated;
+- its contract-law validity/effect as a contractual term;
+- contractual preconditions/steps expressed in the clause.
 
-BL8 owns cross-border governing-law/treaty/international-enforcement overlay. BL4 owns invocation/procedure/deadlines/remedies under the resolved or conditioned forum/regime.
+BL4 owns:
+
+- invocation of the resolved clause/forum;
+- dispute posture;
+- procedural consequences;
+- deadlines and remedy procedure.
+
+BL8 owns cross-border governing-law/treaty/international-enforcement overlay.
+
+Do not infer:
+
+```text
+arbitration clause exists
+→ arbitration procedure available / properly invoked
+```
+
+or:
+
+```text
+cross-border dispute
+→ BL3 decides treaty/enforcement consequence
+```
 
 ## Decision procedure
 
-1. **State the term proposition.** Example: `What payment deadline did the parties agree?` or `What dispute-resolution clause is part of the contract?`
+1. **State the term proposition.** Example: `What payment deadline did the parties agree?` or `Was this arbitration clause incorporated/effective as a contractual term?`
 2. **Inventory candidate documents.** Do not start interpretation from the first PDF found.
 3. **Bind each document to chronology/version.** Identify draft, executed, superseded, later, referenced, or uncertain state.
 4. **Resolve incorporation.** Determine which documents/standard terms became part of the transaction under the applicable regime/facts.
 5. **Resolve precedence/conflicts.** Apply explicit precedence or later-agreement rules only within their supported scope.
 6. **Separate negotiated/standard/external terms where material.** Preserve special interpretation/control issues for live authority if needed.
 7. **Interpret the material term.** Use text, transaction structure, defined terms, related clauses, annexes, chronology, and legally relevant context without inventing business intent.
-8. **Commit the term proposition.** Supported, conditional, disputed, ambiguous, unresolved, or superseded.
-9. **Hand obligations to `obligations-conditions-performance.md`.** Do not jump from wording directly to breach/remedy.
+8. **For dispute clauses, resolve only BL3 contractual propositions.** Hand invocation/procedure/deadlines to BL4 and cross-border overlay to BL8.
+9. **Commit the term proposition.** Supported, conditional, disputed, ambiguous, unresolved, or superseded.
+10. **Hand obligations onward only when needed.** Load `obligations-conditions-performance.md` only if obligation/due/performance state is material; otherwise leave the committed term proposition in shared state for later consumption.
 
 ## Document-stack pattern
 
@@ -160,6 +188,7 @@ Resolve live authority where the result depends on:
 - incorporation/control of standard terms;
 - electronic records/acceptance;
 - required form for particular contractual terms;
+- contract-law validity/effect of a dispute-resolution clause;
 - interpretation rules that materially change outcome;
 - special statutory treatment of standard terms/consumer-facing terms;
 - historical contract rules at the relevant date.
@@ -174,7 +203,7 @@ Consume authority/approval propositions where they affect whether a document bin
 
 ### To BL4
 
-Provide resolved obligation/term and dispute-clause content. BL4 decides breach/remedy/procedure under the appropriate regime.
+Provide resolved obligation/term and dispute-clause contractual propositions. BL4 decides breach/remedy/invocation/procedure under the appropriate regime.
 
 ### To BL5
 
@@ -186,16 +215,17 @@ If a term purports to authorize regulated conduct, collect consent, allocate com
 
 ### To BL8
 
-Provide exact governing-law/dispute/trade/payment clause content. BL8 decides cross-border conflict/treaty/FX/trade overlay where material.
+Provide exact governing-law/dispute/trade/payment clause content. BL8 decides cross-border conflict/treaty/FX/trade/international-enforcement overlay where material.
 
 ## Failure modes
 
 - main PDF treated as complete contract;
 - every attachment/website term treated as incorporated;
 - precedence clause used to bypass incorporation or later-change analysis;
+- formation unit loaded despite reliable committed formation state;
 - current website terms projected backward to historical contract;
 - standard terms and negotiated terms treated identically when legally material;
 - tax/compliance/customs allocation clause treated as statutory conclusion;
-- dispute clause content collapsed into forum/procedure/enforcement conclusion;
+- dispute-clause contractual validity/effect collapsed into invocation/procedure/enforcement conclusion;
 - ambiguous term resolved by invented commercial intent;
 - BL3 interpreting a document without resolving which version governs.
