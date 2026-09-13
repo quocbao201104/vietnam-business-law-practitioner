@@ -1,0 +1,13 @@
+{
+  "name": "vietnam-business-law-practitioner",
+  "version": "0.1.0",
+  "description": "Research-first Vietnamese business-law analysis with live-law verification.",
+  "author": {
+    "name": "quocbao201104",
+    "url": "https://github.com/quocbao201104"
+  },
+  "homepage": "https://github.com/quocbao201104/vietnam-business-law-practitioner",
+  "repository": "https://github.com/quocbao201104/vietnam-business-law-practitioner",
+  "license": "MIT",
+  "keywords": ["vietnam", "business-law", "legal-research", "contracts", "compliance"]
+}
