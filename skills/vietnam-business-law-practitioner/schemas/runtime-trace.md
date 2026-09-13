@@ -1,4 +1,4 @@
-# Runtime Trace — Observable Event Contract v0.5
+# Runtime Trace — Observable Event Contract v0.6
 
 This contract exists to prove execution path independently of final prose.
 
@@ -170,6 +170,42 @@ Both must identify the owning BL track. A specialist without an owner is invalid
 
 Invalidation events must identify the exact proposition/classification ID and dependency basis where applicable.
 
+### `STATE_DELTA`
+
+Use `STATE_DELTA` for every material owner-scoped shared-state mutation that is relevant to runtime proof.
+
+Required fields:
+
+- `owner`;
+- `base_state_revision` — revision the owner reasoned from;
+- `affected_object_ids` — non-empty list of stable state object IDs the delta proposes to change;
+- `write_result` — one of:
+  - `APPLIED`
+  - `REJECTED`
+  - `RECONCILED`
+- `committed_state_revision` when `write_result` is `APPLIED` or `RECONCILED`.
+
+Semantics:
+
+```text
+APPLIED
+→ base_state_revision equals current committed revision
+→ committed_state_revision advances monotonically
+
+REJECTED
+→ shared state is unchanged by the rejected delta
+→ no committed_state_revision is created by that delta
+
+RECONCILED
+→ base_state_revision may be stale/conflicting
+→ runtime explicitly reconciles against current state
+→ the reconciliation result advances committed_state_revision
+```
+
+A delta based on a stale revision must never appear as `write_result=APPLIED`.
+
+Where reclassification, contradiction repair, authority writeback, or another state transition mutates material shared state, the trace should connect that semantic transition to a revision-aware `STATE_DELTA` with the affected object IDs.
+
 Authority freshness/change may make an exact authority-backed proposition `STALE` or review-required. Do not emit global invalidation merely because one authority result aged or changed.
 
 If re-resolution changes the owned proposition materially, downstream `INVALIDATE` / `RECOMPUTE` must still identify exact `DEPENDS_ON` basis. If freshness is restored without changing the owned proposition, readiness may be recomputed without substantive downstream invalidation.
@@ -233,7 +269,7 @@ A run may converge with an unresolved authority result only when the unresolved 
 
 ## Integrity
 
-The trace checker should reject, where the applicable oracle encodes the requirement:
+The trace checker should reject, where the applicable oracle encodes the requirement or the invariant is generic:
 
 - non-monotonic sequence numbers;
 - candidate SHA mismatch;
@@ -245,10 +281,13 @@ The trace checker should reject, where the applicable oracle encodes the require
 - authority-backed proposition promotion that skips a required owner applicability decision;
 - `AUTHORITY_REUSE` whose recorded temporal/freshness/scope basis does not satisfy the fixture;
 - repeated identical authority calls with no new material input when the prior unresolved result has already been recorded;
+- a `STATE_DELTA` missing revision/owner/object metadata;
+- a stale `STATE_DELTA` recorded as `APPLIED`;
+- non-monotonic `committed_state_revision` values;
 - readiness before unresolved required conflict/stale state/authority applicability or freshness issue is reflected in the action state.
 
 ## Evidence status
 
 A trace proves only events that are actually observable in it. It does not prove hidden model reasoning.
 
-Therefore the freeze gate should rely on observable path properties such as file reads, event order, owner/route transitions, resolver calls/reuse/re-resolution, owner applicability decisions, source-attempt/fallback events, invalidation targets, and readiness outputs rather than chain-of-thought.
+Therefore the freeze gate should rely on observable path properties such as file reads, event order, owner/route transitions, resolver calls/reuse/re-resolution, owner applicability decisions, revision-aware state-delta outcomes, source-attempt/fallback events, invalidation targets, and readiness outputs rather than chain-of-thought.
