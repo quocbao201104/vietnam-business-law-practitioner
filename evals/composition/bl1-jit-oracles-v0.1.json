@@ -1,0 +1,109 @@
+{
+  "schema_version": "0.3",
+  "candidate_sha": "af030a3b491c078c2e278f5a1b2f0ce718090892",
+  "fixtures": {
+    "BL1-JIT-01": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/issue-framing.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/regime-routing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/temporal-applicability.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/authority-applicability.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL1"},
+        {"event": "MATERIALITY_DECISION", "material": true},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "AUTHORITY_CALL", "owner": "BL1"}
+      ]
+    },
+    "BL1-JIT-02": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/regime-routing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl3-contracts/core.md",
+        "skills/vietnam-business-law-practitioner/schemas/authority-resolver.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/issue-framing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/temporal-applicability.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/authority-applicability.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL1"},
+        {"event": "ROUTE_HYPOTHESIS", "track": "BL3"},
+        {"event": "ACTIVATE", "track": "BL3"},
+        {"event": "AUTHORITY_CALL", "owner": "BL3"},
+        {"event": "AUTHORITY_RESULT"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "AUTHORITY_CALL", "owner": "BL1"}
+      ]
+    },
+    "BL1-JIT-03": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/temporal-applicability.md",
+        "skills/vietnam-business-law-practitioner/schemas/authority-resolver.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/issue-framing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/regime-routing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/authority-applicability.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL1"},
+        {"event": "AUTHORITY_CALL", "temporal_anchor": "FORMATION"},
+        {"event": "AUTHORITY_CALL", "temporal_anchor": "BREACH"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "required_events": [
+        {"event": "MATERIALITY_DECISION", "material": true},
+        {"event": "OWNER_ASSIGN", "owner": "BL3"},
+        {"event": "OWNER_ASSIGN", "owner": "BL4"}
+      ],
+      "forbidden_events": [
+        {"event": "AUTHORITY_CALL", "temporal_anchor": "GLOBAL_RELEVANT_DATE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL1", "status": "APPLICABLE_TO_CASE"}
+      ]
+    },
+    "BL1-JIT-04": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/authority-applicability.md",
+        "skills/vietnam-business-law-practitioner/schemas/authority-resolver.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/issue-framing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/regime-routing.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl1-issue-framing/temporal-applicability.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL1"},
+        {"event": "AUTHORITY_CALL", "owner": "BL1", "proposition_id": "P-BL1-AUTHORITY-STATUS"},
+        {"event": "AUTHORITY_RESULT"},
+        {"event": "ROUTE_STATUS"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "required_events": [
+        {"event": "MATERIALITY_DECISION", "material": true}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL1", "status": "APPLICABLE_TO_CASE"}
+      ]
+    }
+  }
+}
