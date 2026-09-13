@@ -1,4 +1,4 @@
-# Runtime Composition — Semantic Contract v0.5
+# Runtime Composition — Semantic Contract v0.6
 
 This contract defines how BL1–BL8, live authority, and JIT specialists compose at runtime. It is normative for routing, ownership, invalidation, convergence, and synthesis.
 
@@ -21,6 +21,35 @@ business problem
 ```
 
 A newly discovered fact or authority may activate another owner or invalidate a prior dependent proposition.
+
+### Ownership is semantic, not deployment topology
+
+BL ownership describes **decision authority over a material proposition**. It does not require one agent, model, process, thread, or tool instance per BL track.
+
+A single assistant/runtime may execute multiple BL roles sequentially in one run, for example:
+
+```text
+same runtime
+→ BL1 frames/routes
+→ BL3 resolves contract proposition
+→ BL4 consumes BL3 state and resolves breach/remedy proposition
+→ new evidence contradicts BL3-owned state
+→ semantic control returns to BL3
+→ BL3 updates its proposition
+→ BL4 recomputes from the updated shared state
+```
+
+In that example no agent-to-agent network is required. `Activate`, `handoff`, `return to owner`, and `owner review` mean a **semantic control transition** to the role authorized to decide or mutate the proposition.
+
+Multi-agent execution is optional. Regardless of topology:
+
+- every material proposition still has exactly one accountable BL owner;
+- a role may read another owner's current state but may not silently replace it;
+- owner-scoped mutations remain revision-aware shared-state writes;
+- late routing, contradiction, reclassification, authority applicability, specialist return, conflict handling, readiness, and convergence semantics do not change;
+- spawning extra agents is never required merely because more than one BL role is active.
+
+Do not infer deployment architecture from ownership vocabulary.
 
 ## 2. Canonical materiality gate
 
@@ -57,7 +86,7 @@ Each material route has one of:
 - The newly activated owner may confirm or reject its own route after inspecting the relevant state.
 - A previously rejected route may be reopened only by new material evidence/authority, using an explicit late-route or contradiction signal. It must not silently reappear.
 
-Late activation must be explicit. The new track receives the shared state. A missed initial route is not repaired by silently reasoning from an unloaded domain.
+Late activation must be explicit. The newly active BL role receives/uses the shared state. In a single-runtime implementation this may be an in-process role transition rather than a message to another agent. A missed initial route is not repaired by silently reasoning from an unloaded domain.
 
 ## 4. Proposition ownership
 
@@ -91,6 +120,8 @@ ACTION: commence regulated service
 
 Do not assign multiple owners to the same proposition. Do not force a whole multi-domain business decision into one BL owner.
 
+The same underlying assistant may sequentially perform BL2, BL3, and BL7 reasoning, but the proposition owner recorded in shared state does not change merely because the executor is the same model.
+
 ## 5. Typed dependency edges
 
 Track-level routing is not an executable invalidation graph.
@@ -116,6 +147,8 @@ Owners emit owner-scoped state deltas. They do not replace the entire shared sta
 
 A stale write based on an older state revision must be rejected or reconciled before it can overwrite newer owner state.
 
+Owner-scoped does not mean agent-scoped. In a single-runtime implementation the same model may emit deltas on behalf of different currently active semantic owners, but every delta must still identify the correct owner and obey revision/mutation boundaries.
+
 ## 7. Contradiction protocol
 
 A downstream track or specialist must never reconstruct or replace upstream-owned state.
@@ -125,9 +158,11 @@ When contradictory evidence appears:
 1. emit `CONTRADICTION_SIGNAL`;
 2. identify the affected upstream fact/classification/proposition;
 3. identify the evidence creating the contradiction;
-4. return to the accountable owner;
+4. return semantic control to the accountable owner;
 5. mark dependent reasoning conditional or paused where material;
 6. resume only after the owner commits an updated state.
+
+`Return to owner` may occur entirely inside one assistant/runtime. The prohibition is about who may commit the state change, not about which process performs the computation.
 
 ## 8. Reclassification state machine
 
@@ -151,6 +186,8 @@ When committed:
 - previous classification → `SUPERSEDED`;
 - new classification → `RESOLVED`;
 - only `DEPENDS_ON` dependents are invalidated/recomputed.
+
+The review may be executed by the same underlying model that discovered the signal, but it must execute under the accountable owner's semantic role before committing the classification.
 
 ## 9. Authority Resolver is a callable service
 
@@ -251,6 +288,8 @@ The applicability decision must identify the proposition, accountable owner, aut
 
 `CURRENT_BINDING`, `RESOLVED`, or discovery of a provision never substitutes for this owner decision.
 
+The resolver and owner review may be implemented inside the same underlying assistant. This does not collapse their semantic responsibilities: resolver result and owner applicability remain separate state transitions.
+
 ### Unresolved authority and readiness
 
 If a material owned proposition requires authority support and the final authority/applicability state remains unresolved, the proposition must remain `AUTHORITY_UNCERTAIN`, `AMBIGUOUS`, or otherwise unresolved/conditional rather than being promoted to a supported conclusion.
@@ -296,6 +335,8 @@ A JIT specialist may only be invoked under an owning BL track.
 The specialist returns candidate findings, technical classifications, authority, evidence needs, and uncertainty to that owner.
 
 The owner decides whether to accept, reject, condition, or integrate the specialist result into an owned proposition.
+
+The specialist may be a separate tool/agent/model or a bounded role executed by the same runtime. Either way it remains a temporary depth provider, not the proposition owner.
 
 A specialist cannot:
 
@@ -344,6 +385,8 @@ Conflict status is one of:
 - `TERMINAL_UNRESOLVED`
 
 A new conflict starts as `ACTIVE` and is returned to the accountable owners. While `ACTIVE`, the runtime must perform any still-available material resolution step before convergence, such as owner re-review, authority resolution/re-resolution, contradiction handling, reclassification review, late routing, or an owner-bound specialist call.
+
+Owner re-review may occur by switching semantic role within the same runtime; it does not require dispatching another agent.
 
 ### Resolved conflict
 
@@ -444,6 +487,8 @@ Path evidence should prove, where material:
 - composition-conflict creation plus `RESOLVED` or `TERMINAL_UNRESOLVED` lifecycle where convergence depends on it;
 - per-action readiness;
 - convergence.
+
+Path proof concerns semantic ownership/control transitions, not whether those roles were implemented as separate agents. A single-agent run can be correct if the observable owner/route/state transitions are correct; a multi-agent run can be wrong if they are not.
 
 A substantively plausible final answer produced through the wrong ownership/routing/authority/conflict path is an architecture failure.
 
