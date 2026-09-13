@@ -13,7 +13,7 @@ For each materially relevant track record one of:
 - `ROUTE_UNRESOLVED`
 - `ROUTE_REJECTED`
 
-BL1 creates the initial route hypothesis. Any active owner may emit `LATE_ROUTE_SIGNAL` to activate another track when new evidence makes it material.
+BL1 creates the initial route hypothesis. Any active owner may emit `LATE_ROUTE_SIGNAL` to activate another track when new evidence makes it material. A newly activated accountable owner may confirm or reject its own route under the runtime contract.
 
 ## BL1 — Legal Issue Framing / Regime Selection
 
@@ -25,8 +25,8 @@ Then JIT-load only the capability needed:
 
 - `bl1-issue-framing/issue-framing.md` — convert a business story into candidate actions, material legal questions, owners, fact/evidence state, and missing conditions;
 - `bl1-issue-framing/regime-routing.md` — candidate regime stacks, special/mandatory layers, cross-track routing, foreign-element detection, substantive/procedural separation;
-- `bl1-issue-framing/temporal-applicability.md` — proposition-specific temporal anchors, historical/current/future-effective regimes, amendment/replacement/suspension/transition issues;
-- `bl1-issue-framing/authority-applicability.md` — source provenance, legal force, lifecycle, applicability, freshness, conflicting authority, and minimum sufficient authority set.
+- `bl1-issue-framing/temporal-applicability.md` — proposition-specific temporal anchors, historical/current/future-effective regimes, amendment/replacement/suspension/transition issues; returns lifecycle/transition state to the accountable owner rather than deciding substantive applicability;
+- `bl1-issue-framing/authority-applicability.md` — load only when authority provenance/force/lifecycle/conflict/source availability is itself material to BL1 framing/routing. Do not load it merely because a downstream owner needs current law; the accountable owner calls Authority Resolver directly.
 
 Activate BL1 for non-trivial framing, route hypotheses, temporal/foreign/mandatory-law detection, and reclassification orchestration.
 
