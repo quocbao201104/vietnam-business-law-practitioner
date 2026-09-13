@@ -1,0 +1,196 @@
+# BL5 — Incentives / Structuring / Economic Feedback
+
+## Owns
+
+Determining whether a tax incentive/treatment is actually available for the resolved business state, and translating supported tax consequences into bounded structuring/economic feedback for the owning business/legal tracks.
+
+This unit owns **tax-incentive entitlement propositions and tax-economic feedback**. It does not redesign the underlying transaction, corporate structure, employment relationship, foreign-investment pathway, or product strategy.
+
+## Does not own
+
+- corporate ownership/governance/structure — BL2;
+- transaction formation/terms/obligations — BL3;
+- breach/remedy — BL4;
+- employment classification/pathway — BL6;
+- regulatory permission — BL7;
+- investment/FX/trade/customs structure — BL8;
+- bookkeeping/accounting/financial-modeling decisions.
+
+## Activate when
+
+Use when the decision depends on:
+
+- whether a claimed tax incentive/exemption/preference is actually available;
+- whether conditions for an incentive remain satisfied;
+- whether two otherwise lawful structures have materially different supported tax consequences;
+- whether tax cost/timing/document burden makes an upstream option unattractive;
+- whether a planned restructuring needs tax consequences fed back to BL2/BL3/BL6/BL8;
+- whether tax optimization language should be reframed into compliant tax-aware structuring.
+
+Skip when the user only needs characterization, rate, or documentation analysis and no structural/business decision changes.
+
+## Required state
+
+Where material, consume:
+
+- committed BL5 characterization/role proposition;
+- committed base/rate/timing proposition;
+- committed documentary eligibility state;
+- upstream business options from BL2/BL3/BL6/BL8;
+- current/historical incentive authority;
+- factual eligibility conditions;
+- relevant action date/planned transaction date;
+- estimated supported tax consequence for each option;
+- uncertainty/freshness state.
+
+Do not independently redesign or reclassify upstream business/legal state merely to obtain a tax benefit.
+
+## Core distinctions
+
+### Incentive category match ≠ entitlement
+
+A company/project/activity appearing to resemble an incentive category does not establish entitlement.
+
+Resolve the exact legal conditions, relevant actor/activity/location/time/document state, and current authority.
+
+### Incentive entitlement ≠ permanent entitlement
+
+Conditions may be time-bound, event-bound, approval/document-bound, or lost after a change in facts/law.
+
+Bind the proposition to the relevant period/action.
+
+### Lower nominal tax ≠ better structure
+
+Tax is only one constraint. A lower-tax option may increase regulatory, contractual, operational, financing, governance, employment, execution, or evidence risk.
+
+BL5 may provide **FEEDBACK**; it does not silently overrule the owning track.
+
+### Tax economics ≠ upstream invalidity
+
+If a valid BL2/BL3 structure is tax-expensive, the normal edge is:
+
+```text
+BL5 tax consequence
+→ FEEDBACK
+→ owning track may reconsider option
+```
+
+not:
+
+```text
+unattractive tax result
+→ invalidate upstream legal state
+```
+
+Only explicit `DEPENDS_ON` propositions may be invalidated when an upstream fact changes.
+
+### Tax-aware structuring ≠ evasion
+
+Optimize only among lawful, supportable options. Do not invent transactions, labels, sham arrangements, circular flows, fake invoices, artificial employment/contractor statuses, or unsupported residency/ownership positions to manufacture a tax result.
+
+### Tax result ≠ accounting/finance recommendation
+
+BL5 may explain legal tax cash/timing consequences. It does not own bookkeeping treatment, financial reporting, valuation, financing, or full investment-return analysis.
+
+## Decision procedure
+
+1. **State the decision being informed.** Example: `Does supported tax treatment materially change which lawful structure should be considered?`
+2. **Consume the upstream options.** Do not create a new corporate/contract/employment/cross-border option from tax intuition alone.
+3. **Resolve incentive entitlement where claimed.** Verify all material legal/factual/documentary conditions with current authority.
+4. **Compute only supported tax consequences.** Use committed BL5 base/rate/timing/document state; preserve uncertainty.
+5. **Compare tax consequences on like-for-like assumptions.** Do not use different hidden business assumptions to favor one option.
+6. **Identify non-tax dependencies.** Mark BL2/BL3/BL6/BL7/BL8 consequences that remain for their owners.
+7. **Emit bounded feedback.** State what tax fact changes the option set/economics and why.
+8. **Return to the owner.** The owning track decides whether to restructure/re-negotiate/reclassify after considering all constraints.
+9. **Re-resolve before irreversible action.** Incentive/rate/threshold/freshness changes can invalidate the tax comparison without changing upstream legal facts.
+
+## Feedback pattern
+
+```text
+P-BL5-ECON-01
+upstream_option: OPTION-A
+supported_tax_effect: <amount/range/timing/condition>
+incentive_dependency: <if any>
+document_dependency: <if any>
+uncertainty: <...>
+edge: FEEDBACK
+recommended_owner_review: BL2 / BL3 / BL6 / BL8
+```
+
+For incentive entitlement:
+
+```text
+P-BL5-INC-01
+incentive: <candidate benefit>
+eligibility_conditions: [...]
+temporal_scope: <...>
+documentary_dependency: P-BL5-DOC-...
+status: ELIGIBLE / CONDITIONAL / NOT_ESTABLISHED / UNRESOLVED / NOT_APPLICABLE
+```
+
+These are reasoning states, not statutory labels.
+
+## Evidence requirements
+
+Potential evidence includes:
+
+- committed corporate/transaction/employment/cross-border state;
+- official incentive eligibility records/approvals where legally material;
+- documents proving factual conditions;
+- current authority for the incentive;
+- supported base/rate/timing calculations;
+- evidence of planned action date/location/activity;
+- scenario assumptions explicitly stated by the user/owning track.
+
+Do not infer eligibility from marketing materials, generic investment promotion pages, or the company’s own description when authoritative conditions are material.
+
+## Live authority triggers
+
+Use Authority Resolver where the result depends on:
+
+- current tax incentives/exemptions/preferences;
+- eligibility conditions;
+- effective periods/transitional rules;
+- current rates/thresholds used in option comparison;
+- clawback/loss-of-entitlement consequences;
+- historical incentive rules for an existing project/transaction.
+
+Do not hardcode incentive lists, tax holidays, preferential rates, thresholds, geographic lists, qualification periods, or application procedures as stable knowledge.
+
+## Cross-track handoffs
+
+### To BL2
+
+Return tax feedback about ownership/capital/restructuring options. BL2 owns the corporate state and whether/how to change it.
+
+### To BL3
+
+Return tax feedback about pricing/payment/allocation/transaction structure. BL3 owns contract terms and transaction change.
+
+### To BL6
+
+Return tax/contribution consequences of the committed employment pathway. BL6 owns employment classification/action.
+
+### To BL8
+
+Return tax consequences of a cross-border/investment/payment/trade structure. BL8 owns the cross-border mode and investment/trade proposition.
+
+### From documentation unit
+
+Consume documentary eligibility/gaps. Do not declare an incentive available when its documentary prerequisite remains unresolved.
+
+## Failure modes
+
+- category resemblance treated as incentive entitlement;
+- outdated incentive/rate used for current structuring;
+- lowest nominal tax treated as automatically optimal;
+- BL5 redesigning corporate/contract/employment/cross-border state without owner review;
+- tax feedback emitted as automatic invalidation;
+- tax optimization used to justify fake/sham labels or unsupported transactions;
+- marketing/investment-promotion material treated as binding incentive authority;
+- accounting/financial recommendation presented as tax-law conclusion;
+- false precision in option comparison despite unresolved authority/documents.
+
+## Escalation
+
+Increase verification for restructurings, acquisitions, foreign investment, related-party arrangements, large capital expenditures, incentive-dependent investments, worker-model changes, cross-border payment structures, or any irreversible decision whose commercial case materially depends on current tax treatment.
