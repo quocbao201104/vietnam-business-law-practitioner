@@ -11,6 +11,35 @@ from pathlib import Path
 from typing import Any
 
 
+ATTEMPT_STATUSES = {
+    "SUCCEEDED",
+    "SOURCE_UNAVAILABLE",
+    "SOURCE_DRIFT",
+    "SOURCE_LAGGING",
+}
+
+RESOLUTION_STATUSES = {
+    "RESOLVED",
+    "PARTIALLY_RESOLVED",
+    "CONFLICTING_AUTHORITY",
+    "DOCUMENT_IDENTITY_UNRESOLVED",
+    "CURRENTNESS_UNRESOLVED",
+    "PROVISION_UNRESOLVED",
+    "CONSOLIDATION_UNRESOLVED",
+    "INSUFFICIENT_AUTHORITY",
+    "TEMPORAL_SCOPE_UNRESOLVED",
+}
+
+APPLICABILITY_STATUSES = {
+    "APPLICABLE_TO_CASE",
+    "NOT_APPLICABLE_TO_CASE",
+    "APPLICABILITY_CONDITIONAL",
+    "APPLICABILITY_UNRESOLVED",
+}
+
+STATE_DELTA_RESULTS = {"APPLIED", "REJECTED", "RECONCILED"}
+
+
 def git_bytes(repo: Path, *args: str) -> bytes:
     proc = subprocess.run(
         ["git", "-C", str(repo), *args],
@@ -79,6 +108,111 @@ def ordered_subsequence(actual: list[str], expected: list[str]) -> bool:
             return False
         idx += 1
     return True
+
+
+def validate_authority_events(events: list[dict[str, Any]], errors: list[str]) -> None:
+    for e in events:
+        event = e.get("event")
+        seq = e.get("seq")
+
+        if event in {"AUTHORITY_SOURCE_DRIFT", "AUTHORITY_SOURCE_UNAVAILABLE"}:
+            attempt_status = e.get("attempt_status")
+            if attempt_status not in ATTEMPT_STATUSES:
+                errors.append(
+                    f"authority source-attempt event has invalid/missing attempt_status at seq {seq}: {attempt_status!r}"
+                )
+
+        if event == "AUTHORITY_RESULT":
+            status = e.get("resolution_status")
+            if status in ATTEMPT_STATUSES:
+                errors.append(
+                    f"AUTHORITY_RESULT uses attempt_status value as resolution_status at seq {seq}: {status}"
+                )
+            elif status is not None and status not in RESOLUTION_STATUSES:
+                errors.append(f"AUTHORITY_RESULT has unknown resolution_status at seq {seq}: {status!r}")
+
+        if event == "AUTHORITY_APPLICABILITY_DECISION":
+            status = e.get("applicability_status")
+            if status not in APPLICABILITY_STATUSES:
+                errors.append(
+                    f"AUTHORITY_APPLICABILITY_DECISION has invalid/missing applicability_status at seq {seq}: {status!r}"
+                )
+
+
+def validate_state_deltas(events: list[dict[str, Any]], errors: list[str]) -> None:
+    """Enforce revision-safe semantics for observable owner-scoped state writes."""
+
+    current_revision: int | None = None
+
+    for e in events:
+        if e.get("event") != "STATE_DELTA":
+            continue
+
+        seq = e.get("seq")
+        owner = e.get("owner")
+        base_revision = e.get("base_state_revision")
+        affected = e.get("affected_object_ids")
+        write_result = e.get("write_result")
+        committed_revision = e.get("committed_state_revision")
+
+        if not isinstance(owner, str) or not owner:
+            errors.append(f"STATE_DELTA missing owner at seq {seq}")
+        if not isinstance(base_revision, int) or base_revision < 0:
+            errors.append(f"STATE_DELTA invalid base_state_revision at seq {seq}: {base_revision!r}")
+            continue
+        if not isinstance(affected, list) or not affected or not all(isinstance(x, str) and x for x in affected):
+            errors.append(f"STATE_DELTA invalid/missing affected_object_ids at seq {seq}: {affected!r}")
+        if write_result not in STATE_DELTA_RESULTS:
+            errors.append(f"STATE_DELTA invalid write_result at seq {seq}: {write_result!r}")
+            continue
+
+        # The first observed material delta establishes the revision it reasoned from.
+        if current_revision is None:
+            current_revision = base_revision
+
+        is_stale = base_revision < current_revision
+        is_ahead = base_revision > current_revision
+
+        if is_ahead:
+            errors.append(
+                f"STATE_DELTA base revision is ahead of observed committed revision at seq {seq}: "
+                f"base={base_revision}, current={current_revision}"
+            )
+
+        if write_result == "APPLIED":
+            if is_stale:
+                errors.append(
+                    f"stale STATE_DELTA incorrectly APPLIED at seq {seq}: "
+                    f"base={base_revision}, current={current_revision}"
+                )
+            if base_revision != current_revision:
+                errors.append(
+                    f"APPLIED STATE_DELTA must use current revision at seq {seq}: "
+                    f"base={base_revision}, current={current_revision}"
+                )
+            if not isinstance(committed_revision, int) or committed_revision <= current_revision:
+                errors.append(
+                    f"APPLIED STATE_DELTA must advance committed_state_revision at seq {seq}: "
+                    f"committed={committed_revision!r}, current={current_revision}"
+                )
+            else:
+                current_revision = committed_revision
+
+        elif write_result == "REJECTED":
+            if committed_revision is not None:
+                errors.append(
+                    f"REJECTED STATE_DELTA must not create committed_state_revision at seq {seq}: "
+                    f"{committed_revision!r}"
+                )
+
+        elif write_result == "RECONCILED":
+            if not isinstance(committed_revision, int) or committed_revision <= current_revision:
+                errors.append(
+                    f"RECONCILED STATE_DELTA must advance committed_state_revision at seq {seq}: "
+                    f"committed={committed_revision!r}, current={current_revision}"
+                )
+            else:
+                current_revision = committed_revision
 
 
 def main() -> None:
@@ -183,6 +317,10 @@ def main() -> None:
     for e in events:
         if e.get("event") in {"SPECIALIST_CALL", "SPECIALIST_RETURN"} and not e.get("owner"):
             errors.append(f"specialist event missing owner at seq {e.get('seq')}")
+
+    # Generic authority vocabulary and revision-safe state-write invariants.
+    validate_authority_events(events, errors)
+    validate_state_deltas(events, errors)
 
     result = {
         "fixture": fixture,
