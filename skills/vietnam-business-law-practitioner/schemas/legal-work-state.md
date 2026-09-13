@@ -1,4 +1,4 @@
-# Legal Work State — Semantic Contract v0.6
+# Legal Work State — Semantic Contract v0.7
 
 This is a semantic contract, not a requirement to emit JSON or persist every field for every request.
 
@@ -34,7 +34,9 @@ RECONCILED
 → reconciliation result, not the original stale write, is what advances state_revision
 ```
 
-A stale delta must never be labeled `APPLIED`. Reclassification, contradiction repair, authority writeback, and other owner mutations remain owner-scoped and revision-aware; they must not silently overwrite a newer object's state.
+A stale delta must never be labeled `APPLIED`. Reclassification, contradiction repair, authority writeback, composition-conflict status/scope transitions, and other owner mutations remain owner-scoped and revision-aware; they must not silently overwrite a newer object's state.
+
+A material transition of an existing `COMPOSITION_CONFLICT` — including `ACTIVE → RESOLVED`, `ACTIVE → TERMINAL_UNRESOLVED`, explicit reopen, or material affected-action-scope change — must be committed through a revision-safe `STATE_DELTA` whose `affected_object_ids` includes that `conflict_id`. The lifecycle event must refer to the committed revision produced by that delta.
 
 ## Objective
 
@@ -339,6 +341,8 @@ A material unresolved authority/applicability question normally prevents `READY`
 
 A `COMPOSITION_CONFLICT` with status `ACTIVE` or `TERMINAL_UNRESOLVED` also prevents `READY` / `READY_WITH_CONDITIONS` for every affected action. Terminal unresolved conflict is an explicit non-READY endpoint, not a permission state.
 
+When `DO_NOT_PROCEED` is used while a terminal unresolved conflict also affects the action, preserve at least one independent current supported `blocking_proposition_id` (or equivalent blocker ID) in the readiness basis. The conflict itself is not a blocker.
+
 ## Risks
 
 Separate, where useful:
@@ -403,7 +407,8 @@ If current owned propositions conflict materially, create a `COMPOSITION_CONFLIC
 - `status`;
 - opened/current `state_revision`;
 - resolution basis when resolved;
-- remaining uncertainty / required external input or review when terminal unresolved.
+- remaining uncertainty / required external input or review when terminal unresolved;
+- reopen basis when a terminal conflict is reopened after new material input.
 
 Conflict status is one of:
 
@@ -415,10 +420,35 @@ A new conflict starts `ACTIVE`. The synthesizer may identify/record the conflict
 
 The relevant owners must review an `ACTIVE` conflict and perform any still-available material resolution step under the runtime-composition contract. Substantive proposition changes remain owner-scoped and revision-aware.
 
-Set `RESOLVED` only when the owners' current proposition/condition state is coherent enough that the conflict no longer controls the affected actions. Record the resolution basis and revision.
+The conflict's affected-action set is stable state. It may change only when an explicit dependency/scope basis is committed at the current revision. Do not silently drop an action from a later terminal/resolved representation merely to permit that action to remain `READY`.
 
-Set `TERMINAL_UNRESOLVED` only when owner review is complete, no material internal resolution step remains available in the current run, and the unresolved external fact/authority/human judgment is explicit. The conflict record must identify affected actions and the remaining verification/review need.
+Set `RESOLVED` only when the owners' current proposition/condition state is coherent enough that the conflict no longer controls the affected actions. Commit the status change through a revision-safe state delta affecting the same `conflict_id`; record the resolution basis and committed revision. Recompute readiness for every action in the current affected-action scope after the resolution transition.
 
-Every affected action must then be recomputed to `VERIFY_BEFORE_ACTION` or `LEGAL_REVIEW_REQUIRED`, unless an independent supported blocker justifies `DO_NOT_PROCEED`.
+Set `TERMINAL_UNRESOLVED` only when owner review is complete against the current reconciled state, no material internal resolution step remains available in the current run, and the unresolved external fact/authority/human judgment is explicit. Commit the status change through a revision-safe state delta affecting the same `conflict_id`; the terminal event/readiness must use that committed revision.
+
+Every affected action must then be recomputed to `VERIFY_BEFORE_ACTION` or `LEGAL_REVIEW_REQUIRED`, unless an independent supported blocker justifies `DO_NOT_PROCEED`. A `DO_NOT_PROCEED` readiness basis must identify that blocker independently of the conflict.
 
 `TERMINAL_UNRESOLVED` is not equivalent to `RESOLVED`; it cannot support `READY` or `READY_WITH_CONDITIONS`. A conflict must not be terminalized merely to silence an available routing, authority, reclassification, contradiction, stale-state, or specialist step.
+
+### Reopening a terminal conflict
+
+`TERMINAL_UNRESOLVED` is an endpoint only for the state/inputs that produced it.
+
+If new material evidence, authority, external input, or human review later arrives and can change the conflict, retain the same `conflict_id` and perform an explicit reopen transition:
+
+```text
+TERMINAL_UNRESOLVED
+→ new material input committed
+→ CONFLICT_REOPENED
+→ ACTIVE
+```
+
+The reopen must:
+
+- identify one or more `reopen_basis_ids` for the new material input;
+- use a committed `state_revision` newer than the terminal transition;
+- be committed through a revision-safe `STATE_DELTA` affecting the `conflict_id`;
+- preserve the prior affected-action scope unless an explicit revision-safe scope/dependency change is recorded;
+- recompute from the reopened current state rather than inheriting the terminal readiness as current.
+
+Silent reactivation is invalid. If there is no qualifying new material input, keep the conflict `TERMINAL_UNRESOLVED`. A conflict previously marked `RESOLVED` is not silently reactivated; a later materially new incompatibility must preserve the prior resolution history rather than overwrite it.
