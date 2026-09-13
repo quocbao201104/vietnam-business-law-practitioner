@@ -21,7 +21,7 @@ Use when:
 - a law was amended, replaced, suspended, or became effective during the matter;
 - an enacted rule will take effect before a planned future action;
 - a transition clause may preserve an older regime;
-- the user asks what law applies to a past event;
+- the user asks which temporal authority version governs analysis of a past event;
 - current consolidated text may not represent the historical rule.
 
 ## Required state
@@ -58,25 +58,25 @@ An enacted future rule may matter for planning but must not be presented as curr
 
 ### Historical ≠ obsolete for the case
 
-A superseded rule can still be the correct authority for an event that occurred while it governed.
+A superseded rule can still be the correct authority candidate for an event that occurred while it governed.
 
 ### Lifecycle ≠ case applicability
 
-The Authority Resolver may determine `CURRENT_BINDING`, `HISTORICAL`, `SUPERSEDED`, or another lifecycle state. The proposition owner still decides which authority applies to the specific legal question.
+The Authority Resolver may determine `CURRENT_BINDING`, `HISTORICAL`, `SUPERSEDED`, or another lifecycle state. The proposition owner still decides whether/how that authority governs the specific legal proposition.
 
 ### One relationship ≠ one temporal regime
 
-Formation may be governed by one version, later performance or breach by another, and present-day procedure by a third depending on transition rules and proposition type.
+Formation may require one authority version, later performance or breach another, and present-day procedure a third depending on transition rules and proposition type.
 
 ## Temporal-anchor procedure
 
 1. **Identify the proposition.** Temporal reasoning is proposition-specific, not case-wide.
-2. **Identify legally relevant events.** Ask which event can change the rule governing this proposition.
+2. **Identify legally relevant events.** Ask which event can change the authority version/lifecycle relevant to this proposition.
 3. **Create explicit temporal anchor(s).** Name the anchor by event, not merely `date`.
 4. **Detect lifecycle uncertainty.** Determine whether amendment, replacement, suspension, repeal, future effectiveness, or transition may matter.
 5. **Call Authority Resolver when material.** Request authority against each relevant anchor.
 6. **Preserve transition provisions.** Do not use only the latest consolidated text when the relationship crosses a legal change.
-7. **Return authority lifecycle data to the proposition owner.** The owner resolves case applicability.
+7. **Return authority lifecycle/transition data to the proposition owner.** The owner resolves substantive case applicability.
 8. **Re-evaluate future actions.** If a planned action moves to a different date, authority/version dependencies may need re-resolution.
 9. **Invalidate only exact temporal dependents.** A changed date should not rerun unrelated propositions.
 
@@ -114,7 +114,7 @@ Live resolution is generally required when:
 - transition provisions may preserve the old regime;
 - the user asks about a historical transaction;
 - an instrument was suspended/replaced/amended;
-- a future-effective rule may apply by the planned action date;
+- a future-effective rule may govern analysis by the planned action date;
 - a deadline or procedural right depends on date-sensitive current authority.
 
 ## Evidence requirements
@@ -134,7 +134,16 @@ Document date ≠ event date automatically. Preserve disputes over when the lega
 
 ## Cross-track handoffs
 
-BL1 should pass:
+BL1 should pass only temporal metadata and unresolved signals, for example:
+
+```text
+TEMPORAL_ANCHOR: FORMATION_DATE
+LIFECYCLE_STATUS: CURRENT_BINDING | HISTORICAL | ...
+TRANSITION_SIGNAL: YES | NO | UNRESOLVED
+CASE_APPLICABILITY: UNRESOLVED → accountable owner
+```
+
+A handoff may include:
 
 - proposition ID/question;
 - temporal anchor name;
@@ -143,7 +152,7 @@ BL1 should pass:
 - transition/amendment signal;
 - affected owner/action.
 
-BL1 should not pass `current law applies` unless that is itself a BL1-owned meta proposition and case applicability remains with the substantive owner.
+BL1 should not state that a substantive law/regime `applies` to the case. That conclusion remains with the accountable BL owner.
 
 ## Failure modes
 
@@ -155,7 +164,8 @@ BL1 should not pass `current law applies` unless that is itself a BL1-owned meta
 - using a current consolidated text without checking historical version/transition;
 - changing an action date without rechecking authority dependencies;
 - invalidating an entire case when only one temporal proposition changed;
-- letting lifecycle status substitute for case applicability.
+- letting lifecycle status substitute for case applicability;
+- BL1 describing a substantive regime as `applicable` instead of handing lifecycle/transition state to its owner.
 
 ## Escalation
 
