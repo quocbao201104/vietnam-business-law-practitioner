@@ -1,0 +1,116 @@
+{
+  "schema_version": "0.1",
+  "candidate_sha": "6dec6a6172f99a44353f1f29561ed3015202b6fc",
+  "fixtures": {
+    "BL2-JIT-01": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/entity-actor-state.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/authority-representation.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/approval-conflict-governance.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/ownership-control-state-change.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL2"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "basis": "OWNER_EQUALS_COMPANY"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "basis": "OWNERSHIP_IMPLIES_AUTHORITY"}
+      ]
+    },
+    "BL2-JIT-02": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/authority-representation.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/approval-conflict-governance.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/ownership-control-state-change.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL2"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "proposition_id": "P-BL2-AUTH"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "proposition_id": "P-BL2-GOV"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "basis": "AUTHORITY_IMPLIES_APPROVAL"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "basis": "RELATED_PARTY_IMPLIES_INVALIDITY"}
+      ]
+    },
+    "BL2-JIT-02-PERTURB": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/approval-conflict-governance.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/ownership-control-state-change.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL2"},
+        {"event": "DEPENDENCY_ADD", "edge_type": "DEPENDS_ON", "owner": "BL2"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "proposition_id": "P-BL2-OWN"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "proposition_id": "P-BL2-GOV"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "proposition_id": "P-BL2-GOV", "basis": "RECONSTRUCTED_CAP_TABLE"}
+      ]
+    },
+    "BL2-JIT-03": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/ownership-control-state-change.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/authority-representation.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL2"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "proposition_id": "P-BL2-OWN"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "basis": "PAYMENT_IMPLIES_OWNERSHIP"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "basis": "SIGNED_DOCUMENT_IMPLIES_OWNERSHIP"}
+      ]
+    },
+    "BL2-JIT-04": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/entity-actor-state.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/ownership-control-state-change.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/approval-conflict-governance.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl2-corporate/authority-representation.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL2"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "proposition_id": "P-BL2-OWN"},
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "OWNER_ASSIGN", "owner": "BL8", "proposition_id": "P-BL8-FI"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-FI"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL2", "domain": "FOREIGN_INVESTMENT"},
+        {"event": "OWNER_ASSIGN", "owner": "BL2", "proposition_id": "P-BL8-FI"}
+      ]
+    }
+  }
+}
