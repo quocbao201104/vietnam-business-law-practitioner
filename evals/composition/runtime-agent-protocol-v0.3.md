@@ -1,6 +1,6 @@
 # Cold-Start Runtime Proof Protocol v0.3
 
-**Frozen candidate:** `75135e67223c488bdecb9b2f753186bd2bab4601`
+**Frozen candidate:** `c4fe8200f67adf6fa44fdbb95612836d817f3574`
 
 **Oracle:** `rf-oracles-v0.3.json`
 
@@ -21,7 +21,7 @@ Do not provide the agent with prior fixture traces or the expected final answer.
 The semantic/runtime candidate is exactly:
 
 ```text
-75135e67223c488bdecb9b2f753186bd2bab4601
+c4fe8200f67adf6fa44fdbb95612836d817f3574
 ```
 
 Do not evaluate `main` implicitly. The walker serves file content with:
@@ -59,7 +59,7 @@ $Trace = "$RunDir\trace.jsonl"
 python "$Repo\scripts\runtime_walker.py" init `
   --repo-root $Repo `
   --fixture RF-01 `
-  --candidate-sha 75135e67223c488bdecb9b2f753186bd2bab4601 `
+  --candidate-sha c4fe8200f67adf6fa44fdbb95612836d817f3574 `
   --trace $Trace `
   --run-id RF01-COLD-001 `
   --runner codex-local `
