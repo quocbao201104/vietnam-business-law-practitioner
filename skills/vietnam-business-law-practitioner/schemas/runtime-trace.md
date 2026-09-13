@@ -183,17 +183,26 @@ If re-resolution changes the owned proposition materially, downstream `INVALIDAT
 
 `ACTION_READINESS` must include `action_id`, state, and explicit prerequisite proposition/condition IDs.
 
-When authority is material to readiness, the trace should make it possible to connect:
+When a new/re-resolved authority result is material to readiness, the trace should make it possible to connect:
 
 ```text
-AUTHORITY_CALL / AUTHORITY_REUSE
+AUTHORITY_CALL / AUTHORITY_RERESOLVE
 → AUTHORITY_RESULT
 → AUTHORITY_APPLICABILITY_DECISION
 → PROPOSITION_STATUS
 → ACTION_READINESS
 ```
 
-or, on freshness change:
+When an existing authority result is reused, the path is:
+
+```text
+AUTHORITY_REUSE
+→ AUTHORITY_APPLICABILITY_DECISION
+→ PROPOSITION_STATUS
+→ ACTION_READINESS
+```
+
+On freshness change:
 
 ```text
 AUTHORITY_CHANGE_SIGNAL / freshness failure
