@@ -100,8 +100,8 @@ The accountable BL proposition owner must decide case applicability and record t
 
 If the preferred official source cannot be accessed:
 
-1. record `SOURCE_UNAVAILABLE` for that source;
-2. try another authoritative official repository/source family where available;
+1. record `SOURCE_UNAVAILABLE` for that source ID;
+2. follow the official fallback route in `../references/source-registry.md` where possible;
 3. if only secondary material is available, use it only as a discovery/interpretive lead and mark the proposition unresolved or conditional if primary authority is material;
 4. do not silently downgrade the authority requirement.
 
@@ -124,7 +124,12 @@ If a material action depends on an authority result whose freshness requirement 
 
 ## Source routing
 
-Use `../references/authority-sources.md`, `../references/source-status.md`, and `../references/search-strategy.md` for discovery/routing guidance.
+Use:
+
+- `../references/source-registry.md` for stable source IDs and fallback routes;
+- `../references/authority-sources.md` for source-family/authority guidance;
+- `../references/source-status.md` for source/force/lifecycle distinctions;
+- `../references/search-strategy.md` for proposition-specific search procedure.
 
 The source-routing files are not themselves authority.
 
@@ -137,4 +142,4 @@ An instrumented runtime should emit:
 - `AUTHORITY_RERESOLVE`
 - `AUTHORITY_CHANGE_SIGNAL`
 
-with `proposition_id`, owner, temporal anchors, resolution status, and authority IDs where material.
+with `proposition_id`, owner, temporal anchors, resolution status, source IDs/authority IDs, and freshness data where material.
