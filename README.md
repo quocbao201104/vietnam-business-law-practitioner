@@ -62,6 +62,38 @@ evals/                # adversarial and runtime evaluation
 scripts/              # supporting runtime/evaluation utilities
 ```
 
+## Plugin installation
+
+The repository can be used as both a standalone Agent Skill and a repository-backed plugin. Claude Code and Codex share the same `skills/vietnam-business-law-practitioner/` runtime files; the plugin manifests do not maintain a second copy of the skill.
+
+### Claude Code
+
+```text
+/plugin marketplace add quocbao201104/vietnam-business-law-practitioner
+/plugin install vietnam-business-law-practitioner@vietnam-business-law-practitioner
+```
+
+See [Claude Code marketplace setup](docs/claude-code-plugin.md).
+
+### Codex
+
+Add this repository as a marketplace in compatible Codex plugin controls:
+
+```text
+https://github.com/quocbao201104/vietnam-business-law-practitioner.git
+```
+
+On a compatible Codex CLI:
+
+```text
+codex plugin marketplace add https://github.com/quocbao201104/vietnam-business-law-practitioner.git
+codex plugin add vietnam-business-law-practitioner@vietnam-business-law-practitioner
+```
+
+See [Codex plugin setup](docs/plugin.md).
+
+Plugin installation packages the reasoning system; it does not itself supply an authoritative legal database or guarantee current-law retrieval. Live-law verification still depends on the host's available source tools and the skill's authority-resolution contract.
+
 ## Project documents
 
 - [Contributing](CONTRIBUTING.md)
