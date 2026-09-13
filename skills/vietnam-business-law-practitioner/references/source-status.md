@@ -1,33 +1,88 @@
-# Source Status
+# Source / Authority Status v0.2
 
-Use source status to prevent authority inflation.
+Use four separate dimensions to prevent authority inflation and temporal drift.
 
-## Binding/current authority
+## 1. Source provenance
 
-Primary legal instruments and other sources with binding status for the proposition and relevant date.
+Where did the material come from?
 
-## Future-effective authority
+Examples:
 
-Promulgated authority not yet effective for the relevant action/event date. It may be material for future planning but must not be presented as current law.
+- official legislation database;
+- government/ministry/regulator site;
+- court/judiciary source;
+- treaty/official trade repository;
+- business association;
+- academic publication;
+- law firm / secondary legal database;
+- repository / skill / AI output.
 
-## Historical authority
+Provenance describes origin. It does not by itself determine legal force.
 
-Authority that governed a past event/period. Preserve the historical version rather than replacing it with today's text.
+## 2. Authority / legal force
 
-## Official guidance
+Classify the legal character of the material, for example:
 
-Administrative or regulator interpretation/implementation material. Useful for practice and interpretation, but its legal status must be identified rather than assumed.
+- statute / ordinance / regulation / implementing instrument;
+- treaty / international commitment;
+- authoritative judicial instrument / binding precedent where applicable;
+- official administrative guidance;
+- ordinary court/arbitral/practice material;
+- academic / practitioner interpretation;
+- research-only lead.
 
-## Judicial/practice authority
+An official webpage may host both binding instruments and non-binding explanations. Do not conflate hosting source with legal force.
 
-Use according to actual status. Binding precedent/authoritative judicial instruments must be distinguished from ordinary decisions, arbitral practice, and practitioner case summaries.
+## 3. Lifecycle / temporal status
+
+Recommended labels:
+
+- `CURRENT_BINDING`
+- `FUTURE_EFFECTIVE`
+- `HISTORICAL`
+- `AMENDED`
+- `SUPERSEDED`
+- `SUSPENDED`
+- `UNCERTAIN`
+
+Lifecycle describes the instrument/version at the relevant time. It does not prove the instrument applies to the specific case.
+
+## 4. Case applicability
+
+Applicability is decided by the accountable proposition owner, not automatically by the resolver.
+
+Suggested states:
+
+- `APPLICABLE`
+- `APPLICABLE_WITH_CONDITIONS`
+- `POSSIBLY_APPLICABLE`
+- `NOT_APPLICABLE`
+- `APPLICABILITY_UNRESOLVED`
+
+A currently effective rule may be inapplicable because of scope, transaction classification, treaty interaction, or transition provisions. A historical rule may remain the governing rule for a past event.
+
+## Freshness metadata
+
+Material authority results should preserve:
+
+- `authority_id`;
+- `verified_at`;
+- temporal anchor(s);
+- effective period;
+- source version/amendment context;
+- freshness requirement where material.
+
+Before a material irreversible/current action, stale authority must be re-resolved when freshness could affect readiness.
 
 ## Secondary/research material
 
-Academic work, business-association materials, law-firm analysis, legal databases, repositories, skills, and AI outputs may discover or challenge propositions but do not silently become binding authority.
+Academic work, VCCI/business-association materials, law-firm analysis, legal databases, repositories, skills, and AI outputs may discover, explain, or challenge propositions. They must not silently become binding authority.
 
-## Lifecycle labels
+## Core invariant
 
-Recommended shared labels:
-
-`CURRENT_BINDING`, `FUTURE_EFFECTIVE`, `HISTORICAL`, `AMENDED`, `SUPERSEDED`, `SUSPENDED`, `UNCERTAIN`.
+```text
+source provenance
+≠ legal force
+≠ lifecycle status
+≠ case applicability
+```
