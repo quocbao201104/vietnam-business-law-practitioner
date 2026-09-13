@@ -221,20 +221,35 @@ Do not load all four BL7 units by default.
 
 ## BL8 — Investment / Cross-border / Trade
 
+Start with:
+
 `bl8-cross-border/core.md`
 
-Activate when a foreign element can materially change the legal position.
+Then JIT-load only the capability needed:
 
-BL8 may be an accountable owner for:
+- `bl8-cross-border/foreign-investment-market-access.md` — foreign-investor status, foreign-investment market access, acquisition/subscription/project entry/change triggers, and foreign-investment control tests using committed BL2 corporate facts;
+- `bl8-cross-border/governing-law-treaty-enforcement.md` — governing law/conflict-of-laws, treaty/CISG applicability, mandatory-law interaction, and international recognition/enforcement overlay while BL3/BL4 retain their substantive ownership;
+- `bl8-cross-border/fx-cross-border-payment.md` — cross-border payment/capital-flow classification, FX/account/channel/registration/reporting conditions, and foreign-payment state consumed by BL5;
+- `bl8-cross-border/trade-customs-origin-tariff.md` — goods trade/customs, HS, origin, customs valuation/tariff/preference, clearance state, and owner-bound HS/origin/customs specialist depth.
 
-- foreign-investor status / market access / foreign-investment control tests;
-- governing-law/conflict/treaty/CISG propositions;
-- FX/cross-border payment classification;
-- trade/customs/HS/origin/tariff propositions.
+Activate BL8 only when a foreign element can materially change a proposition. A foreign element is an activation/materiality signal, **not** a rule assigning the whole case to BL8.
 
-BL8 may also operate only as a cross-border overlay when the underlying proposition remains owned elsewhere.
+BL8 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
-Foreign element does not automatically mean import/export.
+BL8 may act either as accountable proposition owner or as a cross-border overlay. The owned proposition/handoff must make that role explicit.
+
+Within BL8:
+
+- BL2 owns corporate identity/cap table/voting/control/approval; `foreign-investment-market-access.md` owns the separate foreign-investment consequence of those committed facts;
+- BL3 owns contract formation/content/obligations and dispute-clause contractual content/effect as a term; `governing-law-treaty-enforcement.md` owns governing-law/conflict/treaty/CISG/international-enforcement overlay;
+- BL4 owns dispute invocation/procedure/deadlines/remedies; BL8 must not duplicate the same forum/procedure proposition;
+- BL5 owns tax/withholding consequences after BL8 commits the relevant foreign payment/investment/trade classification;
+- BL7 owns domestic product/service market placement, operating permission and conduct; BL8 border/customs or foreign-investment status does not substitute for BL7;
+- `fx-cross-border-payment.md` does not activate goods/customs merely because a payment/counterparty is foreign;
+- within trade/customs reasoning, product name does not determine HS, shipment country does not determine preferential origin, and FTA existence does not determine preferential tariff entitlement;
+- a specialist is owner-bound candidate depth only. BL8 accepts/conditions/rejects before committing an HS/origin/customs proposition.
+
+Do not load all four BL8 units by default.
 
 ## Late-route examples
 
@@ -242,8 +257,10 @@ Foreign element does not automatically mean import/export.
 - BL5 sees payroll-style evidence contradicting contractor classification → `CONTRADICTION_SIGNAL` to BL6; do not classify employee itself.
 - BL6 finds monitoring/employee-data evidence material to an employer action → late-route BL7 for privacy/regulatory legality; BL6 retains employment merits ownership.
 - BL6 employment action becomes challenged → late-route BL4 for claim/remedy/dispute-preservation timing and procedure; BL6 retains employment merits/pathway ownership.
-- BL7 discovers foreign platform/operator facts → late-route BL8 for the foreign/cross-border proposition while BL7 retains domestic regulatory ownership.
-- BL8 discovers domestic product approval/market-placement state is material → late-route BL7; customs/border status does not prove domestic permission.
+- BL7 discovers foreign platform/operator facts → late-route BL8 for the exact foreign/cross-border proposition while BL7 retains domestic regulatory ownership.
+- BL8 investment/trade analysis discovers domestic sector/product approval is material → late-route BL7; foreign-investment/customs state does not prove domestic permission.
+- BL8 payment evidence contradicts the committed BL3 transaction purpose → `CONTRADICTION_SIGNAL` to BL3; BL8 must not rewrite transaction state.
+- BL8 investment evidence contradicts committed BL2 ownership/control → `CONTRADICTION_SIGNAL` to BL2; BL8 must not reconstruct cap table/control.
 - BL3 obligations unit establishes material non-performance/deviation → activate BL4; BL3 does not label the state breach itself.
 
 ## Specialist depth
@@ -254,11 +271,11 @@ Only an accountable BL owner may invoke specialist depth via `../schemas/special
 
 Examples:
 
-- BL8 → HS classification / preferential origin specialist;
+- BL8 active owning capability → HS classification / preferential origin / customs technical specialist;
 - BL5 → transfer-pricing specialist;
 - BL7 active owning capability → privacy / food / medical / product-safety / competition / sector-licensing specialist.
 
-The specialist returns candidate depth to the owner; the owner promotes/conditions/rejects the result. Within BL7, no capability needs to reload `regulatory-perimeter-role.md` solely to authorize a specialist call for its own material proposition.
+The specialist returns candidate depth to the owner; the owner promotes/conditions/rejects the result. BL8 must not let an HS/origin specialist directly commit a legal proposition or final readiness state.
 
 ## Composition reminders
 
@@ -267,10 +284,12 @@ The specialist returns candidate depth to the owner; the owner promotes/conditio
 - BL6 → BL5: employment classification precedes employment-tax/contribution consequences.
 - BL6 ↔ BL7: employment merits/pathway and privacy/monitoring legality have separate owners.
 - BL6 ↔ BL4: substantive employment-action timing stays BL6; claim/dispute-preservation timing and procedure stay BL4.
-- BL8 → BL3: governing-law/treaty proposition precedes cross-border contract reasoning where material.
+- BL2 ↔ BL8: corporate ownership/control state and foreign-investment control/market-access consequence have separate owners.
+- BL8 → BL3: governing-law/treaty proposition precedes cross-border contract reasoning where material; BL3 remains contract owner.
 - BL3 ↔ BL7: agreement never replaces mandatory regulatory analysis.
-- BL8 ↔ BL7: customs/border status never proves domestic market permission.
-- BL3 ↔ BL8 ↔ BL4: clause contractual existence/effect / cross-border overlay / dispute invocation-procedure have separate owners.
+- BL8 ↔ BL7: customs/border/foreign-investment state never proves domestic market permission.
+- BL3 ↔ BL8 ↔ BL4: clause contractual existence/effect / cross-border regime-enforcement overlay / dispute invocation-procedure have separate owners.
+- BL8 → BL5: foreign payment/investment/trade classification may be consumed for tax consequence; tax economics do not back-solve BL8 classification.
 
 ## Invalidation reminder
 
