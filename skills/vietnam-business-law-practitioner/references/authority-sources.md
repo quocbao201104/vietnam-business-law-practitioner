@@ -1,10 +1,19 @@
-# Authority Sources
+# Authority Sources v0.2
 
-Use source authority appropriate to the proposition being verified. This file is a source-routing guide, not a static legal database.
+Use source provenance appropriate to the proposition being verified. This file is a **source-routing guide**, not a legal-force ladder and not a static legal database.
 
-## Primary and official sources
+Always keep separate:
 
-Prefer current official text and official repositories for binding legal propositions.
+```text
+source provenance
+legal force
+lifecycle status
+case applicability
+```
+
+## Primary and official source families
+
+Prefer official repositories when verifying binding legal instruments and their lifecycle.
 
 Typical source families include:
 
@@ -14,6 +23,8 @@ Typical source families include:
 - judiciary/precedent portals where judicial authority is material;
 - official treaty/FTA texts and official trade portals;
 - official corporate-registration, tax, customs, labour/social-insurance, investment, and competition authorities when the issue falls within their competence.
+
+An official host may contain legislation, guidance, Q&A, notices, or commentary with different legal force. Classify the document itself rather than inflating authority from the domain name.
 
 ## Official guidance
 
@@ -43,13 +54,7 @@ Do not use them as silent substitutes for available primary authority.
 
 ## Academic material
 
-Academic and doctrinal sources are useful for:
-
-- unresolved distinctions;
-- legal doctrine;
-- empirical court/practice research;
-- competing interpretation;
-- comparative or theoretical analysis.
+Academic and doctrinal sources are useful for unresolved distinctions, doctrine, empirical court/practice research, competing interpretation, and comparative/theoretical analysis.
 
 They are reasoning inputs, not automatically binding authority.
 
@@ -61,8 +66,12 @@ They must not become the final authority for a material proposition.
 
 ## Proposition-specific sufficiency
 
-There is no universal source count.
+There is no universal source count and no universal single-source goal.
 
-A proposition may be sufficiently supported by one controlling current provision. Another may require statute + implementing regulation + authoritative interpretation.
+Use the **minimum sufficient authority set** needed to resolve the proposition for its temporal anchor(s). This may be one controlling provision or several coordinated instruments such as base law + amendment + implementing regulation + transition rule.
 
-Authority sufficiency depends on the proposition, legal status, temporal context, and ambiguity—not citation quantity.
+## Applicability ownership
+
+Finding a current official instrument does not settle case applicability.
+
+Authority Resolver returns source/lifecycle/freshness metadata. The accountable BL owner decides whether and how that authority applies to the proposition.
