@@ -9,7 +9,8 @@ This unit owns **internal corporate decision validity/state**. It is separate fr
 ## Does not own
 
 - external representation/signing authority — `authority-representation.md`;
-- contract formation/content/performance — BL3;
+- corporate ownership/cap-table/voting/control state — `ownership-control-state-change.md`;
+- contract formation/content/performance or disputed agreement interpretation — BL3;
 - tax consequences — BL5;
 - market/sector regulatory permission — BL7;
 - foreign-investment approval/market-access procedures — BL8.
@@ -37,11 +38,12 @@ Where material, capture:
 - decision-maker(s);
 - representation/authority proposition if already resolved;
 - charter/governance documents;
-- ownership/voting state relevant to approval;
+- **committed ownership/voting state** relevant to approval, or an explicit unresolved dependency on `ownership-control-state-change.md`;
 - conflict/related-party facts;
 - resolutions/minutes/consents/approvals;
 - conditions, quorum/voting or procedural facts where material;
-- any post-transaction confirmation/ratification evidence if relevant.
+- any post-transaction confirmation/ratification evidence if relevant;
+- resolved BL3 proposition for any shareholder/member agreement term whose existence/content/interpretation is material.
 
 ## Core distinctions
 
@@ -64,6 +66,34 @@ First determine whether an approval is required; then separately determine wheth
 
 A related-party relationship, shared ownership, family relationship, management overlap, personal interest, or other conflict signal activates governance analysis. It does not itself establish invalidity, prohibition, or remedy.
 
+### Voting/ownership input ≠ governance-owned state
+
+Governance may need ownership/voting state to determine quorum, voting entitlement, abstention, or approval outcome. That does not make governance the owner of the cap table or corporate-control proposition.
+
+If the relevant ownership/voting state is unresolved:
+
+```text
+governance question
+→ activate ownership-control-state-change.md
+→ consume committed ownership/voting proposition
+→ apply governance rule
+```
+
+Do not reconstruct the cap table or control state inside this unit.
+
+### Governance source ≠ contract reconstruction
+
+A shareholder/member agreement may contain governance-related commitments, but its existence, content, formation, interpretation, and contractual effect belong to BL3 when disputed or material.
+
+Use:
+
+```text
+BL3 resolves contractual proposition
+→ BL2 governance asks what corporate-governance consequence follows, if any
+```
+
+Do not read a disputed agreement and simultaneously resolve both its contractual meaning and the governance result inside BL2.
+
 ### Economic importance ≠ legal reserved matter
 
 A transaction can be commercially important without triggering a particular statutory/charter approval, and a legally reserved matter may be triggered even when management views the transaction as routine.
@@ -76,22 +106,36 @@ Board/member/shareholder/owner consent does not establish that a regulator, lice
 
 Route public-law questions to BL7/BL8.
 
-### Corporate approval ≠ contract validity in every respect
+### Corporate approval ≠ transaction effect
 
-BL2 resolves internal approval state. BL3 determines the transaction/contract position under the resolved authority/approval dependencies and applicable legal regime.
+BL2 resolves:
+
+- whether approval was required;
+- whether it was obtained;
+- whether a governance defect exists;
+- the **corporate-law status/consequence of that defect within BL2 ownership**.
+
+BL3 resolves what that BL2 proposition means for transaction formation, binding effect, content, performance, or other contract/transaction consequences under the applicable regime.
+
+Do not infer:
+
+```text
+approval defective
+→ contract automatically invalid / non-binding
+```
 
 ## Decision procedure
 
 1. **Define the exact corporate action.** Avoid asking abstractly whether `the company approved the deal`.
-2. **Consume entity/authority state.** Do not reconstruct entity identity or signing authority here.
-3. **Identify candidate governance source.** Law, charter, member/shareholder agreement where legally relevant, board/member rules, reserved-matter list, prior resolution, or transaction-specific governance document.
+2. **Consume upstream BL2 state.** Do not reconstruct entity identity, signing authority, or ownership/voting state here. If ownership/voting state material to approval is unresolved, activate `ownership-control-state-change.md` first and consume its committed proposition.
+3. **Identify candidate governance source.** Law, charter, board/member rules, reserved-matter list, prior resolution, transaction-specific governance document, or a **resolved BL3 proposition** about a shareholder/member agreement term where legally relevant.
 4. **Detect conflict/related-party signals.** Map relationships and interests without pre-judging legal consequence.
-5. **Resolve whether approval is required.** Bind the proposition to the relevant date and corporate state.
+5. **Resolve whether approval is required.** Bind the proposition to the relevant date and committed corporate state.
 6. **Resolve the proper approving body/person and procedure.** Verify current/historical authority where procedure is material.
 7. **Evaluate evidence that approval occurred.** Resolution, consent, minutes, written decision, voting evidence, disclosure/abstention evidence, or other applicable proof.
-8. **Separate procedural defect from consequence.** If an approval process appears defective, do not invent the legal effect; resolve the applicable consequence under current/historical authority.
-9. **Commit the approval proposition.** Supported, supported with conditions, unresolved, disputed, or defective subject to legal consequence analysis.
-10. **Hand off downstream.** BL3 consumes approval state for transaction conclusions; BL8 consumes corporate facts when foreign-investment procedures are separately triggered.
+8. **Separate procedural defect from downstream transaction effect.** Resolve only the corporate-law status/consequence of the governance defect within BL2. Hand transaction-effect questions to BL3.
+9. **Commit the approval proposition.** Supported, supported with conditions, unresolved, disputed, or defective subject to the resolved corporate-law consequence.
+10. **Hand off downstream.** BL3 consumes approval/defect state for transaction conclusions; BL8 consumes corporate facts when foreign-investment procedures are separately triggered.
 
 ## Conflict / related-party analysis
 
@@ -104,8 +148,8 @@ Separate at least:
 - disclosure requirement;
 - participation/abstention restriction if any;
 - approving body/process;
-- effect of non-compliance;
-- downstream transaction consequence.
+- effect of non-compliance within corporate-governance ownership;
+- downstream transaction consequence owned by BL3 where material.
 
 Different regimes may define related/conflicted actors differently. Verify the definition relevant to the exact governance proposition.
 
@@ -116,18 +160,20 @@ Prefer explicit propositions such as:
 - `P-BL2-GOV-01: Transaction T required approval by corporate body B at date D.`
 - `P-BL2-GOV-02: Required approval was documented before execution.`
 - `P-BL2-GOV-03: Conflict procedure remains unresolved because relationship R may trigger disclosure/abstention rules.`
+- `P-BL2-GOV-04: Governance defect D has corporate-law consequence C; downstream transaction effect remains for BL3.`
 
-Avoid broad statements like `the board approved everything` or `related-party deal is invalid`.
+Avoid broad statements like `the board approved everything`, `related-party deal is invalid`, or `approval defect means the contract is void`.
 
 ## Evidence requirements
 
 Potential evidence includes:
 
 - charter/bylaws/governance rules;
-- member/shareholder agreements where legally relevant;
+- **shareholder/member agreement terms already resolved by BL3 when contractual content/interpretation is material or disputed**;
 - board/member/shareholder resolutions;
 - written owner decisions;
 - meeting notices, minutes, attendance/quorum/voting records;
+- committed ownership/voting proposition for the relevant meeting/action date;
 - conflict disclosures;
 - abstention/participation records;
 - transaction schedules/materials presented for approval;
@@ -144,7 +190,7 @@ Live authority is normally required when the result depends on:
 - quorum/voting/procedure;
 - related-party/conflict definitions;
 - disclosure/abstention rules;
-- legal consequence of missing/defective approval;
+- corporate-law consequence of missing/defective approval;
 - historical governance rules at the transaction date.
 
 Do not hardcode numeric thresholds, voting percentages, current procedural formalities, or article numbers as stable knowledge.
@@ -155,6 +201,18 @@ Do not hardcode numeric thresholds, voting percentages, current procedural forma
 
 Consume the resolved signatory/representation proposition. Do not treat it as internal approval.
 
+### From ownership / control
+
+Consume the committed ownership/voting/control proposition for the relevant date when quorum, voting entitlement, abstention, approving body, or outcome depends on it.
+
+If that state is unresolved, return to `ownership-control-state-change.md`; governance must not reconstruct it.
+
+### From BL3
+
+Consume resolved contractual propositions when a shareholder/member agreement or other contract term is material to the governance question.
+
+BL2 does not resolve disputed contractual existence/content/interpretation itself.
+
 ### To BL3
 
 Provide:
@@ -162,14 +220,15 @@ Provide:
 - whether approval was required;
 - whether it was obtained;
 - unresolved conditions/defects;
+- corporate-law status/consequence of any governance defect within BL2 ownership;
 - temporal anchor;
 - authority/evidence support.
 
-BL3 decides transaction formation/content/effect under the applicable regime.
+BL3 decides what that BL2 proposition means for transaction formation, binding effect, content, performance, or other transaction consequences under the applicable regime.
 
 ### To BL5
 
-If tax consequences depend on related-party/ownership facts, provide those facts/classifications only. BL5 owns tax treatment.
+If tax consequences depend on related-party/ownership facts, provide only committed facts/classifications from the owning BL2 unit. BL5 owns tax treatment.
 
 ### To BL7
 
@@ -177,13 +236,18 @@ Send competition/market-conduct/regulatory conflict issues only when the facts t
 
 ### To BL8
 
-Provide corporate ownership/control and approval facts. BL8 separately owns foreign-investment market-access/control tests and investment procedures.
+Provide only governance/approval propositions owned by this unit plus ownership/control facts already resolved by `ownership-control-state-change.md` when needed.
+
+BL8 separately owns foreign-investment market-access/control tests and investment procedures.
 
 ## Failure modes
 
 - signature treated as sufficient corporate approval;
 - legal representative treated as unlimited corporate decision-maker;
+- governance reconstructing cap table/voting/control state instead of consuming ownership unit;
+- BL2 governance reconstructing disputed shareholder/member agreement content instead of consuming BL3;
 - conflict/related-party status treated as automatic invalidity;
+- approval defect promoted directly into contract invalidity/non-binding conclusion;
 - commercial materiality substituted for actual reserved-matter rule;
 - board/member/shareholder approval treated as regulatory permission;
 - current governance rule applied to historical transaction without temporal check;
