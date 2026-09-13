@@ -61,14 +61,18 @@ Start with:
 
 Then JIT-load only the capability needed:
 
-- `bl3-contracts/formation-transaction-state.md` — agreement/assent, draft/offer/order/acceptance sequence, formation versus effectiveness/conditions, electronic/form issues, and current transaction state;
-- `bl3-contracts/document-stack-terms.md` — document/version stack, incorporation, precedence, negotiated/standard terms, material clause interpretation, and existence/content of dispute-resolution clauses;
+- `bl3-contracts/formation-transaction-state.md` — agreement/assent, draft/offer/order/acceptance sequence, formation versus effectiveness/conditions, electronic/form issues, and formation/effectiveness state only;
+- `bl3-contracts/document-stack-terms.md` — document/version stack, incorporation, precedence, negotiated/standard terms, material clause interpretation, and dispute-resolution clause existence/content plus contract-law formation/incorporation/validity/effect as a contractual term;
 - `bl3-contracts/obligations-conditions-performance.md` — obligations, triggers/conditions, due state, performance/acceptance state, and performance evidence;
-- `bl3-contracts/variation-waiver-settlement.md` — amendment, waiver, later agreement, course of dealing/conduct, and settlement terms that change transaction/obligation state.
+- `bl3-contracts/variation-waiver-settlement.md` — amendment, contractual waiver, later agreement, course of dealing/conduct, and settlement terms that change contractual transaction/obligation state.
 
-Activate BL3 when a decision depends on what transaction exists, what terms/documents govern, what each party must do, what performance state exists, whether the deal changed, or what a dispute-resolution clause says.
+Activate BL3 when a decision depends on what transaction exists, what terms/documents govern, what each party must do, what performance state exists, whether the deal changed, or what a dispute-resolution clause contractually says/does.
 
-BL3 does **not** decide entity/signatory authority or corporate approval (BL2), breach/remedies/procedure (BL4), statutory tax liability (BL5), public-law permission/compliance (BL7), or governing-law/treaty/CISG/cross-border overlay (BL8).
+BL3 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
+
+BL3 does **not** decide entity/signatory authority or corporate approval (BL2), breach/remedies/claim consequences/dispute invocation or procedure (BL4), statutory tax liability (BL5), public-law permission/compliance (BL7), or governing-law/treaty/CISG/cross-border overlay (BL8).
+
+For domestic BL3 propositions, BL3 remains the substantive owner and resolves applicable contract-law authority using Authority Resolver where required. BL1 only routes candidate regimes.
 
 Do not load all four BL3 units by default.
 
@@ -76,7 +80,7 @@ Do not load all four BL3 units by default.
 
 `bl4-remedies-disputes/core.md`
 
-Activate after BL3 has established a material obligation/performance proposition for:
+Activate after BL3 has established a material obligation/performance proposition, or when invocation/procedure under a committed dispute-resolution clause is material, for:
 
 - breach/excuse/materiality;
 - remedy availability;
@@ -84,9 +88,14 @@ Activate after BL3 has established a material obligation/performance proposition
 - notice/evidence preservation;
 - limitation/deadline;
 - dispute posture;
-- invocation/procedure/remedies under a resolved forum/regime.
+- invocation/procedure/remedies under a resolved forum/regime;
+- consequences of committed BL3 contractual waiver/change for claims/remedies/procedural rights.
 
-For cross-border disputes, BL8 owns governing-law/treaty/international-enforcement overlay; BL3 owns the dispute-clause content.
+For dispute-resolution clauses:
+
+- BL3 owns clause existence/content and contract-law formation/incorporation/validity/effect as a contractual term;
+- BL8 owns cross-border governing-law/treaty/international-enforcement overlay;
+- BL4 owns invocation, dispute posture, procedure, deadlines, and remedies under the resolved/conditioned clause/forum.
 
 ## BL5 — Tax / Financial Legal Consequences
 
@@ -159,7 +168,7 @@ Foreign element does not automatically mean import/export.
 - BL5 sees payroll-style evidence contradicting contractor classification → `CONTRADICTION_SIGNAL` to BL6; do not classify employee itself.
 - BL7 discovers foreign platform/operator facts → late-route BL8.
 - BL8 discovers domestic product approval is material → late-route BL7.
-- BL3 identifies non-performance → activate BL4 only after obligation/performance state is established.
+- BL3 obligations unit establishes material non-performance/deviation → activate BL4; BL3 does not label the state breach itself.
 
 ## Specialist depth
 
@@ -183,7 +192,7 @@ The specialist returns candidate depth to the owner; the owner promotes/conditio
 - BL8 → BL3: governing-law/treaty proposition precedes cross-border contract reasoning where material.
 - BL3 ↔ BL7: agreement never replaces mandatory regulatory analysis.
 - BL8 ↔ BL7: customs/border status never proves domestic market permission.
-- BL3 ↔ BL8 ↔ BL4: clause content / cross-border overlay / dispute procedure have separate owners.
+- BL3 ↔ BL8 ↔ BL4: clause contractual existence/effect / cross-border overlay / dispute invocation-procedure have separate owners.
 
 ## Invalidation reminder
 
