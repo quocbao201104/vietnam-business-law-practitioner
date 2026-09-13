@@ -44,7 +44,12 @@ BL6 knowledge-synthesis JIT oracle:
 - `bl6-jit-fixtures-v0.1.md` — exactly four BL6 probes covering relationship selectivity, current terms, performance/action routing, and controlled reclassification; confidentiality and timing boundaries are embedded as perturbations inside the relevant probes;
 - `bl6-jit-oracles-v0.1.json` — machine-checkable BL6 JIT read/event oracle bound to repaired semantic candidate `1c199a5771a1f22f38285bff1ebee84785c25786`.
 
-The older RF oracle is **not evidence for BL1/BL2/BL3/BL4/BL5/BL6 internal knowledge-unit routing**. Each synthesis layer must be evaluated against its own candidate-bound JIT oracle.
+BL7 knowledge-synthesis JIT oracle:
+
+- `bl7-jit-fixtures-v0.1.md` — four BL7 probes covering perimeter selectivity, permission scope, market-conduct routing, and privacy/data routing, with a BL7-JIT-02 specialist-activation perturbation;
+- `bl7-jit-oracles-v0.1.json` — machine-checkable BL7 JIT read/event oracle bound to repaired semantic candidate `2d07f0b6917fedc522532a07a789b2696bf9090a`.
+
+The older RF oracle is **not evidence for BL1/BL2/BL3/BL4/BL5/BL6/BL7 internal knowledge-unit routing**. Each synthesis layer must be evaluated against its own candidate-bound JIT oracle.
 
 `ct-v0.1.md` and `vertical-slices-v0.1.md` are retained only as superseded historical markers.
 
@@ -99,6 +104,8 @@ For BL5 knowledge synthesis this is `bl5-jit-oracles-v0.1.json`.
 
 For BL6 knowledge synthesis this is `bl6-jit-oracles-v0.1.json`.
 
+For BL7 knowledge synthesis this is `bl7-jit-oracles-v0.1.json`.
+
 ### Level 3 — held-out / perturbation + independent review
 
 Run held-out/perturbed cases after the relevant Level 2 path tests pass, then perform independent freeze review.
@@ -118,5 +125,7 @@ BL4 knowledge synthesis v0.1 has an accepted decomposition with local deadline/l
 BL5 knowledge synthesis v0.1 has an accepted decomposition with local tax-event/exemption/anti-reclassification repairs and a dedicated JIT/upstream-handoff/feedback oracle; runtime JIT evidence remains **NOT YET PROVEN**.
 
 BL6 knowledge synthesis v0.1 has an accepted decomposition with local reclassification-invalidation/current-vs-post-employment/deadline-ownership repairs and a dedicated JIT/reclassification oracle; runtime JIT evidence remains **NOT YET PROVEN**.
+
+BL7 knowledge synthesis v0.1 has an accepted decomposition with local route-role/data-role, specialist-activation, and permission-maintenance-scope repairs plus a dedicated JIT/specialist-handoff oracle; runtime JIT evidence remains **NOT YET PROVEN**.
 
 Phase 4 also remains open until the broader RF/held-out runtime evidence gate is eventually completed.
