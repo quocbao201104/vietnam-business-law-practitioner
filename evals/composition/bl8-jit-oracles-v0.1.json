@@ -1,0 +1,182 @@
+{
+  "schema_version": "0.1",
+  "candidate_sha": "49e5f4e8f137d6e5e423f85a06f37979443eed90",
+  "fixtures": {
+    "BL8-JIT-01": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/foreign-investment-market-access.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/governing-law-treaty-enforcement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/fx-cross-border-payment.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/trade-customs-origin-tariff.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-INV", "bl8_role": "OWNER", "substantive_owner": null},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "BL2_CONTROL_EQUALS_FOREIGN_INVESTMENT_CONTROL"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "FOREIGN_PERCENTAGE_EQUALS_MARKET_ACCESS"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "TREATY_NOUN_ROUTES_GOVERNING_UNIT"}
+      ]
+    },
+    "BL8-JIT-01-PERTURB": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/foreign-investment-market-access.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/fx-cross-border-payment.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/governing-law-treaty-enforcement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/trade-customs-origin-tariff.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-INV", "bl8_role": "OWNER", "substantive_owner": null},
+        {"event": "MATERIALITY_DECISION", "material": true},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-FX", "bl8_role": "OWNER", "substantive_owner": null},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "RECOMPUTE", "proposition_id": "P-BL8-INV"},
+        {"event": "INVALIDATE", "proposition_id": "P-BL8-INV"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "PAYMENT_RECOMPUTES_MARKET_ACCESS"}
+      ]
+    },
+    "BL8-JIT-02": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/governing-law-treaty-enforcement.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/foreign-investment-market-access.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/fx-cross-border-payment.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/trade-customs-origin-tariff.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/dispute-posture-procedure-settlement.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-LAW", "bl8_role": "OVERLAY", "substantive_owner": "BL3"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "OWNER_ASSIGN", "owner": "BL8", "proposition_id": "P-BL3-OBLIGATION"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "TREATY_EXISTS_EQUALS_APPLIES"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "TREATY_NOUN_ROUTES_GOVERNING_UNIT"}
+      ]
+    },
+    "BL8-JIT-02-PERTURB": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/governing-law-treaty-enforcement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl4-remedies-disputes/dispute-posture-procedure-settlement.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/foreign-investment-market-access.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/fx-cross-border-payment.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/trade-customs-origin-tariff.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-ENF", "bl8_role": "OVERLAY", "substantive_owner": "BL4"},
+        {"event": "LATE_ROUTE_SIGNAL", "track": "BL4"},
+        {"event": "ACTIVATE", "track": "BL4"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL4", "proposition_id": "P-BL4-PROCEDURE"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "BL8_EXECUTES_RECOGNITION_FILING"},
+        {"event": "OWNER_ASSIGN", "owner": "BL8", "proposition_id": "P-BL4-PROCEDURE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL4-PROCEDURE"}
+      ]
+    },
+    "BL8-JIT-03": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/fx-cross-border-payment.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/foreign-investment-market-access.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/governing-law-treaty-enforcement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/trade-customs-origin-tariff.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-FX", "bl8_role": "OWNER", "substantive_owner": null},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "FOREIGN_INVOICE_EQUALS_SERVICE_PAYMENT"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "FOREIGN_PAYMENT_EQUALS_IMPORT_EXPORT"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "FOREIGN_CURRENCY_EQUALS_GOVERNING_LAW"},
+        {"event": "RECLASSIFICATION_COMMITTED", "basis": "TAX_ECONOMICS"}
+      ]
+    },
+    "BL8-JIT-04": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/trade-customs-origin-tariff.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/foreign-investment-market-access.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/governing-law-treaty-enforcement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/fx-cross-border-payment.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-TRADE", "bl8_role": "OWNER", "substantive_owner": null},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "RECOMPUTE", "proposition_id": "P-BL8-HS"},
+        {"event": "PROPOSITION_STATUS", "owner": "SPECIALIST"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "FTA_EXISTS_EQUALS_PREFERENTIAL_TARIFF"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "SHIPMENT_COUNTRY_EQUALS_ORIGIN"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "DUPLICATE_IMPORT_FISCAL_OWNER_BL5_BL8"}
+      ]
+    },
+    "BL8-JIT-04-PERTURB": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/trade-customs-origin-tariff.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/permission-entry-ongoing-compliance.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/foreign-investment-market-access.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/governing-law-treaty-enforcement.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl8-cross-border/fx-cross-border-payment.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL8"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "proposition_id": "P-BL8-CUSTOMS", "bl8_role": "OWNER", "substantive_owner": null},
+        {"event": "LATE_ROUTE_SIGNAL", "track": "BL7"},
+        {"event": "ACTIVATE", "track": "BL7"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "proposition_id": "P-BL7-DOMESTIC-PERMISSION"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL8", "basis": "CUSTOMS_CLEARED_EQUALS_DOMESTIC_SALE_PERMISSION"},
+        {"event": "OWNER_ASSIGN", "owner": "BL8", "proposition_id": "P-BL7-DOMESTIC-PERMISSION"}
+      ]
+    }
+  }
+}
