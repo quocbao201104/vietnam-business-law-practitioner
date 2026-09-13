@@ -144,6 +144,23 @@ The ownership unit is a material legal proposition, not an entire multi-domain c
 
 A proposition may depend on propositions owned by other tracks. Do not create multiple owners for the same proposition.
 
+#### Ownership is semantic, not deployment topology
+
+A BL owner is the semantic role authorized to decide and mutate an owned proposition. It does **not** imply a separate agent, model, process, thread, or service.
+
+One assistant/runtime may sequentially execute multiple BL roles in the same run. For example, the same model may frame under BL1, resolve a contract proposition under BL3, then resolve a breach proposition under BL4. The proposition owner recorded in shared state remains BL3 or BL4 respectively; execution by the same model does not merge ownership.
+
+`Activate another track`, `handoff`, `return to owner`, and `owner review` mean semantic-control transitions. They may happen entirely inside one runtime. Multi-agent execution is optional.
+
+Regardless of topology:
+
+- only the accountable owner may commit or replace its material proposition/classification;
+- another active role may consume current shared state but may not silently rewrite it;
+- owner-scoped deltas, stable IDs, dependencies, and `state_revision` rules remain unchanged;
+- authority applicability, specialist return, contradiction, reclassification, conflict, readiness, and convergence boundaries remain unchanged.
+
+Do not spawn or require extra agents merely because multiple BL roles are active.
+
 ### 3. Materiality has a canonical gate
 
 A fact, proposition, condition, route, authority question, or specialist issue is material only when resolving it can change at least one of:
@@ -227,6 +244,8 @@ Any proposition owner may call the resolver during reasoning. When authority wor
 
 The resolver returns provenance, legal force, lifecycle, temporal/freshness metadata, and source context. Write that result/support state under the Legal Work State contract before the owner uses it to promote the proposition; the owner then decides whether authority applies to the specific proposition.
 
+The resolver and accountable owner may be executed by the same underlying assistant, but resolver result and owner applicability remain separate semantic responsibilities and state transitions.
+
 Re-resolve when freshness, temporal anchor, classification, or authority-change signals make an older result unsafe.
 
 ### 11. Compliance requires proof
@@ -241,7 +260,9 @@ BL3 establishes what was required and what occurred. BL4 determines whether the 
 
 A JIT specialist may only be called under a BL owner. Before the first `SPECIALIST_CALL`, load both `schemas/legal-work-state.md` and `schemas/specialist-handoff.md` so the handoff carries current revision/object identity and the return can be integrated through owner-scoped state.
 
-The specialist returns candidate technical findings + authority + uncertainty to that owner. It does not bypass ownership, update another track's proposition, or synthesize the whole case.
+The specialist may be a separate tool/agent/model or a bounded specialist role inside the same runtime. Either way, it returns candidate technical findings + authority + uncertainty to the semantic owner and does not become the proposition owner.
+
+The specialist does not bypass ownership, update another track's proposition, or synthesize the whole case.
 
 ### 14. Signals, constraints, and feedback are not automatic invalidation
 
@@ -303,6 +324,8 @@ Key object types include:
 
 Owners emit owner-scoped deltas. They do not replace the whole shared state. Stale writes must not overwrite newer owner state.
 
+Owner-scoped does not mean agent-scoped: a single runtime may emit successive deltas for different semantic owners, but each delta must identify the correct owner and obey the same mutation/revision rules.
+
 ## Runtime procedure — controlled reasoning loop
 
 ### Step 1 — Identify business objective and candidate actions
@@ -347,6 +370,8 @@ Load a schema/reference only when its trigger becomes material. Do not preload e
 
 Each active owner resolves only owned propositions and records dependencies/conditions.
 
+The same assistant may execute several owners sequentially. Switching semantic role does not transfer ownership of already committed propositions.
+
 During reasoning, an owner may:
 
 - call Authority Resolver;
@@ -366,16 +391,16 @@ For each material proposition requiring live authority:
 - define temporal anchor(s);
 - resolve provenance/legal force/lifecycle/freshness;
 - write the authority result/support link into shared state;
-- return result to owner;
+- return semantic control to the accountable owner;
 - owner decides case applicability at the current state revision.
 
 Use the minimum sufficient authority set, not a citation quota.
 
 ### Step 7 — Late-route activation and owner return
 
-If a track detects a materially relevant unactivated track, emit `LATE_ROUTE_SIGNAL`, activate via INDEX, and pass shared state.
+If a track detects a materially relevant unactivated track, emit `LATE_ROUTE_SIGNAL`, activate via INDEX, and pass/use shared state under the newly active semantic owner.
 
-If contradictory evidence affects upstream-owned state, emit `CONTRADICTION_SIGNAL` and return to owner. Never reconstruct upstream state downstream.
+If contradictory evidence affects upstream-owned state, emit `CONTRADICTION_SIGNAL` and return semantic control to that owner. In a single-runtime implementation both transitions may occur inside the same assistant. Never reconstruct upstream state downstream.
 
 ### Step 8 — Reclassification / invalidation loop
 
@@ -392,7 +417,7 @@ The synthesizer derives the business-facing composition from resolved propositio
 
 It may not create legal propositions, decide authority applicability, resolve owner conflicts, infer blockers from unlinked constraints, or silently repair a missed route.
 
-If owners conflict materially, create `COMPOSITION_CONFLICT` with status `ACTIVE` and return it to them.
+If owners conflict materially, create `COMPOSITION_CONFLICT` with status `ACTIVE` and return semantic control to the relevant owners.
 
 Keep the conflict `ACTIVE` while a material internal resolution step remains available. After owner review, either mark it `RESOLVED`, or mark the same conflict `TERMINAL_UNRESOLVED` only when no material internal resolution step remains in the current run and the remaining external fact/authority/human judgment is explicit. Terminal unresolved is not substantive resolution and affected actions must be non-READY.
 
@@ -534,6 +559,8 @@ Where material, verify:
 - composition-conflict creation and `RESOLVED` / `TERMINAL_UNRESOLVED` lifecycle where material;
 - per-action readiness;
 - convergence.
+
+Path correctness concerns semantic ownership and state transitions, not the number of agents used. A correct single-runtime execution is valid; a multi-agent execution that violates ownership/state boundaries is not.
 
 Use `schemas/runtime-trace.md` for observable trace evidence. A plausible answer produced through the wrong ownership/routing/conflict path is a failure.
 
