@@ -1,4 +1,4 @@
-# Decision Output — Semantic Contract v0.3
+# Decision Output — Semantic Contract v0.4
 
 The final answer should solve the user's business decision without turning the synthesizer into a hidden ninth legal owner.
 
@@ -147,7 +147,9 @@ This is deterministic projection of owned propositions, not a new substantive le
 
 If an action depends on volatile current law, readiness must reference authority results whose freshness requirement is satisfied at the action's `as_of` date/state revision.
 
-A cached authority result that is stale, superseded, suspended, source-unavailable where primary authority is material, or affected by an authority-change signal cannot support `READY` until re-resolved or explicitly reflected in non-READY readiness.
+A cached authority result that is stale, superseded, suspended, affected by an authority-change signal, or whose **final proposition-level authority support remains insufficient/unresolved** cannot support `READY` until re-resolved or explicitly reflected in non-READY readiness.
+
+A single source/adapter attempt with `SOURCE_UNAVAILABLE`, `SOURCE_DRIFT`, or `SOURCE_LAGGING` does **not** by itself cap readiness when another sufficient official path produces a usable final authority result and the accountable owner records current applicability.
 
 ## Convergence
 
