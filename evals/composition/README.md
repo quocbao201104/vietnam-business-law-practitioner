@@ -9,7 +9,7 @@ Semantic/adversarial cases:
 
 Executable cold-start oracle:
 
-- `rf-oracles-v0.3.json` — machine-checkable RF path/read/event oracle bound to frozen candidate `75135e67223c488bdecb9b2f753186bd2bab4601`;
+- `rf-oracles-v0.3.json` — machine-checkable RF path/read/event oracle bound to frozen candidate `c4fe8200f67adf6fa44fdbb95612836d817f3574`;
 - `runtime-agent-protocol-v0.3.md` — fresh-session/local execution protocol;
 - `../../scripts/runtime_walker.py` — frozen candidate file reader + append-only event logger;
 - `../../scripts/check_runtime_trace.py` — trace integrity/path checker.
