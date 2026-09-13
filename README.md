@@ -6,9 +6,9 @@
 
 A research-first Agent Skill for legally grounded business decisions in Vietnam — built to separate durable legal reasoning from rules that must be verified against current authority.
 
-[![Version: v0.1.0](https://img.shields.io/badge/version-v0.1.0-0a7.svg)](#status-and-scope)
+[![Version: v0.1.0](https://img.shields.io/badge/version-v0.1.0-0a7.svg)](#status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Jurisdiction: Vietnam](https://img.shields.io/badge/jurisdiction-Vietnam-da251d.svg)](#scope)
+[![Jurisdiction: Vietnam](https://img.shields.io/badge/jurisdiction-Vietnam-da251d.svg)](#what-it-can-help-with)
 [![Format: Agent Skill](https://img.shields.io/badge/format-Agent%20Skill-6f42c1.svg)](skills/vietnam-business-law-practitioner/SKILL.md)
 
 **[What it can help with](#what-it-can-help-with) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Live-law verification](#live-law-verification) · [Research & evaluation](#research-and-evaluation)**
@@ -21,7 +21,7 @@ A research-first Agent Skill for legally grounded business decisions in Vietnam 
 
 Vietnam Business Law Practitioner is a decision-support skill for founders, operators, and businesses working through Vietnamese business and commercial legal questions.
 
-It is designed for questions where a useful answer requires more than recalling a rule. The runtime first reconstructs the business situation, separates the legal propositions that actually need resolution, assigns each material proposition to an accountable legal track, verifies current or historically applicable authority when required, and then composes the result back into business-facing options, consequences, unresolved issues, and next actions.
+It is designed to reconstruct the business situation, separate the legal propositions that materially control a decision, assign each proposition to an accountable legal track, verify current or historically applicable authority when required, and compose the result into business-facing options, consequences, unresolved issues, and next actions.
 
 The project is intentionally **not** a static encyclopedia of Vietnamese law. Rules that can change — rates, thresholds, forms, deadlines, filing mechanics, penalties, permit requirements, tariff treatment, current administrative guidance, and similar details — should be resolved from current authority when they materially affect the decision.
 
@@ -35,10 +35,12 @@ The project is intentionally **not** a static encyclopedia of Vietnamese law. Ru
 | What tax or financial-law consequences follow from a business choice? | Legally relevant tax/financial consequences, dependencies, and unresolved authority |
 | Can an employer take a proposed action? | Employment relationship, employer-side constraints, process, evidence, and consequence analysis |
 | Is a business model, activity, claim, or market behavior permitted? | Regulatory perimeter, licensing/permission, market conduct, consumer, competition, data, and compliance analysis |
-| What changes when foreign investment or cross-border activity is involved? | Investment, conflict-of-laws, treaty, foreign-exchange, customs, and trade overlays |
-| Which legal regime even governs the problem? | Issue framing, candidate regimes, route selection, temporal applicability, and proposition ownership |
+| What changes when foreign investment or cross-border activity is involved? | Foreign-investment, governing-law/conflict/treaty/CISG, FX, trade/customs propositions, and cross-border overlays |
+| Which legal regime even governs the problem? | Issue framing, candidate regimes, route selection, temporal/foreign/mandatory-law signals, and proposition ownership |
 
 These are supported decision areas, not guarantees of a legal outcome. The quality of a result still depends on the facts, documents, timing, available authority, host tools, and model behavior.
+
+The project is not intended to be a general Vietnamese-law encyclopedia, criminal/family/inheritance assistant, accounting engine, static tax/tariff/deadline database, contract-template pack, or substitute for professional legal advice or representation.
 
 ## Quick start
 
@@ -105,46 +107,51 @@ A legal answer can sound precise and still be wrong for the decision in front of
 | Failure to avoid | Design response |
 | --- | --- |
 | Treat the user's label as the legal classification | Reconstruct the relationship from legally material facts |
-| Find a matching article and stop | Lock the instrument identity, lifecycle, temporal applicability, and controlling provision |
+| Find a matching article and stop | Lock the instrument identity, lifecycle, temporal scope, and controlling provision |
 | Use a current rule for a historical event | Resolve the authority version applicable to the relevant date |
 | Let one legal domain silently decide another | Give each material proposition one accountable owner |
-| Treat contractual agreement as regulatory permission | Keep private-law validity and public-law permission separate |
+| Treat contractual agreement as regulatory permission | Keep private-law agreement and public-law permission separate |
 | Treat a search result as verified authority | Separate discovery from verification |
 | Hide missing facts behind confident prose | Preserve uncertainty and state what remains unresolved |
 | Return a legal conclusion with no decision path | Translate the legal position into options, consequences, readiness, and next actions |
 
-The core preserves distinctions that can change the legal result:
+The core preserves distinctions that can change the result:
 
 ```text
 user label ≠ legal classification
 search hit ≠ verified authority
 current text ≠ historically applicable text
-contractual permission ≠ regulatory permission
-fact ≠ allegation ≠ inference ≠ verified evidence
+contractual agreement ≠ regulatory permission
+fact proposition ≠ evidence provenance
 instrument identity ≠ provision text
 source availability ≠ source authority
+current/binding authority ≠ applicable-to-case authority
 legal possibility ≠ action readiness
 one case ≠ one legal owner
 ```
 
 ## How it works
 
-The runtime starts from the **business decision**, not from a legal topic list.
+The skill is designed to start from the **business decision**, not from a legal topic list.
 
 ```text
 BUSINESS SITUATION
         ↓
-MATERIAL FACTS + TIME ANCHOR
+MATERIAL FACTS + TEMPORAL ANCHORS
         ↓
 LEGAL PROPOSITIONS
         ↓
 ACCOUNTABLE BL OWNERS
         ↓
-JUST-IN-TIME SPECIALIST DEPTH
+JUST-IN-TIME KNOWLEDGE / SPECIALIST DEPTH
         ↓
 CURRENT / HISTORICAL AUTHORITY RESOLUTION
         ↓
+OWNER APPLICABILITY DECISION
+        ↓
 CROSS-TRACK COMPOSITION
+        ↓
+PER-ACTION READINESS
         ↓
 POSITION · OPTIONS · CONSEQUENCES · GAPS · NEXT ACTIONS
 ```
@@ -158,22 +165,35 @@ ONE MATERIAL PROPOSITION
 → ONE ACCOUNTABLE OWNER
 ```
 
-Other tracks may supply facts, constraints, dependencies, or specialist input. They do not silently overwrite the proposition owned elsewhere.
+Other tracks may supply facts, constraints, dependencies, signals, feedback, or specialist input. They do not silently overwrite a proposition owned elsewhere.
 
 ### Core tracks
 
 | Track | Accountable area |
 | --- | --- |
-| **BL1** | Legal issue framing, candidate regimes, routing, and temporal applicability |
-| **BL2** | Entity, representation, authority, corporate approval, ownership, and control |
-| **BL3** | Contract/transaction existence, terms, obligations, and performance state |
-| **BL4** | Breach, excuse, remedy, evidence posture, disputes, and deadline state |
+| **BL1** | Legal issue framing, candidate regimes, initial routing, and temporal/foreign/mandatory-law signals |
+| **BL2** | Entity, representation, authority, corporate approval, ownership, voting, and control state |
+| **BL3** | Contract/transaction existence, terms, obligations, conditions, and performance state |
+| **BL4** | Breach, excuse, remedy, evidence posture, disputes, procedure, and claim/deadline state |
 | **BL5** | Tax and financial legal consequences |
 | **BL6** | Employment relationship and employer action pathway |
-| **BL7** | Regulatory perimeter, permission, market conduct, and compliance state |
-| **BL8** | Foreign investment, conflict-of-laws, treaty, FX, trade, and customs overlay |
+| **BL7** | Regulatory perimeter, permission, market conduct, privacy/data, and compliance state |
+| **BL8** | Foreign-investment, governing-law/conflict/treaty/CISG, FX, and trade/customs propositions; plus cross-border overlays where another track remains substantive owner |
 
-[`knowledge/INDEX.md`](skills/vietnam-business-law-practitioner/knowledge/INDEX.md) is the canonical detailed route map. Specialist depth is loaded only when an already-open issue requires it; the repository does not route into customs, transfer pricing, sector regulation, privacy, or another specialist area merely because a related noun appears in the prompt.
+[`knowledge/INDEX.md`](skills/vietnam-business-law-practitioner/knowledge/INDEX.md) is the canonical detailed route map. Capability and specialist depth are loaded only when an already-open issue requires them; the repository does not route into customs, transfer pricing, sector regulation, privacy, or another specialist area merely because a related noun appears in the prompt.
+
+### Shared legal state and composition
+
+A multi-domain case should not become independent mini-answers stitched together at the end. Material facts, classifications, legal propositions, dependencies, authority results, applicability decisions, conditions, and action readiness share one semantic state with accountable ownership.
+
+Examples:
+
+- BL3 may determine what a contract requires; BL4 can then evaluate breach and remedies without rewriting the contract terms.
+- BL2 may determine who had authority to act for an entity; BL3 can consume that state without taking ownership of the corporate-authority proposition.
+- BL7 may determine that an activity requires regulatory permission even where BL3 finds a valid private agreement.
+- BL8 may add a cross-border overlay while the substantive proposition remains owned by its existing track. BL8 separately owns material foreign-investment, governing-law/treaty/CISG, FX, and trade/customs propositions.
+
+The normative state and composition contracts live under [`schemas/`](skills/vietnam-business-law-practitioner/schemas/).
 
 ## Live-law verification
 
@@ -184,7 +204,7 @@ The project's central operating principle is:
 Current-law work therefore separates **discovery** from **verification**.
 
 ```text
-PROPOSITION
+PROPOSITION + TEMPORAL ANCHOR
     ↓
 DISCOVER CANDIDATE AUTHORITY
     ↓
@@ -192,65 +212,30 @@ LOCK DOCUMENT IDENTITY
     ↓
 CHECK LIFECYCLE + EFFECTIVE DATE + AMENDMENT / REPLACEMENT
     ↓
-READ THE CONTROLLING PROVISION IN CONTEXT
+RESOLVE THE CONTROLLING PROVISION IN CONTEXT
     ↓
-RECORD SOURCE / VERSION / VERIFICATION STATE
+RECORD SOURCE / VERSION / FRESHNESS / RESOLUTION STATE
     ↓
-RETURN THE AUTHORITY RESULT TO THE PROPOSITION OWNER
+RETURN AUTHORITY RESULT TO THE ACCOUNTABLE OWNER
+    ↓
+OWNER DECIDES CASE APPLICABILITY
 ```
 
 Search engines, legal databases, commentary, and secondary legal sites can be useful for discovering document numbers, candidate provisions, amendments, replacement instruments, or official locators. Discovery does not by itself establish the controlling legal proposition.
 
-The authority resolver is designed to preserve distinctions such as:
+The authority resolver keeps separate:
 
-- whether a candidate source was available or unavailable;
-- whether the source identity was established;
-- whether the applicable version and lifecycle were resolved;
-- whether the controlling provision was read in context;
-- whether a proposition is resolved, partially resolved, ambiguous, or unresolved;
-- when freshness or a new fact requires re-resolution.
+- source/adapter attempt status;
+- source provenance and legal force;
+- document identity and provision locator;
+- lifecycle and effective period;
+- temporal scope and freshness;
+- proposition-level authority resolution status;
+- owner-specific applicability to the case.
 
-This matters because a phrase match can come from the wrong instrument, an older version, a future-effective amendment, or an unofficial reproduction whose text is not enough to establish temporal applicability.
+One unavailable or drifting source does not make the whole authority question unresolved if another sufficient official path establishes the required authority. Likewise, a current binding instrument is not automatically applicable to a particular transaction or proposition.
 
 See [`references/search-strategy.md`](skills/vietnam-business-law-practitioner/references/search-strategy.md), [`references/source-status.md`](skills/vietnam-business-law-practitioner/references/source-status.md), and [`schemas/authority-resolver.md`](skills/vietnam-business-law-practitioner/schemas/authority-resolver.md).
-
-## Shared legal state and composition
-
-A multi-domain case should not become eight independent mini-answers stitched together at the end.
-
-The runtime carries shared state for material facts, classifications, proposition results, dependencies, authority versions, option sets, evidence/procedure/deadline state, and action readiness. A later track can consume an earlier result without silently changing its meaning or evidence status.
-
-Examples:
-
-- BL3 may determine what a contract requires; BL4 then evaluates breach and remedies without rewriting the contract terms.
-- BL2 may determine who had authority to act for an entity; BL3 may use that result when assessing the transaction without taking ownership of the corporate-authority proposition.
-- BL7 may determine that an activity requires regulatory permission even where BL3 finds a valid private agreement.
-- BL8 may add a cross-border overlay without replacing the domestic proposition owner unless the governing-law or treaty question actually changes ownership.
-
-The normative composition contracts live under [`schemas/`](skills/vietnam-business-law-practitioner/schemas/).
-
-## Scope
-
-The project focuses on **business and commercial legal decisions in Vietnam**, including cross-border overlays where they materially affect the matter.
-
-Core scope includes:
-
-- corporate entity, authority, ownership, governance, and approvals;
-- contracts and commercial transactions;
-- breach, remedies, evidence, and disputes;
-- tax and financial legal consequences of business decisions;
-- employment and employer-side actions;
-- licensing, regulatory perimeter, market conduct, consumer, competition, data, and compliance questions;
-- foreign investment, FX, trade, customs, treaty, and conflict-of-laws overlays when activated by the matter.
-
-It is not intended to be:
-
-- a general Vietnamese-law encyclopedia;
-- a criminal, family, inheritance, or ordinary citizen legal Q&A system;
-- an accounting or bookkeeping engine;
-- a tax-rate, tariff, penalty, form, or deadline database;
-- a contract-template pack;
-- a substitute for professional legal advice or representation.
 
 ## Host compatibility and tools
 
@@ -258,11 +243,11 @@ The skill packages instructions, schemas, practitioner knowledge, source discipl
 
 A host may need web search, browser access, official-document retrieval, file reading, or other tools to verify a material proposition. If those tools are unavailable, the correct behavior is to preserve the limitation rather than fabricate current authority.
 
-Likewise, plugin installation does not create access to private legal databases, government systems, filing portals, client documents, or confidential business records.
+Plugin installation does not create access to private legal databases, government systems, filing portals, client documents, or confidential business records.
 
-The host also controls context persistence. Material facts, dates, adopted classifications, authority status, and unresolved dependencies should remain in the active task or an accessible project record when a matter spans multiple sessions.
+The host also controls context persistence. Material facts, dates, committed classifications, authority status, and unresolved dependencies should remain in the active task or an accessible project record when a matter spans multiple sessions.
 
-## Under the hood
+## Repository structure
 
 ```text
 skills/vietnam-business-law-practitioner/
@@ -271,11 +256,11 @@ skills/vietnam-business-law-practitioner/
 │   ├── INDEX.md          canonical detailed route map
 │   └── bl*/              practitioner reasoning by accountable legal track
 ├── references/           authority, source, search, and citation guidance
-├── schemas/              shared state, composition, resolver, handoff, and output contracts
+├── schemas/              shared state, composition, resolver, handoff, trace, and output contracts
 └── specialist/           bounded specialist depth loaded only when justified
 
-research/                 provenance, research questions, synthesis, and repair history
-evals/                    composition, freshness, routing, and runtime evaluation artifacts
+research/                 research provenance and synthesis
+evals/                    adversarial, routing, freshness, and runtime evaluation artifacts
 scripts/                  supporting runtime and evaluation utilities
 
 .claude-plugin/           Claude plugin and marketplace manifests
@@ -285,32 +270,31 @@ scripts/                  supporting runtime and evaluation utilities
 
 The repository deliberately keeps **research provenance** separate from **runtime practitioner knowledge**. Research files explain why a mechanism exists; runtime knowledge contains the bounded material the agent should use during work.
 
-No external repository, legal-tech product, commentary site, or single source package is treated as the architectural source of truth.
-
 ## Research and evaluation
 
-Research is first-class provenance rather than discarded after synthesis. Where useful, a research track preserves its question, source map, findings, contradictory evidence, rejected folklore, architecture implications, unresolved questions, and repair history.
+Research is first-class provenance rather than discarded after synthesis. Where useful, a research track preserves its question, source map, findings, contradictory evidence, rejected alternatives, architecture implications, unresolved questions, and repair history.
 
-The current dedicated research area includes [`research/legal-source-retrieval/`](research/legal-source-retrieval/), which pressure-tests how current legal authority should be discovered, identified, versioned, and verified before a proposition is treated as resolved.
+The dedicated legal-source research area under [`research/legal-source-retrieval/`](research/legal-source-retrieval/) pressure-tests how legal authority should be discovered, identified, versioned, and verified before it can safely support a proposition.
 
-Evaluation artifacts under [`evals/`](evals/) test the architecture at several boundaries, including:
+Evaluation artifacts under [`evals/`](evals/) cover boundaries such as:
 
-- just-in-time track routing;
-- cross-track composition;
-- authority freshness and temporal applicability;
+- just-in-time routing and selective loading;
+- cross-track ownership and composition;
+- authority freshness, fallback, and temporal scope;
 - source drift and source unavailability;
-- preservation of ownership and legal state across runtime steps;
+- preservation of shared legal state across runtime steps;
+- action readiness and convergence;
 - whether a runtime path actually read the required contract and knowledge surfaces.
 
-Passing a mechanical evaluation does not establish that a generated legal answer is correct. Repository checks, routing evidence, authority verification, model behavior, and real legal correctness remain separate claims.
+Passing a mechanical evaluation does not establish that a generated legal answer is correct. Repository checks, path evidence, authority verification, model behavior, and real legal correctness remain separate claims.
 
-## Status and scope
+## Status
 
-Current plugin manifest version: **v0.1.0**.
+Plugin manifests: **v0.1.0**.
 
-The repository is ready for **early dogfooding**. The core practitioner architecture, BL1–BL8 ownership model, just-in-time specialist routing, live-law authority resolution, shared legal state, composition contracts, and action-readiness model are in place.
+The repository is ready for **early dogfooding**. The core practitioner architecture, BL1–BL8 ownership model, capability-level JIT routing, live-law authority resolution, shared legal state, composition contracts, and per-action readiness model are in place.
 
-Runtime validation is ongoing. Real usage may still expose routing failures, missing authority dependencies, composition defects, stale source assumptions, or cases where the current abstractions are too broad or too narrow.
+Runtime validation is ongoing. Real usage may still expose routing failures, missing authority dependencies, composition defects, stale-source assumptions, or cases where current abstractions are too broad or too narrow.
 
 The project favors **local repair over architecture expansion**: a new track, primitive, specialist module, or shared state field should be added only when a concrete decision-relevant failure cannot be repaired cleanly within the existing ownership model.
 
