@@ -74,6 +74,34 @@ restructuring-separation-protection
 
 unless new material evidence actually contradicts the committed relationship or the requested action changes.
 
+### Perturbation — current vs post-employment confidentiality
+
+Current employee question:
+
+> Does Employee E currently owe confidentiality duties concerning dataset X?
+
+Expected:
+
+```text
+BL6 core
+→ engagement-terms-work-state
+```
+
+Do not load separation/protection merely because the word `confidentiality` appears.
+
+Then assume that current confidentiality proposition is committed and the question changes to:
+
+> Does that duty survive after E leaves?
+
+Expected:
+
+```text
+BL6 core
+→ restructuring-separation-protection
+```
+
+Consume the committed current-term proposition. Do not reopen `engagement-terms-work-state` unless the current term itself becomes unresolved, disputed, stale, or contradictory.
+
 ---
 
 ## BL6-JIT-03 — Poor performance with desired dismissal
@@ -106,11 +134,38 @@ If the user then asks whether final separation can lawfully proceed, late-load:
 
 and that unit must consume the committed performance/action-path proposition rather than inventing a new ground.
 
+### Perturbation — employment-action timing vs dispute timing
+
+When the question is:
+
+> Under the committed termination pathway, what employment-path notice/process timing must be satisfied before the employer acts?
+
+Expected owner:
+
+```text
+BL6 / restructuring-separation-protection
+```
+
+If the termination later occurs and is challenged, and the question becomes:
+
+> What is the filing/challenge/limitation deadline for the worker's dispute?
+
+Expected:
+
+```text
+BL6 committed employment merits/pathway
+→ late-route BL4
+→ BL4 timing/procedure unit(s) as material
+```
+
+BL6 must not retain claim/dispute-preservation timing merely because the underlying dispute is employment-related.
+
 ### Forbidden
 
 - separation unit before final separation becomes material;
 - separation unit assigning its own performance/misconduct ground;
-- `poor performance → misconduct → dismissal` shortcut.
+- `poor performance → misconduct → dismissal` shortcut;
+- BL4 claim/dispute deadline treated as a BL6 employment-action deadline.
 
 ---
 
@@ -176,78 +231,8 @@ Only exact `DEPENDS_ON` dependents may be invalidated/recomputed.
 - `SIGNALS` or `FEEDBACK` treated as automatic invalidation edges;
 - BL5 committing the employment classification.
 
----
-
-## BL6-JIT-05 — Temporal confidentiality routing
-
-This is a boundary probe supporting BL6-JIT-02/03 rather than a new capability claim.
-
-### A. Current employee
-
-Question:
-
-> Does Employee E currently owe confidentiality duties concerning dataset X?
-
-Expected:
-
-```text
-BL6 core
-→ engagement-terms-work-state
-```
-
-Do not load separation/protection merely because the word `confidentiality` appears.
-
-### B. After separation
-
-Current confidentiality proposition is already committed. Question changes to:
-
-> Does that duty survive after E leaves, and what post-employment protection remains supportable?
-
-Expected:
-
-```text
-BL6 core
-→ restructuring-separation-protection
-```
-
-Consume the committed current-term proposition. Do not reopen `engagement-terms-work-state` unless the current term itself becomes unresolved/disputed/stale.
-
----
-
-## BL6-JIT-06 — Employment-action timing vs dispute timing
-
-This is a boundary probe supporting BL6-JIT-03.
-
-### A. Employer action timing
-
-Question:
-
-> Under the committed termination pathway, what employment-path notice/process timing must be satisfied before the employer takes the action?
-
-Expected owner:
-
-```text
-BL6 / restructuring-separation-protection
-```
-
-### B. Challenge timing
-
-The termination has occurred and is challenged. Question:
-
-> What is the filing/challenge/limitation deadline for the worker's dispute?
-
-Expected:
-
-```text
-BL6 committed employment merits/pathway
-→ late-route BL4
-→ BL4 notice-evidence-deadlines / dispute procedure as material
-```
-
-BL6 must not keep the claim/dispute-preservation deadline merely because the underlying dispute is employment-related.
-
 ## Gate interpretation
 
-The four primary fixtures are BL6-JIT-01 through BL6-JIT-04. BL6-JIT-05 and BL6-JIT-06 are focused boundary probes for the two local repairs and may be run alongside them.
+The gate contains exactly four probes: BL6-JIT-01 through BL6-JIT-04. Temporal confidentiality routing is a perturbation of JIT-02; employment-action versus dispute timing is a perturbation of JIT-03.
 
 A correct final employment answer reached by loading the wrong sibling unit, back-solving classification from tax, globally invalidating state, or collapsing employment-action timing into dispute timing is a path failure.
