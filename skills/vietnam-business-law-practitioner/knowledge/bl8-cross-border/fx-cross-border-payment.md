@@ -91,7 +91,7 @@ These are separate propositions owned by different systems/owners. A transfer da
 
 ### Currency choice ≠ governing law
 
-Paying in a foreign currency does not determine governing law, treaty/CISG applicability, or dispute forum.
+Paying in a foreign currency does not determine governing law, CISG/private-law treaty applicability, or dispute forum.
 
 ### Cross-border payment ≠ import/export
 
@@ -106,13 +106,15 @@ A foreign payment for software, services, financing, investment, or intellectual
 5. **Resolve FX/capital-flow rules live.** Account/channel/currency/registration/reporting/document conditions as material to the requested action.
 6. **Separate payment legality from tax consequence.** Return committed flow classification to BL5.
 7. **Separate payment flow from customs.** Late-route trade/customs only when actual goods movement/customs proposition is material.
-8. **Commit payment state.** Supported, conditional, verify, blocked, disputed, or unresolved.
+8. **Commit payment state with explicit `bl8_role` / `substantive_owner`.** Supported, conditional, verify, blocked, disputed, or unresolved.
 9. **Link action readiness.** `MAKE PAYMENT`, `RECEIVE FUNDS`, `REMIT PROFIT`, `CONTRIBUTE CAPITAL`, etc. only through explicit proposition dependencies.
 
 ## Payment-state pattern
 
 ```text
 P-BL8-FX-01
+bl8_role: OWNER / OVERLAY
+substantive_owner: BL2 / BL3 / BL4 / BL5 / BL7 / null
 payer: <actor>
 payee: <actor>
 underlying_dependency: <BL3/BL2/BL8 proposition>
@@ -124,6 +126,8 @@ temporal_anchor: <...>
 fx_conditions: [...]
 status: SUPPORTED / CONDITIONAL / VERIFY / BLOCKED / DISPUTED / UNRESOLVED
 ```
+
+The FX/flow proposition itself will normally use `bl8_role: OWNER` with `substantive_owner: null`. Use `OVERLAY` only where a BL8 payment result is explicitly conditioning another owner's action/proposition; the marker never transfers that proposition to BL8.
 
 These are reasoning states, not bank-operation instructions or statutory labels.
 
@@ -187,6 +191,7 @@ If payment-provider/regulated-service or domestic operating permission becomes s
 - tax outcome used to back-solve BL8 flow classification;
 - payment date collapsed into tax/accounting timing;
 - currency used to infer governing law;
+- `bl8_role` / `substantive_owner` omitted where overlay status is material;
 - current FX/account/registration rules recalled from memory.
 
 ## Escalation

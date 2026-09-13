@@ -105,8 +105,8 @@ Within BL4:
 For dispute-resolution clauses:
 
 - BL3 owns clause existence/content and contract-law formation/incorporation/validity/effect as a contractual term;
-- BL8 owns cross-border governing-law/treaty/international-enforcement overlay;
-- BL4 owns invocation, dispute posture, filing mechanics/procedural sequence, and remedies under the resolved/conditioned clause/forum; timing/deadline propositions remain with `notice-evidence-deadlines.md`.
+- BL8 owns cross-border governing-law/private-law treaty/recognition-enforcement-regime overlay;
+- BL4 owns invocation, dispute posture, filing/service/procedural sequence, deadlines and remedies under the resolved/conditioned clause/forum.
 
 For settlement:
 
@@ -143,6 +143,7 @@ Within BL5:
 - contractual tax allocation remains BL3 content; statutory taxpayer/withholder/tax treatment is BL5;
 - employee/contractor and employment-law employer classification remain BL6; BL5 consumes committed/conditioned state for tax/withholding/contribution consequences only;
 - foreign-payment/investment/trade classification remains BL8; BL5 consumes it for tax consequences;
+- customs duty/tariff propositions explicitly owned by BL8 remain BL8; BL5 owns VAT/CIT/PIT/withholding/excise and other non-customs-duty statutory tax consequences;
 - invoice validity, VAT credit, tax deductibility, and accounting recognition are separate propositions;
 - tax-document defects do not silently erase BL3 transaction/payment state;
 - tax economics that make an option unattractive normally create `FEEDBACK` to BL2/BL3/BL6/BL8, not automatic invalidation or reclassification;
@@ -227,23 +228,33 @@ Start with:
 
 Then JIT-load only the capability needed:
 
-- `bl8-cross-border/foreign-investment-market-access.md` — foreign-investor status, foreign-investment market access, acquisition/subscription/project entry/change triggers, and foreign-investment control tests using committed BL2 corporate facts;
-- `bl8-cross-border/governing-law-treaty-enforcement.md` — governing law/conflict-of-laws, treaty/CISG applicability, mandatory-law interaction, and international recognition/enforcement overlay while BL3/BL4 retain their substantive ownership;
+- `bl8-cross-border/foreign-investment-market-access.md` — foreign-investor status, foreign-investment market access/control, acquisition/subscription/project entry/change triggers, and investment/market-access treaty commitments/schedules using committed BL2 corporate facts;
+- `bl8-cross-border/governing-law-treaty-enforcement.md` — governing law/conflict-of-laws, CISG/private-law treaty applicability, mandatory-law interaction, and cross-border recognition/enforcement-regime overlay while BL3/BL4 retain substantive/procedural ownership;
 - `bl8-cross-border/fx-cross-border-payment.md` — cross-border payment/capital-flow classification, FX/account/channel/registration/reporting conditions, and foreign-payment state consumed by BL5;
-- `bl8-cross-border/trade-customs-origin-tariff.md` — goods trade/customs, HS, origin, customs valuation/tariff/preference, clearance state, and owner-bound HS/origin/customs specialist depth.
+- `bl8-cross-border/trade-customs-origin-tariff.md` — goods trade/customs, HS, origin, FTA/trade-agreement origin/tariff propositions, customs valuation/customs duty/tariff/preference, clearance state, and owner-bound HS/origin/customs specialist depth.
 
 Activate BL8 only when a foreign element can materially change a proposition. A foreign element is an activation/materiality signal, **not** a rule assigning the whole case to BL8.
 
 BL8 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
-BL8 may act either as accountable proposition owner or as a cross-border overlay. The owned proposition/handoff must make that role explicit.
+Every committed BL8 proposition/handoff must make dual role explicit where material:
+
+```text
+bl8_role: OWNER | OVERLAY
+substantive_owner: BL2 | BL3 | BL4 | BL5 | BL7 | null
+```
+
+`OVERLAY` conditions another owner's proposition/action; it never transfers that substantive proposition to BL8.
 
 Within BL8:
 
 - BL2 owns corporate identity/cap table/voting/control/approval; `foreign-investment-market-access.md` owns the separate foreign-investment consequence of those committed facts;
-- BL3 owns contract formation/content/obligations and dispute-clause contractual content/effect as a term; `governing-law-treaty-enforcement.md` owns governing-law/conflict/treaty/CISG/international-enforcement overlay;
-- BL4 owns dispute invocation/procedure/deadlines/remedies; BL8 must not duplicate the same forum/procedure proposition;
-- BL5 owns tax/withholding consequences after BL8 commits the relevant foreign payment/investment/trade classification;
+- treaty ownership follows proposition, not the noun: investment/market-access treaty commitments → investment unit; private-law governing/CISG/conflict or recognition-enforcement treaty overlay → governing-law unit; FTA/trade-agreement origin/tariff → trade unit;
+- BL3 owns contract formation/content/obligations and dispute-clause contractual content/effect as a term; `governing-law-treaty-enforcement.md` may overlay governing law/CISG/private-law treaty state but must not resolve BL3 obligations;
+- BL8 owns whether a cross-border recognition/enforcement regime/pathway is available and its treaty/recognition conditions; BL4 owns filing, service, procedural sequence, deadlines, interim/remedial posture and execution of that pathway;
+- `fx-cross-border-payment.md` owns foreign payment/capital-flow classification; BL5 owns resulting non-customs-duty tax/withholding consequences;
+- `trade-customs-origin-tariff.md` owns customs classification, customs valuation, tariff/preferential tariff, customs duty, and only border/customs charges intrinsically part of that trade/customs proposition; BL5 owns VAT/CIT/PIT/withholding/excise and other non-customs-duty statutory tax consequences;
+- BL5 and BL8 must not independently own/calculate the same import fiscal item;
 - BL7 owns domestic product/service market placement, operating permission and conduct; BL8 border/customs or foreign-investment status does not substitute for BL7;
 - `fx-cross-border-payment.md` does not activate goods/customs merely because a payment/counterparty is foreign;
 - within trade/customs reasoning, product name does not determine HS, shipment country does not determine preferential origin, and FTA existence does not determine preferential tariff entitlement;
@@ -261,6 +272,7 @@ Do not load all four BL8 units by default.
 - BL8 investment/trade analysis discovers domestic sector/product approval is material → late-route BL7; foreign-investment/customs state does not prove domestic permission.
 - BL8 payment evidence contradicts the committed BL3 transaction purpose → `CONTRADICTION_SIGNAL` to BL3; BL8 must not rewrite transaction state.
 - BL8 investment evidence contradicts committed BL2 ownership/control → `CONTRADICTION_SIGNAL` to BL2; BL8 must not reconstruct cap table/control.
+- BL8 recognition/enforcement regime becomes actionable → BL4 executes filing/service/procedure/deadline pathway; BL8 does not execute it.
 - BL3 obligations unit establishes material non-performance/deviation → activate BL4; BL3 does not label the state breach itself.
 
 ## Specialist depth
@@ -285,11 +297,12 @@ The specialist returns candidate depth to the owner; the owner promotes/conditio
 - BL6 ↔ BL7: employment merits/pathway and privacy/monitoring legality have separate owners.
 - BL6 ↔ BL4: substantive employment-action timing stays BL6; claim/dispute-preservation timing and procedure stay BL4.
 - BL2 ↔ BL8: corporate ownership/control state and foreign-investment control/market-access consequence have separate owners.
-- BL8 → BL3: governing-law/treaty proposition precedes cross-border contract reasoning where material; BL3 remains contract owner.
+- BL8 → BL3: governing-law/CISG/private-law treaty overlay precedes cross-border contract reasoning where material; BL3 remains contract owner.
+- BL8 ↔ BL4: recognition/enforcement regime/pathway belongs to BL8; procedural execution belongs to BL4.
 - BL3 ↔ BL7: agreement never replaces mandatory regulatory analysis.
 - BL8 ↔ BL7: customs/border/foreign-investment state never proves domestic market permission.
-- BL3 ↔ BL8 ↔ BL4: clause contractual existence/effect / cross-border regime-enforcement overlay / dispute invocation-procedure have separate owners.
-- BL8 → BL5: foreign payment/investment/trade classification may be consumed for tax consequence; tax economics do not back-solve BL8 classification.
+- BL3 ↔ BL8 ↔ BL4: clause contractual existence/effect / cross-border regime-recognition overlay / dispute invocation-procedural execution have separate owners.
+- BL8 → BL5: foreign payment/investment/trade classification and explicitly BL8-owned customs-duty state may be consumed for tax/economic consequences; BL5 retains non-customs-duty tax ownership and tax economics do not back-solve BL8 classification.
 
 ## Invalidation reminder
 
