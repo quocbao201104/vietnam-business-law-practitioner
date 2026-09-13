@@ -2,12 +2,13 @@
 
 ## Owns
 
-Framing authority questions, distinguishing source status from legal force and lifecycle, and identifying when proposition owners must resolve live authority before an action-facing conclusion can be trusted.
+Framing authority-status/applicability problems that materially affect BL1 issue framing or routing, distinguishing source status from legal force and lifecycle, and identifying when a proposition owner must resolve live authority before the route or action-facing conclusion can be trusted.
 
-BL1 may classify an authority problem and route it. It does not become owner of the substantive legal proposition merely because it finds or reads the source.
+BL1 may classify an **authority problem** and route it. It does not become owner of the substantive legal proposition merely because it finds or reads the source.
 
 ## Does not own
 
+- routine current-law verification for a narrow proposition whose accountable owner is already clear;
 - final case applicability of corporate, contract, remedy, tax, employment, regulatory, or cross-border authority;
 - choosing a business-friendly interpretation between conflicting substantive owner conclusions;
 - promoting official guidance into binding law;
@@ -15,25 +16,46 @@ BL1 may classify an authority problem and route it. It does not become owner of 
 
 ## Activate when
 
-Use when:
+Load this BL1 unit only when the **authority problem itself changes or may change framing/routing**, for example when:
 
-- a material proposition depends on current/historical legal authority;
-- source status or legal force is unclear;
-- an official page, guidance, circular, decree, statute, treaty, precedent, or secondary source may be misunderstood;
-- several instruments must be read together;
-- authority may be amended, suspended, replaced, or transition-sensitive;
-- a proposition is action-facing and stale authority would change readiness;
-- sources conflict or primary authority is unavailable.
+- source provenance versus legal force must be distinguished before selecting the correct route/owner;
+- lifecycle, amendment, suspension, replacement, transition, or temporal status makes the route unclear;
+- conflicting authority or source unavailability prevents BL1 from trusting the current route hypothesis;
+- several authority types/instruments must be distinguished to know which owner or regime must be activated;
+- authority freshness/status creates a meta-level routing problem rather than merely an owner-specific verification task.
+
+Do **not** load this unit merely because a downstream legal proposition depends on current or historical law.
+
+For a narrow owner-specific proposition, the accountable BL owner should call Authority Resolver directly:
+
+```text
+BL5 proposition
+→ BL5 calls Authority Resolver
+→ BL5 decides case applicability
+```
+
+not:
+
+```text
+BL1
+→ authority-applicability
+→ Authority Resolver
+→ BL5
+```
+
+unless the authority-status problem is itself material to BL1 framing/routing.
 
 ## Required state
 
-- exact proposition/question;
-- accountable BL owner;
+When this unit is activated, capture:
+
+- exact framing/routing question affected by authority status;
+- candidate accountable BL owner(s);
 - jurisdiction(s);
 - temporal anchor(s);
 - materiality reason;
 - known candidate sources if any;
-- action(s) depending on the proposition;
+- action(s) whose route/readiness may be affected;
 - required freshness or urgency.
 
 ## Core distinctions
@@ -64,16 +86,16 @@ Some propositions are controlled by one instrument. Others require coordinated r
 
 ## Decision procedure
 
-1. **Define the proposition before searching.** Do not search a whole case as one undifferentiated query.
-2. **Identify the owner.** Authority resolution supports the proposition owner; it does not replace ownership.
-3. **Bind temporal anchors.** Ask what authority status matters at the relevant event/action date(s).
-4. **Identify required authority class.** Determine whether the proposition requires binding law, treaty, judicial authority, regulator guidance, or only explanatory material.
-5. **Call Authority Resolver when material.** Use `../../schemas/authority-resolver.md`.
-6. **Separate result dimensions.** Preserve source provenance, legal force, lifecycle, temporal scope, freshness, source version/amendment context, and resolution status.
-7. **Return the result to the owner.** The owner decides `APPLICABLE_TO_CASE` or records uncertainty.
-8. **Use minimum sufficient authority set.** Stop when the proposition is adequately supported; do not collect decorative citations.
-9. **Re-resolve when necessary.** Authority changes, stale freshness, changed temporal anchors, or reclassification can invalidate an earlier authority result.
-10. **Propagate only exact dependencies.** If authority supporting one proposition becomes stale, mark that proposition/dependent actions for review rather than invalidating unrelated state.
+1. **Confirm BL1 activation is justified.** Ask whether authority status/lifecycle can change framing, route, owner, or another BL1-owned meta proposition. If not, skip this unit and let the accountable owner call Authority Resolver directly.
+2. **Define the authority-status question.** Do not search a whole case as one undifferentiated query.
+3. **Identify candidate owner(s).** Authority resolution supports proposition ownership; it does not replace it.
+4. **Bind temporal anchors.** Ask what authority status matters at the relevant event/action date(s).
+5. **Identify required authority class.** Determine whether routing depends on binding law, treaty, judicial authority, regulator guidance, or explanatory material.
+6. **Call Authority Resolver when the BL1 meta question is material.** Use `../../schemas/authority-resolver.md`.
+7. **Separate result dimensions.** Preserve source provenance, legal force, lifecycle, temporal scope, freshness, source version/amendment context, and resolution status.
+8. **Return route-relevant status to BL1 and substantive authority result to the owner.** The owner decides `APPLICABLE_TO_CASE` or records uncertainty.
+9. **Use minimum sufficient authority set.** Stop when the framing/routing question is adequately supported; do not collect decorative citations.
+10. **Re-resolve when necessary.** Authority changes, stale freshness, changed temporal anchors, or reclassification can reopen a previously settled route.
 
 ## Authority resolution states
 
@@ -86,11 +108,11 @@ The resolver may return states such as:
 - `INSUFFICIENT_AUTHORITY`
 - `TEMPORAL_SCOPE_UNRESOLVED`
 
-Do not coerce unresolved authority into a binary legal conclusion.
+Do not coerce unresolved authority into a binary route or legal conclusion.
 
 ## Source routing discipline
 
-Prefer the strongest appropriate source for the proposition, typically:
+Prefer the strongest appropriate source for the authority-status question, typically:
 
 1. competent primary/official legal authority;
 2. official regulator/judiciary/treaty material appropriate to the issue;
@@ -101,7 +123,7 @@ Use `../../references/authority-sources.md` and `../../references/source-registr
 
 ## Applicability questions for the owner
 
-After authority resolution, the owner should ask:
+After authority resolution, the substantive owner should ask:
 
 - Is the actor/activity/object within the authority's scope?
 - Does a special rule displace a general rule?
@@ -111,26 +133,26 @@ After authority resolution, the owner should ask:
 - Does another mandatory regime constrain the result?
 - Is the authority sufficient alone or only as part of a coordinated set?
 
-BL1 may surface these questions but must not answer owner-specific propositions.
+BL1 may surface these questions only when they affect framing/routing. It must not answer owner-specific propositions.
 
 ## Freshness and action-facing burden
 
-The closer a conclusion is to an irreversible or current business action, the stronger the freshness requirement.
+Freshness normally belongs inside the accountable owner's authority call. BL1 should reason about freshness only when freshness itself changes route or framing.
 
-Re-resolve when:
+Re-resolution may be route-relevant when:
 
 - an authority-change signal exists;
 - the source version may have changed;
-- the action date moved;
-- a material classification changed;
-- a transition provision becomes relevant;
-- the prior result is too stale to support readiness.
+- the action date moved across a legal transition;
+- a material classification changed the candidate regime;
+- a transition provision opens/closes a route;
+- a previously rejected route may need explicit reopening.
 
-A stale authority result cannot support `READY` merely because it was correct when first retrieved.
+A stale authority result cannot support `READY`; but BL1 does not become the readiness owner by detecting that issue.
 
 ## Conflicting authority
 
-When material sources conflict:
+When material sources conflict at the routing level:
 
 1. preserve both;
 2. compare legal force;
@@ -138,13 +160,14 @@ When material sources conflict:
 4. compare temporal status;
 5. check amendment/replacement/transition context;
 6. distinguish source text from interpretation;
-7. return `CONFLICTING_AUTHORITY` if conflict remains material.
+7. return `CONFLICTING_AUTHORITY` if conflict remains material;
+8. keep the substantive proposition with its accountable owner.
 
 Do not resolve conflict by source count or convenience.
 
 ## Evidence requirements
 
-Record enough provenance to reconstruct why the source was used:
+Record enough provenance to reconstruct why the authority affected routing:
 
 - source identity and link/reference;
 - authority type/legal force;
@@ -152,25 +175,27 @@ Record enough provenance to reconstruct why the source was used:
 - lifecycle/effective period;
 - verified time;
 - source version/amendment context when material;
-- proposition and temporal anchor supported.
+- framing/route question and temporal anchor supported.
 
 ## Cross-track handoffs
 
-A BL1 authority handoff should contain:
+A BL1 authority handoff should contain only route-relevant authority state:
 
-- proposition ID/question;
-- accountable owner;
+- proposition/question;
+- candidate accountable owner;
 - authority requirement;
 - temporal anchor(s);
 - candidate authority/source status;
 - unresolved authority issue;
-- freshness requirement;
+- freshness requirement where it affects routing;
 - affected action(s).
 
-The owner then calls/consumes Authority Resolver and records case applicability.
+The accountable owner then calls or consumes Authority Resolver as needed and records substantive case applicability.
 
 ## Failure modes
 
+- loading this unit for every action-facing legal proposition;
+- turning BL1 into an authority gateway;
 - `official website = binding law`;
 - `current law = applicable law`;
 - `one recent article = authority`;
@@ -179,9 +204,8 @@ The owner then calls/consumes Authority Resolver and records case applicability.
 - resolver deciding substantive case applicability;
 - searching after a conclusion only to confirm memory;
 - ignoring source unavailability/conflict/partial resolution;
-- using stale authority to keep an action `READY`;
 - letting BL1 become a hidden substantive owner because it found the source.
 
 ## Escalation
 
-Escalate verification when authority uncertainty can change legality, validity, ownership/control, tax liability, regulatory permission, remedy, deadline, enforcement, or readiness for a high-impact action.
+Escalate BL1 authority framing only when authority uncertainty can change routing/ownership or prevents a material action from reaching the correct substantive owner. Owner-specific legal uncertainty should escalate within the accountable BL track.
