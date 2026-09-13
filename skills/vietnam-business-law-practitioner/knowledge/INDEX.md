@@ -161,11 +161,11 @@ Start with:
 Then JIT-load only the capability needed:
 
 - `bl6-employment/relationship-classification.md` — employee/contractor/work-relationship classification, employment-law employer identity, actual-work facts versus labels, and controlled reclassification review;
-- `bl6-employment/engagement-terms-work-state.md` — employment-specific hiring/probation/onboarding terms, role/remuneration/workplace/schedule/current work state, and changes to ongoing employment terms;
+- `bl6-employment/engagement-terms-work-state.md` — employment-specific hiring/probation/onboarding terms, role/remuneration/workplace/schedule/current work state, changes to ongoing employment terms, and confidentiality duty/content/current effect during ongoing employment;
 - `bl6-employment/performance-conduct-employer-action.md` — performance versus misconduct/conduct/attendance/capability classification, evidence, investigation/management action, and lawful employer-action pathway;
-- `bl6-employment/restructuring-separation-protection.md` — restructuring/organizational change, unilateral or mutual separation, final employment state, confidentiality and post-employment business protection.
+- `bl6-employment/restructuring-separation-protection.md` — restructuring/organizational change, unilateral or mutual separation, substantive employment-action notice/process/consultation timing, final employment state, and post-employment survival/effect of confidentiality plus other business protection.
 
-Activate BL6 when a decision depends on employment relationship/employer classification, employment terms/current state, employer management action, restructuring/separation, or employment-specific post-employment protection.
+Activate BL6 when a decision depends on employment relationship/employer classification, employment terms/current state, employer management action, restructuring/separation, substantive employment-action timing, or employment-specific post-employment protection.
 
 BL6 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
@@ -173,14 +173,16 @@ Within BL6:
 
 - relationship/employer classification belongs to `relationship-classification.md`; downstream BL6/BL5 units consume committed or conditioned state rather than reconstructing it;
 - where separation relies on performance or misconduct, `performance-conduct-employer-action.md` owns that issue/action-path proposition and `restructuring-separation-protection.md` consumes it;
+- current confidentiality duty/content/effect during ongoing employment belongs to `engagement-terms-work-state.md`; post-employment survival/effect belongs to `restructuring-separation-protection.md`;
+- substantive timing required to lawfully take the employment action belongs to BL6; claim/dispute-preservation timing such as limitation, filing, challenge and procedural deadlines belongs to BL4;
 - desired employer outcome never creates a legal ground/pathway;
 - restructuring, poor performance and misconduct remain separate propositions;
 - BL5 owns tax/withholding/BHXH/contribution consequences after BL6 relationship state; tax economics alone never justify reclassification;
 - BL7 owns privacy/data/monitoring legality even when monitoring evidence is relevant to BL6 merits;
-- BL4 owns dispute posture/remedies/deadlines/procedure when an employment issue is challenged;
-- reclassification follows signal → review → commit; prior committed state remains visible during review and dependent actions may require verification.
+- reclassification follows signal → review → commit; prior state remains current during review, the competing candidate and exact dependents remain explicit, and affected actions may require verification;
+- on reclassification commit, prior classification becomes `SUPERSEDED`, new classification becomes `RESOLVED`, and only exact `DEPENDS_ON` dependents are invalidated/recomputed; `SIGNALS`/`FEEDBACK` never cause global invalidation.
 
-BL6 does **not** own corporate decision-maker authority (BL2), tax/contribution consequences (BL5), privacy/data/monitoring compliance (BL7), or dispute remedies/procedure (BL4).
+BL6 does **not** own corporate decision-maker authority (BL2), tax/contribution consequences (BL5), privacy/data/monitoring compliance (BL7), or claim/dispute remedies, preservation deadlines and procedure (BL4).
 
 Do not load all four BL6 units by default.
 
@@ -214,7 +216,7 @@ BL8 may be an accountable owner for:
 - FX/cross-border payment classification;
 - trade/customs/HS/origin/tariff propositions.
 
-BL8 may also operate only as an overlay where the underlying proposition remains owned elsewhere.
+BL8 may also operate only as a cross-border overlay when the underlying proposition remains owned elsewhere.
 
 Foreign element does not automatically mean import/export.
 
@@ -223,6 +225,7 @@ Foreign element does not automatically mean import/export.
 - BL3 receives evidence of missing signing authority → signal/late-return BL2.
 - BL5 sees payroll-style evidence contradicting contractor classification → `CONTRADICTION_SIGNAL` to BL6; do not classify employee itself.
 - BL6 finds monitoring/employee-data evidence material to an employer action → late-route BL7 for privacy/regulatory legality; BL6 retains employment merits ownership.
+- BL6 employment action becomes challenged → late-route BL4 for claim/remedy/dispute-preservation timing and procedure; BL6 retains employment merits/pathway ownership.
 - BL7 discovers foreign platform/operator facts → late-route BL8.
 - BL8 discovers domestic product approval is material → late-route BL7.
 - BL3 obligations unit establishes material non-performance/deviation → activate BL4; BL3 does not label the state breach itself.
@@ -247,6 +250,7 @@ The specialist returns candidate depth to the owner; the owner promotes/conditio
 - BL3 → BL4: obligation/performance propositions precede breach/remedy.
 - BL6 → BL5: employment classification precedes employment-tax/contribution consequences.
 - BL6 ↔ BL7: employment merits/pathway and privacy/monitoring legality have separate owners.
+- BL6 ↔ BL4: substantive employment-action timing stays BL6; claim/dispute-preservation timing and procedure stay BL4.
 - BL8 → BL3: governing-law/treaty proposition precedes cross-border contract reasoning where material.
 - BL3 ↔ BL7: agreement never replaces mandatory regulatory analysis.
 - BL8 ↔ BL7: customs/border status never proves domestic market permission.
