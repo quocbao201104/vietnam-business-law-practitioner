@@ -1,4 +1,4 @@
-# Legal Work State — Semantic Contract v0.4
+# Legal Work State — Semantic Contract v0.5
 
 This is a semantic contract, not a requirement to emit JSON or persist every field for every request.
 
@@ -9,6 +9,32 @@ Use only the depth needed for the decision, but every **material** state object 
 Maintain a monotonically increasing `state_revision`.
 
 Tracks and specialists emit owner-scoped deltas against a known revision. They do not replace the whole Legal Work State. A stale write based on an older revision must be rejected or reconciled before it can overwrite newer owner state.
+
+For every **material state mutation** that is being runtime-traced, the owner-scoped delta must expose enough revision metadata to prove whether the write was accepted safely:
+
+- `owner`;
+- `base_state_revision` — revision the owner reasoned from;
+- `affected_object_ids` — stable IDs the delta proposes to change;
+- `write_result` — `APPLIED`, `REJECTED`, or `RECONCILED`;
+- `committed_state_revision` when the delta is applied or reconciled.
+
+Semantics:
+
+```text
+APPLIED
+→ base_state_revision must equal the current committed revision
+→ committed_state_revision must advance monotonically
+
+REJECTED
+→ stale/conflicting delta does not mutate shared state
+→ no new committed revision is created by that rejected delta
+
+RECONCILED
+→ runtime explicitly reconciles the stale/conflicting delta against current state
+→ reconciliation result, not the original stale write, is what advances state_revision
+```
+
+A stale delta must never be labeled `APPLIED`. Reclassification, contradiction repair, authority writeback, and other owner mutations remain owner-scoped and revision-aware; they must not silently overwrite a newer object's state.
 
 ## Objective
 
