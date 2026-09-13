@@ -8,7 +8,7 @@ BL1 owns the **question map and route hypothesis**. It does not own substantive 
 
 - business-objective and candidate-action framing;
 - material legal question/proposition map;
-- initial route hypotheses and route-state transitions;
+- initial route hypotheses, initial route state, and route-map orchestration;
 - detection of temporal, mandatory-law, foreign-element, and specialist signals;
 - orchestration of late routing and reclassification review;
 - meta-level authority/temporal questions needed to route safely.
@@ -22,7 +22,8 @@ BL1 owns the **question map and route hypothesis**. It does not own substantive 
 - employment classification — BL6;
 - regulatory permission/compliance — BL7;
 - governing-law/treaty/foreign-investment/trade propositions — BL8;
-- final case applicability of authority owned by BL2–BL8.
+- final case applicability of authority owned by BL2–BL8;
+- route-state decisions that the runtime contract assigns to a newly activated accountable owner.
 
 ## Activate when
 
@@ -53,7 +54,9 @@ Load when legal treatment may change across formation, performance, breach, noti
 
 ### `authority-applicability.md`
 
-Load when source status, legal force, lifecycle, case applicability, freshness, conflicting authority, or minimum sufficient authority set is material.
+Load only when authority status/applicability is itself part of the BL1 framing/routing problem — for example when provenance, legal force, lifecycle, transition, conflicting authority, or source unavailability must be distinguished before the correct owner/route can be trusted.
+
+Do **not** load this unit merely because a downstream owner needs current law. For a narrow owner-specific proposition, that owner should call Authority Resolver directly.
 
 Do not load all four by default.
 
@@ -97,14 +100,16 @@ A rejected route may reopen only when new material evidence or authority change 
 6. Create route hypotheses rather than closed-world conclusions.
 7. Load only the needed BL1 capability unit(s) and downstream owner(s).
 8. Accept explicit `LATE_ROUTE_SIGNAL` or contradiction/reclassification return from downstream owners.
-9. Update the route map without silently rewriting substantive state.
+9. Update the route map without silently rewriting substantive state or overriding an activated owner's own route confirmation/rejection.
 10. Stop BL1 expansion when framing is sufficient for accountable owners to resolve the requested action(s).
 
 ## Live authority behavior
 
 Authority Resolver is a callable service available to proposition owners.
 
-BL1 should call or request live authority only when a meta-level authority/temporal fact is itself material to safe routing. Finding a source does not transfer substantive ownership to BL1.
+BL1 should call or request live authority only when a meta-level authority/temporal fact is itself material to safe framing or routing. Owner-specific current-law verification goes directly from the accountable owner to Authority Resolver and does not require `authority-applicability.md`.
+
+Finding a source does not transfer substantive ownership to BL1.
 
 ## Handoff contract
 
@@ -130,6 +135,7 @@ Do not attach an unearned substantive conclusion.
 - one-law collapse;
 - treating initial routing as a closed world;
 - BL1 promoting BL2–BL8 classifications itself;
+- BL1 acting as a mandatory authority gateway for owner-specific propositions;
 - one global relevant date;
 - current-law bias for historical/future events;
 - official source treated as automatically binding/applicable;
