@@ -1,4 +1,4 @@
-# Decision Output — Semantic Contract v0.4
+# Decision Output — Semantic Contract v0.5
 
 The final answer should solve the user's business decision without turning the synthesizer into a hidden ninth legal owner.
 
@@ -23,6 +23,8 @@ Explain material legal, tax, regulatory, procedural, evidentiary, or operational
 ### Unresolved
 
 Expose only unresolved facts, authority, classification, route, conflict, or condition capable of changing an affected action.
+
+A `TERMINAL_UNRESOLVED` composition conflict must remain visible here with the remaining external verification/input or human-review need. Do not render it as if the owners agreed.
 
 ### Next action
 
@@ -51,7 +53,7 @@ Use only when:
 - all material prerequisite propositions are positively resolved;
 - no unresolved material condition remains for that action;
 - no blocking proposition exists;
-- no unresolved composition conflict affects the action;
+- no `ACTIVE` or `TERMINAL_UNRESOLVED` composition conflict affects the action;
 - no stale/invalidated dependency remains in the action's dependency closure;
 - required authority freshness is satisfied;
 - readiness is based on the current state revision.
@@ -65,6 +67,7 @@ Use only when:
 - the action is not presently blocked by an unresolved legal question;
 - one or more explicit, objectively identifiable preconditions remain;
 - the legal effect/pathway for satisfying those conditions is sufficiently resolved;
+- no `ACTIVE` or `TERMINAL_UNRESOLVED` composition conflict affects the action;
 - the action becomes READY once those named conditions are satisfied and no new material issue appears.
 
 Do not use this state when the condition itself is legally uncertain or its applicability is unresolved; use `VERIFY_BEFORE_ACTION` instead.
@@ -73,13 +76,19 @@ Do not use this state when the condition itself is legally uncertain or its appl
 
 Use when a material fact, classification, route, authority applicability/freshness question, stale dependency, or composition conflict remains unresolved and could change whether/how the action may proceed.
 
+A `TERMINAL_UNRESOLVED` conflict may legitimately converge here when the remaining issue is explicit and requires external verification/input before acting.
+
 ### LEGAL_REVIEW_REQUIRED
 
 Use when the runtime can state the current position/options but the action is materially high-impact/irreversible or requires specialist human judgment beyond safe runtime resolution. This is an action outcome, not a generic disclaimer and not a substitute for analysis.
 
+A `TERMINAL_UNRESOLVED` conflict may legitimately converge here when the remaining conflict requires human legal judgment rather than another available runtime step.
+
 ### DO_NOT_PROCEED
 
 Use when a current supported proposition prohibits the action, or a required legal prerequisite is definitively absent and cannot be cured before the proposed action.
+
+An unresolved conflict alone does not justify this state.
 
 ## Constraints and readiness
 
@@ -117,7 +126,16 @@ It MAY NOT:
 
 When owned propositions conflict materially, create/retain a `COMPOSITION_CONFLICT` and return it to the relevant owners.
 
-Affected actions become `VERIFY_BEFORE_ACTION` or stricter according to an explicit current blocker. The synthesizer must not select the conclusion that seems more reasonable or business-friendly.
+A new conflict is `ACTIVE`. While it remains `ACTIVE`, do not present the affected action as converged if another material runtime resolution step is still available.
+
+After owner review, the conflict may become:
+
+- `RESOLVED` — the owned proposition/condition state is coherent enough to recompute readiness normally; or
+- `TERMINAL_UNRESOLVED` — no material internal resolution step remains in the current run, the remaining external fact/authority/human judgment is explicit, and affected actions have been recomputed to non-READY readiness.
+
+For `TERMINAL_UNRESOLVED`, affected actions must be `VERIFY_BEFORE_ACTION` or `LEGAL_REVIEW_REQUIRED`, unless an independent supported blocker justifies `DO_NOT_PROCEED`.
+
+The synthesizer must not select the conclusion that seems more reasonable or business-friendly, and terminalization must not be used to hide an available late-route, authority, reclassification, contradiction, stale-state, or specialist step.
 
 ## Cross-track synthesis example
 
@@ -153,7 +171,9 @@ A single source/adapter attempt with `SOURCE_UNAVAILABLE`, `SOURCE_DRIFT`, or `S
 
 ## Convergence
 
-Do not render final readiness as if the reasoning loop has converged while a material late-route signal, contradiction/reclassification review, stale dependency, unresolved composition conflict, or required authority freshness failure still affects the action.
+Do not render final readiness as if the reasoning loop has converged while a material late-route signal, contradiction/reclassification review, stale dependency, `ACTIVE` composition conflict, or required authority freshness failure still affects the action.
+
+A `TERMINAL_UNRESOLVED` conflict may be part of a converged run only when its remaining uncertainty/review need is explicit, no further material internal resolution step remains, and every affected action is already in non-READY readiness.
 
 A run may legitimately converge to `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`.
 
