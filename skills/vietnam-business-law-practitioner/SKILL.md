@@ -57,8 +57,10 @@ Read and follow:
 
 - `schemas/legal-work-state.md`
 - `schemas/runtime-composition.md`
+- `schemas/authority-resolver.md`
 - `schemas/specialist-handoff.md`
 - `schemas/decision-output.md`
+- `schemas/runtime-trace.md` when runtime path evidence is being evaluated
 - `references/search-strategy.md`
 - `references/source-status.md`
 
@@ -85,20 +87,35 @@ The ownership unit is a material legal proposition, not an entire multi-domain c
 
 A proposition may depend on propositions owned by other tracks. Do not create multiple owners for the same proposition.
 
-### 3. BL1 routing is a hypothesis, not a closed world
+### 3. Materiality has a canonical gate
+
+A fact, proposition, condition, route, authority question, or specialist issue is material only when resolving it can change at least one of:
+
+- route/owner activation;
+- legal classification;
+- proposition result/status;
+- dependency;
+- applicable authority version/lifecycle;
+- option set;
+- required evidence/procedure/deadline;
+- action readiness.
+
+Do not load extra legal depth merely because a topic is interesting.
+
+### 4. BL1 routing is a hypothesis, not a closed world
 
 BL1 creates the initial issue map and route hypothesis.
 
-Route states may be:
+Route states:
 
 - `ROUTE_CONFIRMED`
 - `ROUTE_PLAUSIBLE`
 - `ROUTE_UNRESOLVED`
 - `ROUTE_REJECTED`
 
-Any active owner may emit `LATE_ROUTE_SIGNAL` when new evidence reveals a materially relevant track that was initially missed. Late activation must be explicit and follow `knowledge/INDEX.md`.
+Any active owner may emit `LATE_ROUTE_SIGNAL` when new material evidence reveals a missed track. A rejected route may be reopened only by explicit new material evidence/authority.
 
-### 4. No silent reclassification
+### 5. No silent reclassification
 
 Use:
 
@@ -112,21 +129,21 @@ A strong candidate does not immediately replace the committed classification. Du
 
 When reclassification is committed, invalidate only exact proposition dependencies linked by `DEPENDS_ON`.
 
-### 5. Provenance is not truth status
+### 6. Provenance is not truth status
 
 A proposition may be user-asserted, documented, and disputed at the same time.
 
 Keep factual epistemic status separate from evidence provenance. A document saying X proves the document says X; it does not automatically prove X is true.
 
-### 6. Agreement is not regulatory permission
+### 7. Agreement is not regulatory permission
 
 A term can be contractually agreed yet prohibited, restricted, or conditioned by mandatory public law.
 
-### 7. Contractual allocation is not statutory liability
+### 8. Contractual allocation is not statutory liability
 
 A contract may allocate economic cost or responsibility between parties without changing who the law treats as taxpayer, withholding party, importer, employer, licensed operator, or other statutory actor.
 
-### 8. Promulgated is not necessarily effective; effective is not necessarily applicable
+### 9. Promulgated is not necessarily effective; effective is not necessarily applicable
 
 Distinguish lifecycle from case applicability.
 
@@ -145,29 +162,31 @@ Case applicability is separately decided by the accountable proposition owner.
 
 Resolve authority against proposition-specific temporal anchor(s), not merely today's date.
 
-### 9. Authority Resolver is a callable service
+### 10. Authority Resolver is a callable service
 
 Authority resolution is not a linear pipeline stage.
 
-Any proposition owner may call the resolver during reasoning. It returns provenance, legal force, lifecycle, temporal/freshness metadata, and source context. The owner decides whether that authority applies to the specific proposition.
+Any proposition owner may call the resolver during reasoning. Use `schemas/authority-resolver.md` for request/result/failure semantics.
+
+The resolver returns provenance, legal force, lifecycle, temporal/freshness metadata, and source context. The owner decides whether authority applies to the specific proposition.
 
 Re-resolve when freshness, temporal anchor, classification, or authority-change signals make an older result unsafe.
 
-### 10. Compliance requires proof
+### 11. Compliance requires proof
 
 `We comply` and `we can prove compliance` are different propositions. Preserve evidence paths for material obligations.
 
-### 11. Deviation is not automatically breach
+### 12. Deviation is not automatically breach
 
 BL3 establishes what was required and what occurred. BL4 determines whether the deviation creates breach, liability, excuse, or remedy.
 
-### 12. Specialist depth stays under an owner
+### 13. Specialist depth stays under an owner
 
 A JIT specialist may only be called under a BL owner. It returns candidate technical findings + authority + uncertainty to that owner.
 
 The specialist does not bypass ownership, update another track's proposition, or synthesize the whole case.
 
-### 13. Signals and feedback are not invalidation
+### 14. Signals, constraints, and feedback are not automatic invalidation
 
 Use typed proposition edges:
 
@@ -176,18 +195,31 @@ Use typed proposition edges:
 - `SIGNALS`
 - `FEEDBACK`
 
-Only `DEPENDS_ON` automatically propagates `STALE` / `INVALIDATED` status. Signals/feedback create review triggers.
+Only `DEPENDS_ON` automatically propagates `STALE` / `INVALIDATED` status.
 
-### 14. Readiness is per action
+A `CONSTRAINS` edge changes action readiness only when explicitly linked to that action. Signals/feedback create review triggers.
+
+### 15. Readiness is per action
 
 A matter may contain several actions with different readiness states.
 
-Example:
+Use:
 
-- sign agreement → `READY`
-- commence regulated operation → `DO_NOT_PROCEED` until approval
+- READY
+- READY_WITH_CONDITIONS
+- VERIFY_BEFORE_ACTION
+- LEGAL_REVIEW_REQUIRED
+- DO_NOT_PROCEED
 
-`READY` requires positive closure of all material prerequisites, no unresolved material condition/conflict, and sufficiently fresh authority. Absence of a known blocker is not enough.
+`READY` requires positive closure of all material prerequisites, sufficiently fresh required authority, no unresolved material condition/conflict, and no stale/invalidated dependency. Absence of a known blocker is not enough.
+
+`READY_WITH_CONDITIONS` requires explicit objectively identifiable conditions whose legal pathway is sufficiently resolved.
+
+`VERIFY_BEFORE_ACTION` is for unresolved material fact/classification/authority/route/conflict issues that could change the action.
+
+`LEGAL_REVIEW_REQUIRED` is for materially high-impact/irreversible actions or specialist human judgment beyond safe runtime resolution; it is not a substitute for analysis.
+
+`DO_NOT_PROCEED` requires a supported blocking proposition or a definitively absent prerequisite that cannot be cured before the proposed action.
 
 ## Shared Legal Work State
 
@@ -216,7 +248,7 @@ Owners emit owner-scoped deltas. They do not replace the whole shared state. Sta
 
 ## Runtime procedure — controlled reasoning loop
 
-### Step 1 — Identify the business objective and candidate actions
+### Step 1 — Identify business objective and candidate actions
 
 Determine what the user is trying to accomplish: sign, structure, hire, terminate, collect, defend, launch, invest, import, pay, exit, or otherwise act.
 
@@ -224,9 +256,7 @@ Split materially different actions when their prerequisites may differ.
 
 ### Step 2 — Establish minimum material state
 
-Capture only facts/evidence/dates capable of changing classification, applicable regime, proposition ownership, readiness, or risk.
-
-Do not force a universal legal intake questionnaire.
+Use the canonical materiality gate. Capture only facts/evidence/dates capable of changing route, classification, proposition result/dependency, authority version, option set, required procedure/evidence/deadline, or readiness.
 
 Missing information may be:
 
@@ -240,7 +270,7 @@ Ask only when the missing fact is truly blocking and cannot be resolved from ava
 
 BL1 reconstructs the business situation, identifies candidate issues and temporal/foreign/mandatory-law signals, and proposes routes.
 
-BL1 does **not** promote substantive BL2–BL8 classifications merely because it recognizes a likely regime.
+BL1 does **not** promote substantive BL2–BL8 classifications or decide governing-law applicability merely because it recognizes a likely regime.
 
 ### Step 4 — Load the smallest relevant track(s)
 
@@ -291,21 +321,27 @@ When an owner commits a reclassification:
 
 The synthesizer derives the business-facing composition from resolved propositions, explicit dependencies, conditions, and conflicts.
 
-It may not create legal propositions, decide authority applicability, resolve owner conflicts, or silently repair a missed route.
+It may not create legal propositions, decide authority applicability, resolve owner conflicts, infer blockers from unlinked constraints, or silently repair a missed route.
 
 If owners conflict materially, create `COMPOSITION_CONFLICT` and return to them.
 
 ### Step 10 — Compute per-action readiness
 
-For each material action use:
+Derive readiness only from explicit proposition/condition links to each action.
 
-- READY
-- READY_WITH_CONDITIONS
-- VERIFY_BEFORE_ACTION
-- LEGAL_REVIEW_REQUIRED
-- DO_NOT_PROCEED
+### Step 11 — Check convergence
 
-Risk severity and action readiness are separate concepts.
+The loop may stop for a requested action only when:
+
+- no pending late-route signal affects it;
+- no pending contradiction/reclassification review affects a prerequisite;
+- no stale/invalidated proposition remains in its dependency closure;
+- no unresolved composition conflict affects it;
+- authority freshness requirements are satisfied or explicitly reflected in non-READY readiness;
+- every material prerequisite has an accountable owner/current status;
+- explicit readiness has been derived.
+
+A run can converge at `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`; convergence does not mean permission.
 
 ## High-level activation contract
 
@@ -361,7 +397,7 @@ BL3 determines what parties agreed. BL7 determines whether mandatory regulation 
 
 - BL3 owns existence/content of dispute-resolution clause.
 - BL8 owns cross-border governing-law/conflict/treaty/international-enforcement overlay.
-- BL4 owns dispute posture, invocation/procedure, deadlines, and remedies under the resolved regime/forum.
+- BL4 owns dispute posture, invocation/procedure, deadlines, and remedies only after the relevant clause/regime/forum propositions are resolved or explicitly conditioned.
 
 ### BL7 ↔ BL8
 
@@ -424,12 +460,13 @@ Where material, verify:
 - contradiction/reclassification transition;
 - typed dependency invalidation;
 - composition/conflict handling;
-- per-action readiness.
+- per-action readiness;
+- convergence.
 
-A plausible answer produced through the wrong ownership/routing path is a failure.
+Use `schemas/runtime-trace.md` for observable trace evidence. A plausible answer produced through the wrong ownership/routing path is a failure.
 
 ## Architecture freeze
 
 Do not add new global primitives, tracks, or specialists because they seem useful. Add/change architecture only when a concrete runtime/composition failure shows the current contract is inadequate.
 
-Phase 4 is not freeze-ready until frozen adversarial cases preserve expected activation paths, ownership, authority dependencies, state transitions, specialist return paths, invalidation semantics, and final per-action decisions under perturbation.
+Phase 4 is not freeze-ready until frozen adversarial cases preserve expected activation paths, ownership, authority dependencies, state transitions, specialist return paths, invalidation semantics, convergence, and final per-action decisions under perturbation.
