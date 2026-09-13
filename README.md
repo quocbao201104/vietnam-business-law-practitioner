@@ -62,6 +62,18 @@ evals/                # adversarial and runtime evaluation
 scripts/              # supporting runtime/evaluation utilities
 ```
 
+## Project documents
+
+- [Contributing](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Disclaimer](DISCLAIMER.md)
+- [MIT License](LICENSE)
+
 ## Status
 
-Active development. The architecture and evaluation framework are being validated before the practitioner knowledge base is expanded further.
+Ready for early dogfooding. Core practitioner architecture, capability routing, live-law authority resolution, shared state, composition, and action-readiness behavior are in place; runtime validation continues as real usage surfaces concrete failures.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
