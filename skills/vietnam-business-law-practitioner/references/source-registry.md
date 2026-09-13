@@ -1,4 +1,4 @@
-# Authority Source Registry v0.2
+# Authority Source Registry v0.3
 
 This registry gives stable source IDs and fallback roles for runtime authority discovery. It is not a legal database and does not imply that every statement on an official site is binding law.
 
@@ -13,7 +13,8 @@ Use together with `../schemas/authority-resolver.md`, `authority-sources.md`, `s
 - Practitioner/academic/secondary sources may discover or interpret but do not silently replace primary authority when primary authority is material.
 - Record the actual URL/document identity used at runtime; registry IDs are routing aids only.
 - Portal backend IDs, `ItemID`s, UUIDs, frontend action hashes, and undocumented API routes are transport/locator details, not legal authority by themselves.
-- If an undocumented adapter changes shape, emit `SOURCE_DRIFT` and use an official fallback instead of treating the result as legally empty.
+- Machine-readable official access is an optional accelerator, not a mandatory verification path.
+- If an undocumented adapter changes shape, becomes unavailable, or appears stale, record the source-attempt condition and continue through an official fallback instead of treating the legal result as empty.
 
 ## General legal instruments
 
@@ -23,7 +24,7 @@ Role: national/competent-authority legal-document databases under `vbpl.vn` and 
 
 Use for: official text, legal-document identity/metadata, lifecycle/history, amendment/replacement/consolidation relationships, and provision structure where available.
 
-Runtime note: portal frontend/backend endpoints may be useful as adapters, but undocumented endpoint shapes or Next.js action identifiers are not stable contracts. Cross-check returned instrument identity and fail closed on source-shape drift.
+Runtime note: portal frontend/backend endpoints may be useful as accelerators, but undocumented endpoint shapes or Next.js action identifiers are not stable contracts. Research has observed a document-detail transport shaped like `https://vbpl-bientap-gateway.moj.gov.vn/api/qtdc/public/doc/{id}`. Treat the route as implementation transport, not a guaranteed developer API. Cross-check returned instrument identity, tolerate catalog/index lag, and fall back to official web/publication sources when the transport fails or drifts.
 
 Fallback: `VN-GOV-LAW`, original official attachment/publication, or competent ministry/regulator legal-document portal.
 
@@ -167,20 +168,22 @@ For a material binding-law proposition:
 
 1. secondary/web discovery may nominate candidate instruments;
 2. resolve the instrument against an appropriate official source;
-3. check lifecycle and later-change signals;
-4. when the rule is recent, disputed, high-consequence, or one official index may lag, use another appropriate official source or original official attachment as a cross-check;
-5. preserve conflicts instead of averaging sources.
+3. optionally use official machine-readable transport when it speeds metadata/relationship/structure lookup;
+4. check lifecycle and later-change signals;
+5. when the rule is recent, disputed, high-consequence, or one official index may lag, use another appropriate official source or original official attachment as a cross-check;
+6. preserve conflicts instead of averaging sources.
 
 `Official convergence` is a verification discipline, not a fixed two-source quota.
 
 ## Registry fallback rule
 
-When a registry source is unavailable:
+When a registry source or transport is unavailable, stale, or drifting:
 
-1. log `SOURCE_UNAVAILABLE` for the attempted source ID;
+1. record `SOURCE_UNAVAILABLE` or `SOURCE_DRIFT` for the attempted source/adapter as appropriate;
 2. follow the stated official fallback where possible;
 3. preserve the source actually used and its provenance/legal force;
-4. if only non-primary material remains for a material binding proposition, return partial/unresolved authority rather than silently treating the secondary source as controlling.
+4. do not treat failure of one API, portal adapter, or index as failure of the Authority Resolver if another sufficient official route resolves the proposition;
+5. if only non-primary material remains for a material binding proposition, return partial/unresolved authority rather than silently treating the secondary source as controlling.
 
 ## Maintenance
 

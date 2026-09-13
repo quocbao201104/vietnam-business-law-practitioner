@@ -1,4 +1,4 @@
-# Search Strategy v0.3
+# Search Strategy v0.4
 
 Search is a designed runtime dependency for volatile legal authority. The Authority Resolver is a **callable service**, not a fixed pipeline stage.
 
@@ -59,6 +59,31 @@ For a material binding-law assertion, however, converge on appropriate official 
 
 For recently changing, conflicting, or high-consequence rules, fan out across appropriate official sources when useful to detect a later amendment, replacement, transition rule, or source-index lag. Source count does not determine legal force.
 
+## Machine-readable official access is an accelerator, not a dependency
+
+When an official portal exposes machine-readable data and the document identity/locator is sufficiently resolved, the resolver may use it to accelerate metadata, relationship, lifecycle, or structural lookup.
+
+For VBPL, research has observed publicly reachable frontend/backend transport such as a document-detail route shaped like:
+
+`https://vbpl-bientap-gateway.moj.gov.vn/api/qtdc/public/doc/{id}`
+
+Treat such routes as implementation transports unless an official stable developer contract says otherwise.
+
+Machine-readable access must not become a hard dependency:
+
+```text
+machine-readable lookup succeeds
+→ use it when useful
+→ cross-check material identity/currentness against official authority as needed
+
+machine-readable lookup fails / lags / changes shape
+→ record the source-attempt condition
+→ continue with official webpages, original attachments, Government portal, or competent authority
+→ do not block legal resolution merely because that adapter failed
+```
+
+A machine-readable catalog or dataset may lag newly promulgated instruments. Absence from that catalog is not proof that an instrument, amendment, or relationship does not exist.
+
 ## Search sequence
 
 1. Define the exact proposition requiring verification.
@@ -66,16 +91,17 @@ For recently changing, conflicting, or high-consequence rules, fan out across ap
 3. Identify jurisdiction and likely authority/legal-force type.
 4. Discover candidate instruments broadly enough to avoid single-index blind spots.
 5. **Lock document identity** before relying on a provision: verify, as available, number, title, instrument type, issuer, promulgation date, and canonical official record/identifier.
-6. Acquire the controlling text from an appropriate official source or official fallback.
-7. Check lifecycle/currentness: effective date, amendment, partial effect, replacement, suspension, repeal, consolidation, future effect, and transition rules.
-8. For current-law questions, prefer an appropriate official current consolidated text where it actually resolves the wording needed; do not reconstruct consolidated wording when an official consolidation is available and sufficient.
-9. For historical questions, resolve the wording and authority set **as of the proposition's temporal anchor**, not by reading today's consolidated text backward.
-10. Resolve the exact provision after document identity/currentness are sufficiently controlled: Chapter/Article/Clause/Point where material.
-11. Read the controlling passage in context and preserve the provenance of both document identity and provision text.
-12. Record `verified_at`, source/version context, and freshness requirement.
-13. Return the authority result to the accountable owner.
-14. The owner decides **case applicability**; the resolver does not silently promote `CURRENT_BINDING` to `APPLICABLE_TO_CASE`.
-15. Reuse the resolved authority across tracks when the proposition, temporal anchor, document/version identity, and freshness remain valid.
+6. If useful and reachable, use official machine-readable access to accelerate metadata/relationship/structure lookup; treat the transport as optional and cross-check stable legal identity.
+7. Acquire the controlling text from an appropriate official source or official fallback.
+8. Check lifecycle/currentness: effective date, amendment, partial effect, replacement, suspension, repeal, consolidation, future effect, and transition rules. Actively look for later changes rather than stopping at the first still-existing instrument.
+9. For current-law questions, prefer an appropriate official current consolidated text where it actually resolves the wording needed; do not reconstruct consolidated wording when an official consolidation is available and sufficient.
+10. For historical questions, resolve the wording and authority set **as of the proposition's temporal anchor**, not by reading today's consolidated text backward.
+11. Resolve the exact provision after document identity/currentness are sufficiently controlled: Chapter/Article/Clause/Point where material.
+12. Read the controlling passage in context and preserve the provenance of both document identity and provision text.
+13. Record `verified_at`, source/version context, and freshness requirement.
+14. Return the authority result to the accountable owner.
+15. The owner decides **case applicability**; the resolver does not silently promote `CURRENT_BINDING` to `APPLICABLE_TO_CASE`.
+16. Reuse the resolved authority across tracks when the proposition, temporal anchor, document/version identity, and freshness remain valid.
 
 ## Document identity before provision retrieval
 
@@ -95,19 +121,30 @@ If deterministic parsing is required as a fallback, mark the structure as derive
 
 Do not use arbitrary vector chunks as legal citation identity when a provision-level locator is available or can be deterministically resolved.
 
-## Source-shape drift
+## Source-shape drift and source-attempt failure
 
-Undocumented portal endpoints, frontend Server Actions, HTML layouts, and backend payloads may change.
+Undocumented portal endpoints, frontend Server Actions, HTML layouts, and backend payloads may change. Official indexes may also lag recently promulgated material.
 
 If an adapter expects a field/shape and the source no longer matches it:
 
 ```text
 unexpected source shape
-→ SOURCE_DRIFT
-→ fail closed / use an official fallback
+→ record SOURCE_DRIFT for that source attempt
+→ do not infer an empty legal result
+→ continue through an appropriate official fallback
 ```
 
-Do **not** reinterpret a changed payload as an empty legal result, missing provision, or proof that no amendment exists.
+If a source is unreachable:
+
+```text
+source unavailable
+→ record SOURCE_UNAVAILABLE for that source attempt
+→ continue through an appropriate official fallback
+```
+
+`SOURCE_DRIFT` or `SOURCE_UNAVAILABLE` at one adapter/source attempt does **not** automatically mean the Authority Resolver failed. If another sufficient official route establishes identity, lifecycle, currentness, and the controlling provision, the final proposition-level authority result may still be `RESOLVED`.
+
+Do **not** reinterpret a changed/missing payload, stale catalog, or failed API request as proof that no amendment, replacement, provision, or instrument exists.
 
 ## Four dimensions of authority
 
