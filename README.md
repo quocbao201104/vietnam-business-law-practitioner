@@ -1,63 +1,67 @@
 # Vietnam Business Law Practitioner
 
-Research-first practitioner skill for legally grounded business and commercial decisions in Vietnam.
+A research-first Agent Skill for analyzing Vietnamese business and commercial legal questions with current authoritative law.
 
-> **Status:** architecture repair / runtime preflight. The repository is intentionally not a legal encyclopedia and does not yet contain a production-ready legal knowledge base.
+It is designed for founders, operators, and businesses that need to understand legal constraints, obligations, risks, and available options around real business decisions.
 
-## Design principle
+## What it helps with
 
-**Stable reasoning, live law.**
-
-The repository preserves durable decision methods: issue framing, legal characterization, proposition ownership, authority discipline, evidence handling, cross-domain routing, uncertainty, invalidation, and escalation. Volatile law — rates, thresholds, forms, filing mechanics, permit procedures, tariffs, deadlines, and current implementing rules — is resolved from current authoritative sources at runtime when materially relevant.
-
-## Intended scope
-
-The skill focuses on business and commercial legal decisions in Vietnam:
-
-- entity, authority, ownership, governance;
+- company authority, ownership, governance, and approvals;
 - contracts and commercial transactions;
 - breach, remedies, evidence, and disputes;
 - tax and financial legal consequences of business decisions;
-- employment and people-side business law;
-- licensing, regulatory perimeter, market conduct, and compliance;
-- investment, cross-border transactions, and trade interfaces.
+- employment and employer-side legal issues;
+- licensing, market conduct, consumer, competition, data, and regulatory compliance;
+- investment, cross-border transactions, and trade-related legal issues.
 
-Import/export and customs are specialist branches, not the identity of the skill.
+It is not intended to be a general Vietnamese-law encyclopedia or an accounting/bookkeeping assistant.
 
-## Out of scope
+## Approach
 
-This is not a general Vietnamese-law encyclopedia. Criminal law, family law, inheritance, ordinary citizen disputes, bookkeeping, and generic accounting are outside the core scope unless they materially intersect a business-law decision.
+**Stable reasoning, live law.**
 
-## Architecture
+The skill keeps durable legal reasoning methods in the repository while resolving time-sensitive legal rules from current authoritative sources when they materially affect the answer.
 
-The runtime uses eight BL tracks:
+In practice, it:
 
-1. **BL1 — Legal Issue Framing / Regime Selection**
-2. **BL2 — Entity / Authority / Ownership / Governance**
-3. **BL3 — Contracts / Commercial Transactions**
-4. **BL4 — Breach / Remedies / Evidence / Disputes**
-5. **BL5 — Tax / Financial Legal Consequences**
-6. **BL6 — Employment / People-side Business Law**
-7. **BL7 — Regulatory / Market Conduct / Business Compliance**
-8. **BL8 — Investment / Cross-border / Trade**
+1. frames the actual business decision and relevant facts;
+2. loads only the legal reasoning needed for that issue;
+3. verifies current or historically applicable authority when required;
+4. preserves uncertainty, evidence status, and cross-domain dependencies;
+5. returns a business-facing position, options, consequences, unresolved issues, and next actions.
 
-The accountable unit is a **material legal proposition**, not the whole case. A proposition has one owner and may depend on propositions owned by other tracks.
+A user or document label is not automatically accepted as the legal classification, and contractual agreement does not automatically mean regulatory permission.
 
-The runtime is a controlled reasoning loop rather than a linear pipeline: BL1 proposes initial routes; owners may call live authority or owner-bound specialists; downstream evidence may trigger late activation or reclassification review; exact dependencies are invalidated explicitly; final readiness is computed per user action.
+## Scope
 
-## Current phase
+The core practitioner areas are:
 
-The repository is being built in this order:
+- legal issue framing and applicable regimes;
+- corporate entity, authority, ownership, and governance;
+- contracts and commercial transactions;
+- breach, remedies, evidence, and disputes;
+- tax consequences;
+- employment;
+- regulatory and market conduct;
+- investment, cross-border matters, and trade.
 
-`scope freeze → source mapping → deep research → composition contract → runtime architecture → adversarial evaluation → practitioner knowledge synthesis`
+Specialist topics such as customs classification, preferential origin, transfer pricing, sector regulation, or specialist privacy analysis are loaded only when the specific matter requires that depth.
 
-The current implementation is the **Phase 4 architecture-repair preflight**. Substantive law remains intentionally thin until routing, proposition ownership, authority-as-service, state semantics, specialist return paths, invalidation, and per-action synthesis survive adversarial evaluation.
+## Repository structure
 
-Canonical architecture evals:
+```text
+skills/vietnam-business-law-practitioner/
+├── SKILL.md          # runtime instructions and core invariants
+├── knowledge/        # practitioner reasoning by legal decision area
+├── references/       # authority, source, search, and citation guidance
+├── schemas/          # shared runtime and composition contracts
+└── specialist/       # specialist depth when justified
 
-- `evals/composition/ct-v0.2.md`
-- `evals/composition/runtime-fixtures-v0.2.md`
+research/             # research provenance and synthesis
+evals/                # adversarial and runtime evaluation
+scripts/              # supporting runtime/evaluation utilities
+```
 
-## Provenance
+## Status
 
-The project is developed from multi-source research. Third-party skills, repositories, practitioner materials, academic work, and legal-tech systems may be studied as research inputs, but no single external package is treated as the architectural source of truth.
+Active development. The architecture and evaluation framework are being validated before the practitioner knowledge base is expanded further.
