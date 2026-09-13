@@ -1,4 +1,4 @@
-# Decision Output — Semantic Contract v0.5
+# Decision Output — Semantic Contract v0.6
 
 The final answer should solve the user's business decision without turning the synthesizer into a hidden ninth legal owner.
 
@@ -90,6 +90,8 @@ Use when a current supported proposition prohibits the action, or a required leg
 
 An unresolved conflict alone does not justify this state.
 
+When `DO_NOT_PROCEED` coexists with an `ACTIVE` or `TERMINAL_UNRESOLVED` conflict, the readiness basis must identify at least one **independent current supported blocker** (`blocking_proposition_id` or equivalent). The blocker must not merely restate the conflict or select one side of it.
+
 ## Constraints and readiness
 
 A `CONSTRAINS` edge limits options but does not automatically change readiness.
@@ -133,9 +135,13 @@ After owner review, the conflict may become:
 - `RESOLVED` — the owned proposition/condition state is coherent enough to recompute readiness normally; or
 - `TERMINAL_UNRESOLVED` — no material internal resolution step remains in the current run, the remaining external fact/authority/human judgment is explicit, and affected actions have been recomputed to non-READY readiness.
 
-For `TERMINAL_UNRESOLVED`, affected actions must be `VERIFY_BEFORE_ACTION` or `LEGAL_REVIEW_REQUIRED`, unless an independent supported blocker justifies `DO_NOT_PROCEED`.
+For `TERMINAL_UNRESOLVED`, affected actions must be `VERIFY_BEFORE_ACTION` or `LEGAL_REVIEW_REQUIRED`, unless an independent supported blocker justifies `DO_NOT_PROCEED`. If `DO_NOT_PROCEED` is used, expose the independent blocker identity in the readiness basis; the conflict itself cannot serve as that blocker.
 
 The synthesizer must not select the conclusion that seems more reasonable or business-friendly, and terminalization must not be used to hide an available late-route, authority, reclassification, contradiction, stale-state, or specialist step.
+
+If a terminal conflict is explicitly reopened after new material input, prior terminal readiness is no longer current merely because it existed. Recompute affected readiness from the reopened current state.
+
+If a conflict becomes `RESOLVED`, recompute readiness for every action in its current affected-action scope before final convergence.
 
 ## Cross-track synthesis example
 
@@ -174,6 +180,8 @@ A single source/adapter attempt with `SOURCE_UNAVAILABLE`, `SOURCE_DRIFT`, or `S
 Do not render final readiness as if the reasoning loop has converged while a material late-route signal, contradiction/reclassification review, stale dependency, `ACTIVE` composition conflict, or required authority freshness failure still affects the action.
 
 A `TERMINAL_UNRESOLVED` conflict may be part of a converged run only when its remaining uncertainty/review need is explicit, no further material internal resolution step remains, and every affected action is already in non-READY readiness.
+
+A resolved conflict may be part of a converged run only after every action in its affected scope has been recomputed after the resolution transition.
 
 A run may legitimately converge to `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`.
 
