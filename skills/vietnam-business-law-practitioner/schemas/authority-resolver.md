@@ -1,4 +1,4 @@
-# Authority Resolver — Service Contract v0.5
+# Authority Resolver — Service Contract v0.6
 
 This contract defines the callable authority-resolution service used by proposition owners. It does not decide substantive case applicability.
 
@@ -142,15 +142,32 @@ Record:
 - `fresh_until` or a semantic freshness requirement when determinable
 - authority-change signals, if any
 
+### Source-attempt status
+
+Each material source/adapter attempt must preserve its own `attempt_status`. Use as applicable:
+
+- `SUCCEEDED`
+- `SOURCE_UNAVAILABLE`
+- `SOURCE_DRIFT`
+- `SOURCE_LAGGING`
+
+Attempt status describes one retrieval path only. It must not overwrite or substitute for the proposition-level resolver result.
+
+Example:
+
+```text
+source_attempt[source=VN-VBPL].attempt_status = SOURCE_DRIFT
+source_attempt[source=VN-GOV-LAW].attempt_status = SUCCEEDED
+resolver.resolution_status = RESOLVED
+```
+
 ### Resolution status
 
-Use one of:
+`resolution_status` is reserved for the overall proposition-level authority result. Use one of:
 
 - `RESOLVED`
 - `PARTIALLY_RESOLVED`
 - `CONFLICTING_AUTHORITY`
-- `SOURCE_UNAVAILABLE`
-- `SOURCE_DRIFT`
 - `DOCUMENT_IDENTITY_UNRESOLVED`
 - `CURRENTNESS_UNRESOLVED`
 - `PROVISION_UNRESOLVED`
@@ -158,7 +175,7 @@ Use one of:
 - `INSUFFICIENT_AUTHORITY`
 - `TEMPORAL_SCOPE_UNRESOLVED`
 
-`SOURCE_UNAVAILABLE` and `SOURCE_DRIFT` may describe a failed source/adapter attempt in the trace. They do not force the final proposition-level resolver status to remain unresolved if an official fallback establishes a sufficient authority result. For example, a VBPL backend adapter may emit `SOURCE_DRIFT` while the final resolver result is `RESOLVED` from an official Government publication plus the controlling text.
+A failed source/adapter attempt does not force the final resolver result to remain unresolved if another sufficient official path establishes the required authority.
 
 ### Source set
 
@@ -178,7 +195,7 @@ The accountable BL proposition owner must decide case applicability and record t
 
 If the preferred official source cannot be accessed:
 
-1. record `SOURCE_UNAVAILABLE` for that source ID/attempt;
+1. record `attempt_status=SOURCE_UNAVAILABLE` for that source ID/attempt;
 2. follow the official fallback route in `../references/source-registry.md` where possible;
 3. continue resolution if another sufficient official source can establish the needed authority;
 4. if only secondary material is available, use it only as a discovery/interpretive lead and mark the proposition unresolved or conditional if primary authority is material;
@@ -188,33 +205,32 @@ If the preferred official source cannot be accessed:
 
 If an undocumented endpoint, frontend action, HTML layout, or expected payload changes shape:
 
-1. record `SOURCE_DRIFT` for that adapter/source attempt;
+1. record `attempt_status=SOURCE_DRIFT` for that adapter/source attempt;
 2. do not reinterpret the unexpected response as an empty legal result;
 3. use an official fallback route where possible;
 4. continue resolution if fallback authority is sufficient;
-5. return final `SOURCE_DRIFT`/unresolved authority only when the drift prevents the proposition from being resolved to the required level after fallback attempts;
-6. require re-resolution before a dependent material proposition can be `READY` only when the final authority result remains insufficient/stale.
+5. require re-resolution before a dependent material proposition can be `READY` only when the final authority result remains insufficient/stale.
 
 ### Source/index lag
 
 If a machine-readable catalog, portal index, or cached corpus lacks a recent instrument/change that is found on another official source:
 
-1. preserve the lag signal in provenance/trace;
+1. record `attempt_status=SOURCE_LAGGING` for that retrieval path where material;
 2. do not treat catalog absence as negative legal evidence;
 3. verify the newer instrument/change against the best available official publication/source;
 4. use the proposition-level result established by sufficient authority rather than forcing the lagging source to agree.
 
 ### Document identity unresolved
 
-If a candidate instrument cannot be reliably matched to an official record, return `DOCUMENT_IDENTITY_UNRESOLVED`. Do not retrieve a same-numbered/similarly titled provision from another document and continue silently.
+If a candidate instrument cannot be reliably matched to an official record, return `resolution_status=DOCUMENT_IDENTITY_UNRESOLVED`. Do not retrieve a same-numbered/similarly titled provision from another document and continue silently.
 
 ### Currentness unresolved
 
-If amendment, replacement, partial effect, consolidation, or temporal applicability cannot be resolved to the level needed by the proposition, return `CURRENTNESS_UNRESOLVED` or `TEMPORAL_SCOPE_UNRESOLVED` rather than assuming the discovered text is current.
+If amendment, replacement, partial effect, consolidation, or temporal applicability cannot be resolved to the level needed by the proposition, return `resolution_status=CURRENTNESS_UNRESOLVED` or `resolution_status=TEMPORAL_SCOPE_UNRESOLVED` rather than assuming the discovered text is current.
 
 ### Provision unresolved
 
-If the correct instrument/version is known but the exact controlling provision cannot be reliably located, return `PROVISION_UNRESOLVED` and identify what is missing.
+If the correct instrument/version is known but the exact controlling provision cannot be reliably located, return `resolution_status=PROVISION_UNRESOLVED` and identify what is missing.
 
 ### Conflicting authority
 
@@ -222,12 +238,12 @@ If authoritative sources conflict:
 
 1. preserve both sources;
 2. compare legal force, identity, scope, temporal status, amendment/replacement, and transition rules;
-3. return `CONFLICTING_AUTHORITY` if the conflict remains material;
+3. return `resolution_status=CONFLICTING_AUTHORITY` if the conflict remains material;
 4. the owner may not force `READY` for an affected action merely by choosing the more convenient source.
 
 ### Partial resolution
 
-If only part of a proposition is resolved, return `PARTIALLY_RESOLVED` and identify the unresolved sub-proposition or missing temporal/factual input.
+If only part of a proposition is resolved, return `resolution_status=PARTIALLY_RESOLVED` and identify the unresolved sub-proposition or missing temporal/factual input.
 
 ### Freshness failure
 
@@ -254,13 +270,16 @@ An instrumented runtime should emit:
 - `AUTHORITY_CHANGE_SIGNAL`
 - `AUTHORITY_IDENTITY_LOCK`
 - `AUTHORITY_SOURCE_DRIFT`
+- `AUTHORITY_SOURCE_UNAVAILABLE`
 
-with `proposition_id`, owner, temporal anchors, resolution status, source IDs/authority IDs, resolved document identity, provision locator, and freshness data where material.
+with `proposition_id`, owner, temporal anchors, source IDs/authority IDs, resolved document identity, provision locator, and freshness data where material.
+
+Source-attempt events carry `attempt_status`; `AUTHORITY_RESULT` carries proposition-level `resolution_status`. Do not use one field for both scopes.
 
 When one source/adapter attempt fails but fallback resolution succeeds, the trace should preserve both facts rather than collapsing them, for example:
 
 ```text
-AUTHORITY_SOURCE_DRIFT source=VN-VBPL transport=machine-readable
+AUTHORITY_SOURCE_DRIFT source=VN-VBPL attempt_status=SOURCE_DRIFT
 → official fallback
-→ AUTHORITY_RESULT status=RESOLVED
+→ AUTHORITY_RESULT resolution_status=RESOLVED
 ```
