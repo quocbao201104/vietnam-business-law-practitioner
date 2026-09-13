@@ -124,25 +124,29 @@ Start with:
 
 Then JIT-load only the capability needed:
 
-- `bl5-tax/characterization-events-roles.md` — tax characterization of resolved business events, taxpayer/payer/recipient/withholder roles, candidate tax regimes, and upstream classification dependencies;
+- `bl5-tax/characterization-events-roles.md` — map already-resolved business events to tax significance, statutory taxpayer/payer/recipient/withholder roles, candidate tax regimes, taxable-scope/non-taxable characterization, and scope exclusions integral to the regime;
 - `bl5-tax/base-method-rate-timing.md` — taxable base, computation/withholding method, current rate/band/threshold, proposition-specific tax timing, and historical/current rule differences;
 - `bl5-tax/documentation-invoice-evidence.md` — invoice/document/payment/evidence conditions for a specific tax position, including VAT-credit/deduction/deductibility support without collapsing them into accounting recognition;
-- `bl5-tax/incentives-structuring-economics.md` — incentive/exemption/preference entitlement and bounded tax-economic `FEEDBACK` to upstream owners across already lawful options.
+- `bl5-tax/incentives-structuring-economics.md` — preferential incentive/exemption/holiday/preference entitlement after taxable scope is resolved and bounded tax-economic `FEEDBACK` across already lawful prospective options.
 
-Activate BL5 when a decision depends on statutory tax characterization/role, tax computation/timing, documentary eligibility, incentive entitlement, or tax consequences that materially change the economics of an upstream business option.
+Activate BL5 when a decision depends on statutory tax characterization/role, tax computation/timing, documentary eligibility, preferential incentive entitlement, or tax consequences that materially change the economics of an upstream business option.
 
 BL5 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
-BL5 consumes upstream corporate/transaction/employment/cross-border classifications. It must not reconstruct them merely to reach a tax result.
+BL5 consumes upstream corporate/transaction/employment/cross-border events and classifications. It must not reconstruct whether those business events occurred or reclassify them merely to reach a tax result.
 
 Within BL5:
 
+- business-event occurrence is owned upstream; `characterization-events-roles.md` maps the committed event to tax significance/trigger;
+- taxable scope/non-taxable characterization and regime-integral exclusions belong to `characterization-events-roles.md`;
+- preferential exemption/holiday/incentive entitlement after taxable scope is established belongs to `incentives-structuring-economics.md`;
 - contractual tax allocation remains BL3 content; statutory taxpayer/withholder/tax treatment is BL5;
-- employee/contractor classification remains BL6; BL5 consumes the committed/conditioned classification for tax/contribution consequences;
+- employee/contractor and employment-law employer classification remain BL6; BL5 consumes committed/conditioned state for tax/withholding/contribution consequences only;
 - foreign-payment/investment/trade classification remains BL8; BL5 consumes it for tax consequences;
 - invoice validity, VAT credit, tax deductibility, and accounting recognition are separate propositions;
 - tax-document defects do not silently erase BL3 transaction/payment state;
-- tax economics that make an option unattractive normally create `FEEDBACK` to BL2/BL3/BL6/BL8, not automatic invalidation.
+- tax economics that make an option unattractive normally create `FEEDBACK` to BL2/BL3/BL6/BL8, not automatic invalidation or reclassification;
+- tax economics alone never justify changing a factual/legal classification; reopening classification requires new non-tax facts/evidence and remains owned by the upstream track.
 
 BL5 does **not** own bookkeeping/accounting entries, general financial reporting, or full financial analysis.
 
@@ -161,7 +165,7 @@ Activate for:
 - restructuring/termination;
 - confidentiality/business protection and post-employment issues.
 
-BL6 owns employment classification. BL5 applies tax/BHXH consequences only after the classification is committed or clearly conditioned.
+BL6 owns employee/contractor and employment-law employer/relationship classification. BL5 applies tax/withholding/BHXH or other contribution consequences only after that state is committed or clearly conditioned; tax economics alone cannot justify reclassification.
 
 ## BL7 — Regulatory / Market Conduct / Business Compliance
 
@@ -223,7 +227,7 @@ The specialist returns candidate depth to the owner; the owner promotes/conditio
 
 - BL2 → BL3: authority/approval propositions condition binding transaction conclusions.
 - BL3 → BL4: obligation/performance propositions precede breach/remedy.
-- BL6 → BL5: employment classification precedes employment-tax consequences.
+- BL6 → BL5: employment classification precedes employment-tax/contribution consequences.
 - BL8 → BL3: governing-law/treaty proposition precedes cross-border contract reasoning where material.
 - BL3 ↔ BL7: agreement never replaces mandatory regulatory analysis.
 - BL8 ↔ BL7: customs/border status never proves domestic market permission.
