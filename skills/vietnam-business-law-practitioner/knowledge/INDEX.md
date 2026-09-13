@@ -84,10 +84,10 @@ Start with:
 
 Then JIT-load only the capability needed:
 
-- `bl4-remedies-disputes/breach-excuse-liability.md` — breach/materiality/attribution, excuse/defense, force-majeure/hardship-type questions, and liability state after committed BL3 performance state;
-- `bl4-remedies-disputes/remedies-loss-mitigation.md` — remedy availability, termination/performance/payment relief, penalty/damages/interest, loss/causation/proof/mitigation, and remedy limits;
-- `bl4-remedies-disputes/notice-evidence-deadlines.md` — notice/cure/objection/reservation, evidence preservation, limitation/time bars/deadlines, and preservation of claims/options;
-- `bl4-remedies-disputes/dispute-posture-procedure-settlement.md` — invocation/procedure under a committed dispute-resolution clause/forum, dispute posture, urgent protection, and settlement posture.
+- `bl4-remedies-disputes/breach-excuse-liability.md` — breach/materiality/attribution, excuse/defense, force-majeure/hardship-type questions, liability state after committed BL3 performance state, and exclusion/limitation effects on whether/to what scope liability exists;
+- `bl4-remedies-disputes/remedies-loss-mitigation.md` — remedy availability, termination/performance/payment relief, penalty/damages/interest, loss/causation/proof/mitigation, and exclusion/limitation effects on remedy/recovery/quantum after liability is established;
+- `bl4-remedies-disputes/notice-evidence-deadlines.md` — notice/cure/objection/reservation, evidence preservation/mapping, limitation/time bars, trigger/clock/tolling/expiry/filing-window state, and preservation of claims/options;
+- `bl4-remedies-disputes/dispute-posture-procedure-settlement.md` — invocation under a committed dispute-resolution clause/forum, filing mechanics/procedural sequence, dispute posture, urgent protection, and settlement posture using committed timing state.
 
 Activate BL4 after BL3 has established a material obligation/performance proposition, or when remedy preservation, claim procedure, or invocation under a committed dispute-resolution clause is material.
 
@@ -95,11 +95,18 @@ BL4 sibling units are not a mandatory pipeline. Consume already committed siblin
 
 BL4 does **not** reconstruct transaction/obligation/change state (BL3), dispute-clause contractual existence/content/effect (BL3), statutory tax consequences (BL5), public-law permission/compliance/enforcement (BL7), or governing-law/treaty/international-enforcement overlay (BL8).
 
+Within BL4:
+
+- deadline/timing ownership is singular: `notice-evidence-deadlines.md` owns trigger, clock, tolling/suspension/extension, expiry/filing-window, and preservation state;
+- `dispute-posture-procedure-settlement.md` consumes that timing proposition and owns how/where/what procedural sequence to pursue;
+- evidence preservation/mapping belongs to the notice/evidence unit, while evidentiary sufficiency remains with the proposition owner;
+- exclusion/limitation ownership follows effect: liability-existence/scope → breach unit; remedy/recovery/quantum → remedies unit. If both effects matter, create two propositions.
+
 For dispute-resolution clauses:
 
 - BL3 owns clause existence/content and contract-law formation/incorporation/validity/effect as a contractual term;
 - BL8 owns cross-border governing-law/treaty/international-enforcement overlay;
-- BL4 owns invocation, dispute posture, procedure, deadlines, and remedies under the resolved/conditioned clause/forum.
+- BL4 owns invocation, dispute posture, filing mechanics/procedural sequence, and remedies under the resolved/conditioned clause/forum; timing/deadline propositions remain with `notice-evidence-deadlines.md`.
 
 For settlement:
 
