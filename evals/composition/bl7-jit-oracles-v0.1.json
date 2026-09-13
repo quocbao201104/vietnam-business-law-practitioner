@@ -1,0 +1,130 @@
+{
+  "schema_version": "0.1",
+  "candidate_sha": "2d07f0b6917fedc522532a07a789b2696bf9090a",
+  "fixtures": {
+    "BL7-JIT-01": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/regulatory-perimeter-role.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/permission-entry-ongoing-compliance.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/market-conduct-consumer-claims.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/data-privacy-digital-operations.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL7"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "proposition_id": "P-BL7-PERIM"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "SPECIALIST_CALL"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "CONTRACTUAL_ROLE_EQUALS_REGULATED_ROLE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "COARSE_ROLE_EQUALS_OPERATION_SPECIFIC_DATA_ROLE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "PLATFORM_NOUN_TRIGGERS_SPECIALIST"}
+      ]
+    },
+    "BL7-JIT-02": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/permission-entry-ongoing-compliance.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/regulatory-perimeter-role.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/market-conduct-consumer-claims.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/data-privacy-digital-operations.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL7"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "proposition_id": "P-BL7-PERM"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "RECOMPUTE", "proposition_id": "P-BL7-PERIM"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "ONGOING_EQUALS_PERMISSION_OWNER"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "PERMISSION_IMPLIES_CONDUCT_SAFE"}
+      ]
+    },
+    "BL7-JIT-02-PERTURB": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/permission-entry-ongoing-compliance.md",
+        "skills/vietnam-business-law-practitioner/schemas/specialist-handoff.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/regulatory-perimeter-role.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/market-conduct-consumer-claims.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/data-privacy-digital-operations.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL7"},
+        {"event": "MATERIALITY_DECISION", "material": true},
+        {"event": "SPECIALIST_CALL", "owner": "BL7"},
+        {"event": "SPECIALIST_RETURN", "owner": "BL7"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "proposition_id": "P-BL7-PERM"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "OWNER_ASSIGN", "owner": "SPECIALIST", "proposition_id": "P-BL7-PERM"},
+        {"event": "PROPOSITION_STATUS", "owner": "SPECIALIST", "proposition_id": "P-BL7-PERM"},
+        {"event": "SPECIALIST_CALL", "owner": "BL1"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "PERIMETER_RELOAD_REQUIRED_FOR_SPECIALIST"}
+      ]
+    },
+    "BL7-JIT-03": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/market-conduct-consumer-claims.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/regulatory-perimeter-role.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/permission-entry-ongoing-compliance.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/data-privacy-digital-operations.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL7"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "proposition_id": "P-BL7-CONDUCT"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "RECOMPUTE", "proposition_id": "P-BL7-PERM"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "PERMISSION_IMPLIES_CLAIM_ALLOWED"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "DISCLAIMER_REPLACES_PUBLIC_LAW"}
+      ]
+    },
+    "BL7-JIT-04": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/data-privacy-digital-operations.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/regulatory-perimeter-role.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/permission-entry-ongoing-compliance.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl7-regulatory/market-conduct-consumer-claims.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/performance-conduct-employer-action.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL7"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "proposition_id": "P-BL7-DATA-ROLE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "proposition_id": "P-BL7-DATA"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "OWNER_ASSIGN", "owner": "BL7", "proposition_id": "P-BL6-MERITS"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "WORKER_CONSENT_EQUALS_PRIVACY_COMPLIANCE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "USEFUL_EVIDENCE_EQUALS_LAWFUL_COLLECTION"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL7", "basis": "COARSE_PERIMETER_ROLE_EQUALS_DATA_ROLE"}
+      ]
+    }
+  }
+}
