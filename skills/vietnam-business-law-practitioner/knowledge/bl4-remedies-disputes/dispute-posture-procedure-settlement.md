@@ -128,7 +128,7 @@ BL4 owns:
 - reservation/preservation strategy;
 - procedural implications of settlement steps.
 
-If parties actually agree terms that create/change contractual obligations, BL3 `variation-waiver-settlement.md` owns the new transaction state.
+For ordinary commercial settlement terms, BL3 `variation-waiver-settlement.md` owns the new transaction state. Employment-specific ongoing terms return to BL6 engagement/terms; agreed separation/end-state returns to BL6 separation/protection. Split mixed terms into owned propositions.
 
 Then BL4 consumes that committed state for remaining claims/remedies/procedure.
 
@@ -146,7 +146,7 @@ A procedure may be legally available but commercially irrational. BL4 may explai
 6. **Assess urgent protection.** Identify whether immediate evidence/asset/status-quo preservation is material; do not promise availability without authority.
 7. **Choose posture.** Negotiate, demand, reserve rights, file, defend, seek interim relief, pause pending verification, or other action supported by state.
 8. **Protect against silent waiver/deadline loss.** Consume committed timing/preservation state; do not own/recalculate the clock unless returned to the timing owner.
-9. **Handle settlement loop correctly.** If settlement produces agreed contractual change, return it to BL3; resume BL4 only after BL3 commits the changed state.
+9. **Handle settlement loop correctly.** Return commercial changes to BL3 and employment-specific changes to the relevant BL6 unit. Resume dependent BL4 reasoning from the substantive owner's committed or conditioned update.
 10. **Commit procedural state.** Ready, conditional, verification-required, legally review-required, blocked, or unresolved as appropriate for the action.
 
 ## Dispute-state pattern
@@ -163,6 +163,16 @@ status: READY / CONDITIONAL / VERIFY / REVIEW_REQUIRED / BLOCKED / UNRESOLVED
 ```
 
 Use the canonical action-readiness states at synthesis time; these labels are local working state only.
+
+For employment claims, `clause_dependency` and the BL3 clause inputs apply only
+if a material BL3-owned clause exists. Use BL6 term/merits/change IDs for
+employment-specific content and resolve the procedural forum under the applicable
+regime. No commercial contract or arbitration clause is required merely to
+analyze a statutory employment claim.
+
+Employment settlement path: BL4 claim posture -> BL6 terms/separation update ->
+BL4 remaining claims/remedies/procedure. The commercial example below applies to
+BL3-owned changes only.
 
 ## Settlement loop
 
@@ -243,7 +253,7 @@ Consume governing-law/treaty/international-enforcement overlay when material. BL
 
 ### To BL3
 
-Return candidate settlement/amendment/waiver terms when they may change contractual state. BL3 owns formation/content/change.
+Return ordinary commercial settlement/amendment/waiver terms to BL3. Return employment-specific changes to BL6 terms/separation and consume its update before deciding remaining claim/procedural consequences.
 
 ### To BL7
 

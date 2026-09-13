@@ -93,6 +93,20 @@ proof/documentary eligibility
 
 A document may support a tax proposition without deciding bookkeeping/accounting recognition. BL5 should not turn tax-document analysis into an accounting opinion.
 
+## Contribution evidence
+
+Activate for a material compulsory-contribution evidence question after coverage
+and relevant computation state are committed or conditioned. Resolve the required
+scheme-specific registration, participant declaration, payroll/base records,
+payment evidence and correction/reconciliation pathway against live authority.
+Payroll withholding is not proof of remittance; registration is not proof of
+correct coverage or contribution base. An invoice is not a universal prerequisite.
+
+Map each record to the scheme, participant/contributor, period and proposition.
+Return contradictions about employment/pay facts to BL6; keep documentary
+sufficiency and the contribution consequence in BL5. Record missing evidence and
+whether it is curable without inventing completion or silently erasing coverage.
+
 ## Decision procedure
 
 1. **State the exact documentary proposition.** Example: `Are the conditions for tax treatment X sufficiently supported?`

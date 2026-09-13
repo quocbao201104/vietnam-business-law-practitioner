@@ -16,6 +16,10 @@ BL3 owns propositions about:
 
 BL3 does **not** own the whole legal position merely because a contract exists.
 
+Employment-specific terms and mutual separation remain BL6-owned, including
+changes agreed during a dispute. The settlement routes below concern ordinary
+commercial obligations; split mixed settlements by proposition owner.
+
 ## Does not own
 
 - entity/signatory authority, corporate approval, ownership/control — BL2;
@@ -52,7 +56,7 @@ Load a sibling capability only when its owned proposition is:
 - disputed;
 - stale;
 - contradicted by new evidence; or
-- otherwise material to the current decision under the canonical materiality gate.
+- material to reopen because new facts, authority, scope, or contradictions can change the committed result.
 
 Examples:
 

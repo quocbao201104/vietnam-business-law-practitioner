@@ -117,6 +117,14 @@ For BL8 knowledge synthesis this is `bl8-jit-oracles-v0.1.json`.
 
 Run held-out/perturbed cases after the relevant Level 2 path tests pass, then perform independent freeze review.
 
+## Audit repair scenarios
+
+`audit-repair-cases-v0.1.md` records employment handoffs, BL8-to-BL6 overlay,
+sibling reuse/review, and contribution-only cases for the 2026-09-13 repairs.
+These are not frozen runtime oracles and have no cold-start PASS status.
+`../../scripts/test_runtime_trace.py` covers the corresponding checker defects
+with synthetic software regression tests only.
+
 ## Current status
 
 The semantic architecture has passed manual trace preflight.

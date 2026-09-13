@@ -4,7 +4,7 @@
 
 Determining whether a committed BL3 obligation/performance deviation supports a breach/liability proposition, including materiality, attribution, contractual/statutory excuse, force-majeure/hardship-type issues, risk allocation, and other defenses that affect whether or to what scope liability exists.
 
-This unit starts **after BL3 has established the relevant obligation, due state, and performance state**. It does not reconstruct the contract or decide the remedy merely because breach is established.
+For a commercial claim, this unit starts **after BL3 has established the relevant obligation, due state, and performance state**. For an employment claim, consume BL6 employment merits/state instead; resolve only any still-open claim-liability consequence, without reconstructing BL6 grounds or terms. It does not reconstruct the contract or decide the remedy merely because breach is established.
 
 ## Does not own
 
@@ -18,7 +18,7 @@ This unit starts **after BL3 has established the relevant obligation, due state,
 
 ## Activate when
 
-Use when a material question depends on whether a committed BL3 deviation amounts to breach/liability or is excused/conditioned.
+Use for a material commercial breach/liability question from committed BL3 deviation, or a still-open employment claim-liability consequence from committed BL6 merits. Do not repeat the upstream merits.
 
 Typical triggers:
 
@@ -141,7 +141,7 @@ Private allocation does not displace mandatory public-law obligations owned else
 ## Decision procedure
 
 1. **State the BL4 proposition.** Example: `Does Seller's committed 10-day late-delivery state constitute a breach for which Seller is liable?`
-2. **Consume BL3 state.** Use the committed obligation, due state, performance deviation, and any committed contractual change/waiver. Do not reconstruct them.
+2. **Consume substantive owner state.** Use BL3 obligation/performance/change state for commercial claims or BL6 employment merits/state for employment claims. Do not reconstruct the upstream proposition. If the relevant liability basis is already resolved, pass it to remedies without repeating it.
 3. **Resolve breach characterization.** Determine whether the deviation violates the obligation under the applicable regime.
 4. **Resolve legal materiality where relevant.** Do not equate severity with a termination/remedy right.
 5. **Resolve attribution.** Identify whose conduct/event caused or is legally assigned the deviation where material.
@@ -157,8 +157,9 @@ A useful representation:
 
 ```text
 P-BL4-BREACH-01
-upstream_obligation: P-BL3-OBL-01
-upstream_performance: P-BL3-PERF-01
+substantive_basis: <BL3 obligation/performance or BL6 merits proposition ID>
+upstream_obligation: <P-BL3-OBL-01 for a commercial claim, if material>
+upstream_performance: <P-BL3-PERF-01 for a commercial claim, if material>
 breach_status: SUPPORTED / NOT_ESTABLISHED / DISPUTED / CONDITIONAL
 materiality_status: <if material>
 attribution: <resolved / disputed>

@@ -144,7 +144,7 @@ without a BL3-owned transaction-effect proposition under the applicable regime.
 5. **Resolve BL3 contract-law requirements.** For domestic BL3 propositions, call Authority Resolver directly when current/historical contract law is material. For cross-border matters, consume BL8's resolved/conditioned governing-law/treaty/CISG proposition first where required.
 6. **Separate formation from effectiveness/conditions.** Record unresolved condition-to-effectiveness or form issues explicitly rather than merging them into assent.
 7. **Commit formation/effectiveness state.** Use only states owned by this unit.
-8. **Hand terms/documents onward only when needed.** Load `document-stack-terms.md` only if document/term ownership is unresolved, disputed, stale, contradictory, or material to the current decision. Otherwise consume the committed term state from shared state.
+8. **Hand terms/documents onward only when needed.** Load `document-stack-terms.md` only if document/term ownership is unresolved, disputed, stale, contradictory, or material to reopen. Otherwise consume the committed term state from shared state.
 
 ## Formation-state pattern
 

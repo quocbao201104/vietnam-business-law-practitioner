@@ -1,6 +1,6 @@
 # BL4 — Breach / Remedies / Evidence / Disputes
 
-BL4 resolves what follows after BL3 has established a material obligation/performance state: breach/liability, excuse, available remedies, preservation/deadlines, and dispute posture/procedure under the resolved or explicitly conditioned regime/forum.
+BL4 resolves claim/remedy consequences from the substantive owner's committed or conditioned state (BL3 commercial obligations/performance or BL6 employment merits): breach/liability, excuse, available remedies, preservation/deadlines, and dispute posture/procedure under the resolved or explicitly conditioned regime/forum.
 
 This `core.md` is a **JIT router**, not the full BL4 handbook. Load only the capability unit needed for the material proposition.
 
@@ -130,7 +130,7 @@ BL4 sibling units are **not a mandatory pipeline**.
 
 A proposition owned by another BL4 unit may be consumed directly from shared state when it is already reliably established and is not material to reopen.
 
-Load the sibling capability only when its owned proposition is unresolved, disputed, stale, contradictory, or material to the current decision.
+Load the sibling capability only when its owned proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
 Examples:
 
@@ -188,6 +188,19 @@ Settlement terms were agreed and changed payment obligations.
 → BL4 consumes new state for remaining claim/remedy/procedure questions
 ```
 
+## Employment claim inputs and settlement return
+
+For an employment dispute, consume BL6 merits, employment terms and separation
+state. Do not require or create BL3 commercial-contract propositions to receive
+that handoff. Load breach/liability only for a still-open BL4 claim-liability
+question; consume a sufficiently resolved BL6 merits basis directly for remedy
+analysis. BL4 does not re-decide the employment ground or employment-term effect.
+
+Return agreed changes to ongoing employment terms to BL6 engagement/terms and
+mutual separation changes to BL6 separation/protection. BL4 consumes the committed
+result for claim preservation, remedies and procedure. BL3 receives ordinary
+commercial settlement changes; split mixed terms by substantive owner.
+
 ## Upstream dependency rules
 
 BL4 consumes upstream propositions rather than reconstructing them.
@@ -215,7 +228,7 @@ Do not hardcode penalty ceilings, interest rates, limitation periods, filing win
 ## Handoff rules
 
 - BL3 → BL4: committed/conditioned obligation, performance, change/waiver, and dispute-clause contractual propositions.
-- BL4 → BL3: candidate settlement/amendment/waiver terms only when they may change contractual state; BL3 owns formation/content/change.
+- BL4 → BL3: ordinary commercial settlement/amendment/waiver terms; BL3 owns formation/content/change. Employment-specific changes return to BL6.
 - BL4 → BL5: recovery/settlement/payment facts only; BL5 owns statutory tax consequences.
 - BL4 ↔ BL7: private breach/remedy does not replace regulatory legality/enforcement analysis.
 - BL8 → BL4: governing-law/treaty/international-enforcement overlay where material; BL4 owns dispute posture/procedure/remedies under the resolved or conditioned regime.

@@ -157,8 +157,18 @@ def validate_state_deltas(
 
     current_revision: int | None = None
     delta_index: dict[int, dict[str, Any]] = {}
+    proposition_owners: dict[str, str] = {}
 
     for e in events:
+        if e.get("event") in {"OWNER_ASSIGN", "PROPOSITION_OPEN", "PROPOSITION_STATUS"}:
+            proposition_id = e.get("proposition_id")
+            declared_owner = e.get("owner")
+            if isinstance(proposition_id, str) and proposition_id and isinstance(declared_owner, str) and declared_owner:
+                previous_owner = proposition_owners.get(proposition_id)
+                if previous_owner is not None and previous_owner != declared_owner:
+                    errors.append(f"proposition owner changed without a new proposition at seq {e.get('seq')}: {proposition_id}")
+                else:
+                    proposition_owners[proposition_id] = declared_owner
         if e.get("event") != "STATE_DELTA":
             continue
 
@@ -182,6 +192,14 @@ def validate_state_deltas(
         if write_result not in STATE_DELTA_RESULTS:
             errors.append(f"STATE_DELTA invalid write_result at seq {seq}: {write_result!r}")
             continue
+
+        if write_result in {"APPLIED", "RECONCILED"} and isinstance(affected, list):
+            for object_id in affected:
+                if not isinstance(object_id, str):
+                    continue
+                accountable = proposition_owners.get(object_id)
+                if accountable is not None and accountable != owner:
+                    errors.append(f"STATE_DELTA owner {owner!r} cannot mutate proposition {object_id} owned by {accountable} at seq {seq}")
 
         # The first observed material delta establishes the revision it reasoned from.
         if current_revision is None:
@@ -355,6 +373,11 @@ def validate_composition_conflicts(
             status = e.get("status")
             if isinstance(proposition_id, str) and proposition_id and isinstance(status, str):
                 latest_prop_status[proposition_id] = status
+
+        elif event in {"STALE", "INVALIDATE"}:
+            proposition_id = e.get("proposition_id")
+            if isinstance(proposition_id, str) and proposition_id:
+                latest_prop_status[proposition_id] = "STALE" if event == "STALE" else "INVALIDATED"
 
         elif event == "ACTION_READINESS":
             action_id = e.get("action_id")

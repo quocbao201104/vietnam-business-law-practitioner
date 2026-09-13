@@ -45,7 +45,7 @@ Where material, consume:
 - relevant temporal anchors;
 - current/historical employment authority.
 
-A sibling unit need not be loaded solely because its committed proposition is consumed. Reopen only when unresolved, disputed, stale, contradictory, or material to the current action.
+A sibling unit need not be loaded solely because its committed proposition is consumed. Reopen only when unresolved, disputed, stale, contradictory, or material to reopen.
 
 ## Core distinctions
 

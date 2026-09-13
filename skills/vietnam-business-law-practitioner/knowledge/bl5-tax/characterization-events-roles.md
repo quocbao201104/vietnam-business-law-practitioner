@@ -45,7 +45,7 @@ Where material, consume from shared state:
 - committed evidence that the underlying business event occurred;
 - current/historical authority where the tax characterization depends on law.
 
-A sibling BL5 or upstream unit need not be loaded merely because its committed proposition is consumed. Reopen only when the owned proposition is unresolved, disputed, stale, contradictory, or material to the current decision.
+A sibling BL5 or upstream unit need not be loaded merely because its committed proposition is consumed. Reopen only when the owned proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
 ## Core distinctions
 
@@ -121,6 +121,22 @@ Use a conditioned tax proposition or return a signal to the accountable owner.
 ### Related-party fact ≠ tax consequence
 
 Corporate/relationship facts may activate a tax rule, but BL5 must resolve the specific tax test. Do not treat a generic `related party` label as the tax conclusion.
+
+## Contribution coverage and statutory roles
+
+Activate this unit for compulsory social-insurance/contribution coverage even
+when no tax question is open. Consume BL6 employment/employer state and relevant
+work-period, remuneration, concurrent-employment, nationality/residency or other
+facts only insofar as the scheme's verified rules make them material.
+
+Identify the scheme and temporal anchor; resolve coverage, ordinary exclusions,
+participant and legally liable contributor separately under live authority.
+Employee status is an input, not automatic coverage of every scheme. Record
+`regime_kind: CONTRIBUTION`, scheme identity, coverage status, contributor roles,
+BL6 dependency and authority/applicability links. This is not a tax conclusion.
+Return covered/conditional/excluded/unresolved state to computation or evidence
+only as needed. Ordinary coverage exclusions remain here; a separately claimed
+preferential relief goes to incentives. Never reclassify employment to reduce cost.
 
 ## Decision procedure
 

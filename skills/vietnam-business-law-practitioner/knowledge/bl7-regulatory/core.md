@@ -105,7 +105,7 @@ BL7 sibling units are **not a mandatory pipeline**.
 
 A committed BL7 proposition may be consumed directly from shared state without loading its owning sibling when it is already reliable and not material to reopen.
 
-Load the sibling only when the owned proposition is unresolved, disputed, stale, contradictory, or material to the current action.
+Load the sibling only when the owned proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
 Examples:
 

@@ -141,7 +141,7 @@ BL8 classifies the investment structure/status where owned here. BL5 owns result
 ```text
 P-BL8-INV-01
 bl8_role: OWNER / OVERLAY
-substantive_owner: BL2 / BL3 / BL4 / BL5 / BL7 / null
+substantive_owner: BL2 / BL3 / BL4 / BL5 / BL6 / BL7 / null
 investor: <actor>
 target_or_project: <entity/project>
 mode: ACQUISITION / SUBSCRIPTION / CONTRIBUTION / PROJECT / TRANSFER / RESTRUCTURE / OTHER

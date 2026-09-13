@@ -131,6 +131,16 @@ If one clause has both effects, represent them as separate propositions with sep
 
 Do not assume a limitation/exclusion/penalty clause has the asserted recovery effect merely because BL3 established its text. Resolve its remedy/recovery effect under the applicable regime within this unit; liability-existence effects remain with `breach-excuse-liability.md`.
 
+## Employment remedy basis
+
+For an employment claim, accept the committed/conditioned BL6 merits proposition
+as the upstream substantive basis. A BL3 contract source or a duplicate BL4
+breach proposition is not mandatory. Record the BL6 source ID in the remedy's
+upstream basis; identify any remaining BL4 claim-liability question explicitly.
+Resolve remedy availability, scope and amount using the employment-specific
+current/historical authority. Do not apply commercial penalty/damages rules by
+analogy or reopen the BL6 ground merely because a remedy depends on it.
+
 ## Decision procedure
 
 1. **State the objective.** Preserve performance, obtain payment, exit, recover loss, reduce exposure, protect assets, or settle.
@@ -149,8 +159,8 @@ Do not assume a limitation/exclusion/penalty clause has the asserted recovery ef
 ```text
 P-BL4-REM-01
 remedy: TERMINATION / PERFORMANCE / PENALTY / DAMAGES / INTEREST / RESTITUTION / OTHER
-upstream_liability: P-BL4-LIAB-01
-contract_source: P-BL3-TERM-...
+upstream_basis: <committed BL4 liability or BL6 employment merits ID>
+term_source: <BL3 commercial term or BL6 employment term ID, if material>
 prerequisites: [...]
 notice_deadline_dependency: <if any>
 status: AVAILABLE / CONDITIONAL / UNAVAILABLE / DISPUTED / UNRESOLVED

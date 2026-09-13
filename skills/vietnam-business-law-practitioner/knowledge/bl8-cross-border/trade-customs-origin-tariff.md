@@ -170,7 +170,7 @@ HS/origin/customs specialists return candidate technical findings. BL8 must acce
 ```text
 P-BL8-HS-01
 bl8_role: OWNER / OVERLAY
-substantive_owner: BL2 / BL3 / BL4 / BL5 / BL7 / null
+substantive_owner: BL2 / BL3 / BL4 / BL5 / BL6 / BL7 / null
 product: <...>
 material_product_facts: [...]
 candidate_classification: <...>
@@ -182,7 +182,7 @@ status: RESOLVED / CONDITIONAL / VERIFY / DISPUTED / UNRESOLVED
 ```text
 P-BL8-ORIGIN-01
 bl8_role: OWNER / OVERLAY
-substantive_owner: BL2 / BL3 / BL4 / BL5 / BL7 / null
+substantive_owner: BL2 / BL3 / BL4 / BL5 / BL6 / BL7 / null
 hs_dependency: P-BL8-HS-...
 production_facts: [...]
 origin_regime_or_trade_agreement: <...>
@@ -194,7 +194,7 @@ status: RESOLVED / CONDITIONAL / VERIFY / DISPUTED / UNRESOLVED
 ```text
 P-BL8-CUSTOMS-01
 bl8_role: OWNER / OVERLAY
-substantive_owner: BL2 / BL3 / BL4 / BL5 / BL7 / null
+substantive_owner: BL2 / BL3 / BL4 / BL5 / BL6 / BL7 / null
 movement: IMPORT / EXPORT / TRANSIT / OTHER
 customs_actor_state: <...>
 hs_dependency: <...>

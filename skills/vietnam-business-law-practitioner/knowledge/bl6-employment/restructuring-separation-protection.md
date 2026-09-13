@@ -175,6 +175,16 @@ Use the narrow legally supported mechanism appropriate to the actual interest.
 
 BL6 owns whether/how the employment relationship may lawfully end, the substantive employment-action timing/process needed to take that action, and what employment state follows. BL4 owns claim/remedy/procedure and claim/dispute-preservation timing if the separation is challenged or disputed.
 
+## Settlement handoff
+
+A dispute does not transfer employment-specific terms or separation state to BL3.
+When BL4 returns agreed mutual-exit terms, this unit resolves voluntary agreement,
+employment-specific content/effect, end date, final payments and continuing
+employment obligations using current authority. Return committed/conditioned
+state to BL4 for claim releases, remaining remedies and procedural consequences.
+Ongoing employment-term changes remain with engagement/terms; separate ordinary
+commercial promises go to BL3 where material.
+
 ## Decision procedure
 
 1. **State the exact separation/protection proposition.** Example: `What lawful employment pathway supports ending Employee E's relationship, if any?`

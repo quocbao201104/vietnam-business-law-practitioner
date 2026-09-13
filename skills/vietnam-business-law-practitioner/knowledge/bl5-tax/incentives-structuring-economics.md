@@ -120,6 +120,15 @@ Optimize only among lawful, supportable options. Do not invent transactions, lab
 
 BL5 may explain legal tax cash/timing consequences. It does not own bookkeeping treatment, financial reporting, valuation, financing, or full investment-return analysis.
 
+## Contribution relief and economics
+
+Routine scheme coverage exclusions belong to characterization. Load this unit
+for contributions only when a separately claimed preferential relief requires
+entitlement analysis, or a supported contribution cost changes a comparison of
+lawful prospective options. Consume coverage, computation and evidence results;
+verify relief conditions live and preserve the distinction from tax incentives.
+Cost feedback never changes BL6 relationship/employer classification.
+
 ## Decision procedure
 
 1. **State the decision being informed.** Example: `Does supported tax treatment materially change which lawful prospective option should be considered?`

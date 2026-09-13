@@ -38,6 +38,15 @@ A stale delta must never be labeled `APPLIED`. Reclassification, contradiction r
 
 A material transition of an existing `COMPOSITION_CONFLICT` — including `ACTIVE → RESOLVED`, `ACTIVE → TERMINAL_UNRESOLVED`, explicit reopen, or material affected-action-scope change — must be committed through a revision-safe `STATE_DELTA` whose `affected_object_ids` includes that `conflict_id`. The lifecycle event must refer to the committed revision produced by that delta.
 
+### Ownership evidence for traced writes
+
+Expose the accountable proposition owner before a material mutation through
+`OWNER_ASSIGN` or an owner-bearing proposition event. Reconciliation resolves a
+revision conflict; it does not grant permission to replace another owner's
+proposition. A rejected foreign-owner proposal is permitted as an observation
+because it leaves shared state unchanged. Store authority results and shared
+conflict metadata under their own object IDs, separately from owned propositions.
+
 ## Objective
 
 What business outcome is the user trying to achieve?

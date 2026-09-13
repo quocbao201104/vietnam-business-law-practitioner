@@ -87,6 +87,21 @@ A tax event or filing period is a legal tax proposition. Accounting recognition/
 
 If base inputs, classification, authority, or timing remain unresolved, present a conditional range/scenario rather than false precision.
 
+## Contribution computation and periods
+
+Activate on committed/conditioned contribution coverage from the characterization
+unit; a tax characterization is not required for this path. Identify the scheme,
+contribution period and contributor roles. Consume BL6 remuneration components
+and work-state dates, then verify which components enter the contribution base,
+any caps/floors, employer/worker allocation, rate, commencement/suspension/end
+period and payment deadline under current/historical scheme authority.
+
+Keep contribution base and period separate from PIT taxable income and tax period.
+Record scheme, coverage dependency, contribution base/rule, allocation, period,
+amount or conditional range, and authority support. Do not store live percentages
+or formulas as timeless knowledge. Send missing registration/payment evidence to
+the documentation unit only when it changes the requested contribution position.
+
 ## Decision procedure
 
 1. **Consume tax characterization/role.** Do not recompute the upstream BL5 characterization unless contradicted.

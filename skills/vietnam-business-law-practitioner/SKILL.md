@@ -59,6 +59,11 @@ Load additional contracts only when the current task reaches the behavior they g
 
 `knowledge/INDEX.md` is the **canonical detailed route map**. When runtime knowledge beyond this root file is needed, use the index as the first detailed routing read, then load only the relevant BL core/capability unit. Do not load all BL1–BL8 by default.
 
+Consume a reliable committed proposition without reloading its owning unit.
+Read that unit again only when the result itself needs review because it is
+unresolved, disputed, stale, contradicted, or affected by new material facts,
+authority, or scope. Dependence on an unchanged result alone is not a reload trigger.
+
 ### Contract loading matrix
 
 | Trigger | Load |

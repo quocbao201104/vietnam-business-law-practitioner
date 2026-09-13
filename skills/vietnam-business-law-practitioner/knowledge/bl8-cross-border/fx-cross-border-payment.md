@@ -114,10 +114,10 @@ A foreign payment for software, services, financing, investment, or intellectual
 ```text
 P-BL8-FX-01
 bl8_role: OWNER / OVERLAY
-substantive_owner: BL2 / BL3 / BL4 / BL5 / BL7 / null
+substantive_owner: BL2 / BL3 / BL4 / BL5 / BL6 / BL7 / null
 payer: <actor>
 payee: <actor>
-underlying_dependency: <BL3/BL2/BL8 proposition>
+underlying_dependency: <BL3/BL2/BL6/BL8 proposition as appropriate>
 flow_mode: GOODS / SERVICE / LOAN / CAPITAL / ACQUISITION / DISTRIBUTION / ROYALTY / REIMBURSEMENT / OTHER
 currency: <...>
 direction: INBOUND / OUTBOUND / OTHER

@@ -109,7 +109,7 @@ Do not force every trivial obligation into a full tuple. Use it for propositions
 ## Decision procedure
 
 1. **State the obligation proposition.** Example: `Seller had to deliver specification S by date D after condition C.`
-2. **Consume the governing term proposition from shared state.** If the governing term/document stack is already committed and not material to reopen, do not load `document-stack-terms.md`. Load it only when term source/content/incorporation/precedence is unresolved, disputed, stale, contradictory, or material.
+2. **Consume the governing term proposition from shared state.** If the governing term/document stack is already committed and not material to reopen, do not load `document-stack-terms.md`. Load it only when term source/content/incorporation/precedence is unresolved, disputed, stale, contradictory, or material to reopen.
 3. **Consume formation/effectiveness state only if needed.** If formation/effectiveness is already reliably established, do not load the formation unit. Reopen it only when formation/effectiveness can materially change the obligation proposition.
 4. **Map obligation tuple.** Identify actor, performance, standard, trigger/date, condition, and proof path.
 5. **Resolve conditions/dependencies.** Separate existence of the obligation from whether it became due.

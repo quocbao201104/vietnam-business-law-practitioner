@@ -30,10 +30,14 @@ Every committed BL8 proposition must make the dual role operationally explicit:
 
 ```text
 bl8_role: OWNER | OVERLAY
-substantive_owner: BL2 | BL3 | BL4 | BL5 | BL7 | null
+substantive_owner: BL2 | BL3 | BL4 | BL5 | BL6 | BL7 | null
 ```
 
 Use `OWNER` when BL8 is the accountable owner of the proposition itself. Use `OVERLAY` when the BL8 proposition conditions another track's substantive proposition/action while that track remains the substantive owner. This marker does not transfer ownership and does not create a new primitive.
+
+For a governing-law overlay on an employment-specific term, BL6 supplies term
+content and retains employment merits. BL8 records `OVERLAY` with
+`substantive_owner: BL6` and returns the resolved/conditioned regime to BL6.
 
 ## Does not own
 
@@ -126,7 +130,7 @@ BL8 sibling units are **not a mandatory pipeline**.
 
 A committed BL8 proposition may be consumed directly from shared state without loading its owning sibling when reliable and not material to reopen.
 
-Load the sibling only when the proposition is unresolved, disputed, stale, contradictory, or material to the current action.
+Load the sibling only when the proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
 Examples:
 

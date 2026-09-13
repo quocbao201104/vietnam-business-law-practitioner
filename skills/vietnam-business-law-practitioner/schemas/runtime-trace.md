@@ -172,6 +172,24 @@ Both must identify the owning BL track. A specialist without an owner is invalid
 
 Invalidation events must identify the exact proposition/classification ID and dependency basis where applicable.
 
+### Observable proposition ownership and stale status
+
+Before a material proposition mutation, expose its accountable owner through
+`OWNER_ASSIGN` or an owner-bearing `PROPOSITION_OPEN` / `PROPOSITION_STATUS`.
+Keep that owner for the proposition ID; a different substantive proposition uses
+its own ID and explicit dependencies rather than relabeling another owner's ID.
+An accepted/reconciled delta may not change a proposition assigned to another
+owner. Rejected proposals do not mutate state. Authority results and composition
+conflicts are separate objects, not BL propositions inferred from their ID names.
+
+`STALE` and `INVALIDATE` update the effective status of the identified proposition
+just as an explicit `PROPOSITION_STATUS` does. A later `RECOMPUTE` alone does not
+prove restored support: record the resulting owner status before using it as a
+current supported blocker. An unrelated stale object does not change that blocker.
+
+The checker can compare ownership only when it is observable. Missing ownership
+history is an evidence gap, not proof that a write was authorized.
+
 ### `STATE_DELTA`
 
 Use `STATE_DELTA` for every material owner-scoped shared-state mutation that is relevant to runtime proof.

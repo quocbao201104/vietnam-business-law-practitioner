@@ -150,11 +150,19 @@ Where/how/when do we file the recognition request?
 
 BL8 may condition BL4 procedure but must not execute it.
 
+## Employment overlay inputs
+
+For an employment-specific term, consume its content and any choice-of-law term
+from BL6 rather than requiring BL3 to own it. Resolve the cross-border regime
+proposition here with `bl8_role: OVERLAY` and `substantive_owner: BL6`; return it
+to BL6 for employment merits. Route dispute procedure to BL4 only when material.
+A foreign element alone does not activate investment, FX or customs units.
+
 ## Decision procedure
 
 1. **State the cross-border regime proposition.** Example: `Which law/regime governs Contract C for formation/performance issue P?`
 2. **Classify the treaty/regime job before routing.** Private-law/CISG/conflict or recognition-enforcement remains here; investment treaty goes to the investment unit; FTA/trade treaty goes to the trade unit.
-3. **Consume BL3/BL4 state.** Contract terms/choice-of-law/dispute clause from BL3; current dispute posture from BL4 if relevant.
+3. **Consume substantive term and dispute state.** Commercial terms/choice-of-law content come from BL3; employment-specific term content comes from BL6. Consume BL4 dispute posture only if relevant.
 4. **Map connecting facts.** Parties/place of business, performance, transaction type, chosen law, forum/seat/enforcement location, and other material contacts.
 5. **Separate proposition types.** Governing law, CISG/private-law treaty applicability, dispute-clause content, recognition/enforcement regime, and procedural execution must remain distinct.
 6. **Resolve current/historical conflict/treaty authority.** Bind the result to proposition-specific temporal anchor(s).
@@ -168,10 +176,11 @@ BL8 may condition BL4 procedure but must not execute it.
 ```text
 P-BL8-LAW-01
 bl8_role: OWNER / OVERLAY
-substantive_owner: BL2 / BL3 / BL4 / BL5 / BL7 / null
+substantive_owner: BL2 / BL3 / BL4 / BL5 / BL6 / BL7 / null
 cross_border_mode: CONTRACT / DISPUTE / RECOGNITION_ENFORCEMENT / OTHER
 bl3_dependencies: [...]
 bl4_dependencies: [...]
+bl6_dependencies: <employment term/merits IDs when material>
 choice_of_law_state: <if material>
 connecting_facts: [...]
 candidate_regimes: [...]

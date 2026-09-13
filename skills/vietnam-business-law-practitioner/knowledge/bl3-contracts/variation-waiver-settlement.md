@@ -44,7 +44,7 @@ Where material, capture:
 - affected obligations/actions;
 - applicable regime/temporal anchor where material.
 
-Do not load sibling BL3 units merely because their propositions are inputs. Reopen a sibling only when its owned proposition is unresolved, disputed, stale, contradictory, or material to the current change question.
+Do not load sibling BL3 units merely because their propositions are inputs. Reopen a sibling only when its owned proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
 ## Core distinctions
 
@@ -101,7 +101,7 @@ Repeated conduct may be relevant to interpretation, performance expectations, co
 
 BL4 owns dispute/settlement posture, negotiation strategy, remedies, deadlines, procedural rights, and preservation of claims.
 
-If parties actually reach settlement terms that alter obligations, BL3 owns the resulting agreement/content/changed contractual transaction state.
+If parties reach ordinary commercial settlement terms, BL3 owns the resulting agreement/content/changed contractual transaction state. Employment-specific ongoing terms and mutual separation remain with the relevant BL6 capability, including when agreed during a dispute. Split mixed settlements rather than assigning all terms to BL3.
 
 Use:
 

@@ -89,7 +89,7 @@ Then JIT-load only the capability needed:
 - `bl4-remedies-disputes/notice-evidence-deadlines.md` — notice/cure/objection/reservation, evidence preservation/mapping, limitation/time bars, trigger/clock/tolling/expiry/filing-window state, and preservation of claims/options;
 - `bl4-remedies-disputes/dispute-posture-procedure-settlement.md` — invocation under a committed dispute-resolution clause/forum, filing mechanics/procedural sequence, dispute posture, urgent protection, and settlement posture using committed timing state.
 
-Activate BL4 after BL3 has established a material obligation/performance proposition, or when remedy preservation, claim procedure, or invocation under a committed dispute-resolution clause is material.
+Activate BL4 after the substantive owner has established the relevant merits/state (BL3 commercial obligations or BL6 employment merits), or when remedy preservation, claim procedure, or invocation under a committed dispute-resolution clause is material.
 
 BL4 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
@@ -111,8 +111,8 @@ For dispute-resolution clauses:
 For settlement:
 
 - BL4 owns settlement posture, claim/remedy preservation, and procedural consequences;
-- when parties actually agree terms that create/change contractual obligations, BL3 owns formation/content/changed transaction state;
-- BL4 then consumes the committed BL3 state for remaining claims/remedies/procedure.
+- when parties agree commercial contractual changes, BL3 owns formation/content/changed transaction state; employment-specific changes remain BL6-owned;
+- BL4 then consumes the committed BL3 or BL6 state, according to substantive ownership, for remaining claims/remedies/procedure.
 
 Do not load all four BL4 units by default.
 
@@ -152,6 +152,25 @@ Within BL5:
 BL5 does **not** own bookkeeping/accounting entries, general financial reporting, or full financial analysis.
 
 Do not load all four BL5 units by default.
+
+### BL5 compulsory contribution routing
+
+After BL6 relationship/employer state is committed or conditioned:
+
+- `bl5-tax/characterization-events-roles.md` owns scheme-specific compulsory
+  social-insurance/contribution coverage, exclusions, participant and liable
+  contributor roles. Employment status alone does not settle scheme coverage.
+- `bl5-tax/base-method-rate-timing.md` owns the contribution base, included pay
+  components, caps/floors, allocation, applicable rate and participation/payment
+  period under live authority; a taxable base is not a contribution base.
+- `bl5-tax/documentation-invoice-evidence.md` owns registration, declaration,
+  payroll, payment and coverage evidence needed for the contribution position.
+- `bl5-tax/incentives-structuring-economics.md` is needed only for a separately
+  claimed preferential relief or a comparison of lawful options, not routine
+  coverage exclusions or a contribution-only calculation.
+
+Keep scheme-specific coverage and contribution propositions separate from PIT
+and other tax propositions. Load only units needed for the unresolved question.
 
 ## BL6 — Employment / People-side Business Law
 
@@ -241,7 +260,7 @@ Every committed BL8 proposition/handoff must make dual role explicit where mater
 
 ```text
 bl8_role: OWNER | OVERLAY
-substantive_owner: BL2 | BL3 | BL4 | BL5 | BL7 | null
+substantive_owner: BL2 | BL3 | BL4 | BL5 | BL6 | BL7 | null
 ```
 
 `OVERLAY` conditions another owner's proposition/action; it never transfers that substantive proposition to BL8.
@@ -261,6 +280,23 @@ Within BL8:
 - a specialist is owner-bound candidate depth only. BL8 accepts/conditions/rejects before committing an HS/origin/customs proposition.
 
 Do not load all four BL8 units by default.
+
+## Employment claims, settlement and cross-border terms
+
+BL4 consumes committed BL6 employment merits/state for employment claims and
+remedies; BL3 commercial obligation/performance state is not a prerequisite for
+that handoff. BL4 owns claim/remedy/procedure, while BL6 retains the underlying
+employment ground, term and separation state.
+
+A settlement that changes employment terms or mutual separation goes to BL6:
+ongoing terms to `bl6-employment/engagement-terms-work-state.md`, separation/end
+state to `bl6-employment/restructuring-separation-protection.md`. BL4 consumes the
+committed change for remaining claims and procedural consequences. Ordinary
+commercial settlement terms go to BL3. Split mixed settlements by proposition.
+
+A cross-border regime overlay affecting an employment term uses BL8 `OVERLAY`
+with `substantive_owner: BL6`. BL6 supplies the employment term/choice-of-law
+content; BL8 resolves its conflict-law effect and returns it to BL6 for merits.
 
 ## Late-route examples
 

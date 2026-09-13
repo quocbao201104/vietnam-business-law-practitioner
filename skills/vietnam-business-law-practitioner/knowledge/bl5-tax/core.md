@@ -87,13 +87,33 @@ Load `incentives-structuring-economics.md` when the question depends on:
 
 Do not load all four units by default.
 
+## Compulsory social-insurance and contribution pathway
+
+BL5 also owns statutory contribution consequences of committed/conditioned BL6
+employment state. These are separate from tax treatment:
+
+- Coverage, ordinary scheme exclusions, participant and liable contributor roles:
+  `characterization-events-roles.md`.
+- Contribution base/pay components, caps/floors, employer/worker allocation,
+  rate, participation period and payment timing: `base-method-rate-timing.md`.
+- Registration/declaration/payroll/payment and coverage evidence:
+  `documentation-invoice-evidence.md`.
+- Separately claimed preferential relief or lawful-option economics only:
+  `incentives-structuring-economics.md`.
+
+For contribution-only work, use scheme coverage as the characterization input;
+no tax characterization or invoice route is required unless independently
+material. Resolve each scheme's current/historical requirements live. Do not
+infer coverage from the employee label, contribution base from taxable pay, or
+paid contributions from payroll deductions alone.
+
 ## Sibling JIT rule
 
 BL5 sibling units are **not a mandatory pipeline**.
 
 A committed BL5 proposition may be consumed directly from shared state without loading its owning sibling unit when it is already reliable and not material to reopen.
 
-Load the sibling only when the owned proposition is unresolved, disputed, stale, contradictory, or material to the current decision.
+Load the sibling only when the owned proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
 Examples:
 
