@@ -33,8 +33,8 @@ Skip or compress when the obligation and performance state are undisputed and al
 
 Where material, capture:
 
-- formation/transaction state;
-- resolved document/term propositions;
+- committed formation/effectiveness proposition from shared state when formation matters;
+- resolved governing term/document proposition from shared state;
 - actors/parties;
 - obligation source;
 - condition/dependency structure;
@@ -45,6 +45,8 @@ Where material, capture:
 - evidence provenance and disputes;
 - relevant temporal anchors;
 - upstream BL2/BL7/BL8 propositions where performance depends on them.
+
+Do not load `formation-transaction-state.md` or `document-stack-terms.md` merely because this unit consumes their propositions. Load a sibling unit only when its owned proposition is unresolved, disputed, stale, contradictory, or material to reopen.
 
 ## Core distinctions
 
@@ -107,14 +109,15 @@ Do not force every trivial obligation into a full tuple. Use it for propositions
 ## Decision procedure
 
 1. **State the obligation proposition.** Example: `Seller had to deliver specification S by date D after condition C.`
-2. **Link to governing term/document.** Consume `document-stack-terms.md`; do not reconstruct the document stack here.
-3. **Map obligation tuple.** Identify actor, performance, standard, trigger/date, condition, and proof path.
-4. **Resolve conditions/dependencies.** Separate existence of the obligation from whether it became due.
-5. **Build performance timeline.** Record actual events and evidence against the obligation.
-6. **Preserve disputed facts.** Do not choose document/user/counterparty evidence by source count alone.
-7. **Commit performance state.** Examples: not-yet-due, due, performed, partially performed, late, defective/disputed, non-performed, acceptance disputed, unresolved.
-8. **Late-route upstream issues.** If authority, regulatory permission, or cross-border regime becomes material, return to the accountable owner rather than resolving it in BL3.
-9. **Hand deviations to BL4.** BL4 receives the committed obligation/performance proposition; it does not need to reconstruct BL3 state.
+2. **Consume the governing term proposition from shared state.** If the governing term/document stack is already committed and not material to reopen, do not load `document-stack-terms.md`. Load it only when term source/content/incorporation/precedence is unresolved, disputed, stale, contradictory, or material.
+3. **Consume formation/effectiveness state only if needed.** If formation/effectiveness is already reliably established, do not load the formation unit. Reopen it only when formation/effectiveness can materially change the obligation proposition.
+4. **Map obligation tuple.** Identify actor, performance, standard, trigger/date, condition, and proof path.
+5. **Resolve conditions/dependencies.** Separate existence of the obligation from whether it became due.
+6. **Build performance timeline.** Record actual events and evidence against the obligation.
+7. **Preserve disputed facts.** Do not choose document/user/counterparty evidence by source count alone.
+8. **Commit performance state.** Examples: not-yet-due, due, performed, partially performed, late, defective/disputed, non-performed, acceptance disputed, unresolved.
+9. **Late-route upstream issues.** If authority, regulatory permission, or cross-border regime becomes material, return to the accountable owner rather than resolving it in BL3.
+10. **Hand deviations to BL4.** BL4 receives the committed obligation/performance proposition; it does not need to reconstruct BL3 state.
 
 ## Performance-state pattern
 
@@ -183,11 +186,13 @@ Do not hardcode category-specific deadlines, acceptance rules, or statutory stan
 Provide:
 
 - exact obligation proposition;
-- source term/document;
+- source term/document proposition ID;
 - due/condition state;
 - actual performance state;
 - disputed facts/evidence;
 - temporal anchors.
+
+A state such as `LATE`, `DEFECTIVE`, or `NON_PERFORMED` is still a BL3 performance proposition. When breach/remedy becomes material, emit/record the BL4 activation explicitly; BL3 must not promote the deviation into `BREACH` itself.
 
 BL4 owns breach, attribution, excuse, liability, remedy, loss, notice, and dispute posture.
 
@@ -209,6 +214,7 @@ Provide performance location/payment/goods-movement facts where they create cros
 - obligation existence collapsed into due state;
 - due state collapsed into performance;
 - late/defective/non-performance labeled breach inside BL3;
+- formation/document-stack units loaded despite reliable committed sibling propositions;
 - `PAID` invoice/receipt treated as conclusive payment fact;
 - contractual acceptance treated as regulatory approval;
 - commercial tax allocation treated as statutory liability;
