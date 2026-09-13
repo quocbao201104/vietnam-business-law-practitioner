@@ -34,7 +34,12 @@ BL4 knowledge-synthesis JIT oracle:
 - `bl4-jit-fixtures-v0.1.md` — BL4-JIT-01 through BL4-JIT-04, including the BL4-JIT-03 deadline-to-arbitration perturbation;
 - `bl4-jit-oracles-v0.1.json` — machine-checkable BL4 JIT read/event oracle bound to repaired semantic candidate `bd456e45ab50c72e7a073c91d7120979312a50e5`.
 
-The older RF oracle is **not evidence for BL1/BL2/BL3/BL4 internal knowledge-unit routing**. Each synthesis layer must be evaluated against its own candidate-bound JIT oracle.
+BL5 knowledge-synthesis JIT oracle:
+
+- `bl5-jit-fixtures-v0.1.md` — BL5-JIT-01 through BL5-JIT-04, including the BL5-JIT-01 foreign-payment-mode perturbation;
+- `bl5-jit-oracles-v0.1.json` — machine-checkable BL5 JIT read/event oracle bound to repaired semantic candidate `108d7292df27aeec9fbc265a2a224a900cf7178c`.
+
+The older RF oracle is **not evidence for BL1/BL2/BL3/BL4/BL5 internal knowledge-unit routing**. Each synthesis layer must be evaluated against its own candidate-bound JIT oracle.
 
 `ct-v0.1.md` and `vertical-slices-v0.1.md` are retained only as superseded historical markers.
 
@@ -85,6 +90,8 @@ For BL3 knowledge synthesis this is `bl3-jit-oracles-v0.1.json`.
 
 For BL4 knowledge synthesis this is `bl4-jit-oracles-v0.1.json`.
 
+For BL5 knowledge synthesis this is `bl5-jit-oracles-v0.1.json`.
+
 ### Level 3 — held-out / perturbation + independent review
 
 Run held-out/perturbed cases after the relevant Level 2 path tests pass, then perform independent freeze review.
@@ -100,5 +107,7 @@ BL2 knowledge synthesis v0.1 has an accepted decomposition with local ownership-
 BL3 knowledge synthesis v0.1 has an accepted decomposition with local formation/JIT/waiver/dispute-clause repairs and a dedicated JIT/internal-handoff oracle; runtime JIT evidence remains **NOT YET PROVEN**.
 
 BL4 knowledge synthesis v0.1 has an accepted decomposition with local deadline/liability-remedy/evidence-preservation/procedure repairs and a dedicated JIT/internal-handoff oracle; runtime JIT evidence remains **NOT YET PROVEN**.
+
+BL5 knowledge synthesis v0.1 has an accepted decomposition with local tax-event/exemption/anti-reclassification repairs and a dedicated JIT/upstream-handoff/feedback oracle; runtime JIT evidence remains **NOT YET PROVEN**.
 
 Phase 4 also remains open until the broader RF/held-out runtime evidence gate is eventually completed.
