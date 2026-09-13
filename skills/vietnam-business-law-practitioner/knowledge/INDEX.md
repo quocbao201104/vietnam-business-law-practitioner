@@ -188,20 +188,35 @@ Do not load all four BL6 units by default.
 
 ## BL7 — Regulatory / Market Conduct / Business Compliance
 
+Start with:
+
 `bl7-regulatory/core.md`
 
-Activate for:
+Then JIT-load only the capability needed:
 
-- licensing/conditional business/market entry;
-- product/service operating permission;
-- consumer protection;
-- advertising/claims;
-- e-commerce/platform role;
-- competition/market conduct;
-- privacy/data and other public-law compliance triggers;
-- domestic market permission after import/customs.
+- `bl7-regulatory/regulatory-perimeter-role.md` — regulatory perimeter, public-law regulated role, regime triggers, overlap, material route changes, and owner-controlled specialist activation;
+- `bl7-regulatory/permission-entry-ongoing-compliance.md` — prohibition, market-entry/operating permission, license/approval/registration/notification, product/service domestic market placement, permission scope/lifecycle, and ongoing/event-triggered compliance;
+- `bl7-regulatory/market-conduct-consumer-claims.md` — consumer/customer mandatory protections, advertising/claims/promotions/pricing, e-commerce selling conduct, unfair/deceptive practices, and competition/market-conduct propositions;
+- `bl7-regulatory/data-privacy-digital-operations.md` — personal-data processing, monitoring/tracking/profiling, employee/customer data, vendor/group sharing, retention/security/access, and other privacy/digital-operation propositions.
 
-Agreement/consent in BL3 never substitutes for BL7 regulatory permission.
+Activate BL7 when a decision depends on a material public-law regulatory perimeter, permission/ongoing-compliance state, market/customer conduct, privacy/data/digital operation, or sector specialist finding.
+
+BL7 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
+
+Within BL7:
+
+- `regulatory-perimeter-role.md` owns BL7 regulated-role/regime-trigger propositions; dependent siblings consume committed/conditioned perimeter state rather than silently inventing a role;
+- business registration/registered business line never substitutes for activity/product/service permission;
+- permission to operate/place a product does not establish that every claim, promotion, customer practice or competition restriction is lawful;
+- BL3 owns private contract/consent content; BL7 separately resolves mandatory public-law permission, conduct and data propositions;
+- BL8 owns border/customs/trade/foreign-investment propositions; BL7 owns domestic product/service market permission and domestic conduct after/beside those results;
+- BL6 owns employment merits/pathway; BL7 owns privacy/data/monitoring legality even when the same evidence is relevant to employment action;
+- market-conduct and privacy/data propositions may coexist for one digital practice and must not be collapsed into one generic `digital compliance` result;
+- a specialist is invoked only under BL7 ownership after a concrete material trigger; specialist findings remain candidate depth until BL7 accepts/conditions/rejects them.
+
+BL7 does **not** own private contract formation/content (BL3), private dispute remedies/procedure (BL4), tax (BL5), employment merits/classification (BL6), or foreign-investment/trade/customs/payment classification (BL8).
+
+Do not load all four BL7 units by default.
 
 ## BL8 — Investment / Cross-border / Trade
 
@@ -226,8 +241,8 @@ Foreign element does not automatically mean import/export.
 - BL5 sees payroll-style evidence contradicting contractor classification → `CONTRADICTION_SIGNAL` to BL6; do not classify employee itself.
 - BL6 finds monitoring/employee-data evidence material to an employer action → late-route BL7 for privacy/regulatory legality; BL6 retains employment merits ownership.
 - BL6 employment action becomes challenged → late-route BL4 for claim/remedy/dispute-preservation timing and procedure; BL6 retains employment merits/pathway ownership.
-- BL7 discovers foreign platform/operator facts → late-route BL8.
-- BL8 discovers domestic product approval is material → late-route BL7.
+- BL7 discovers foreign platform/operator facts → late-route BL8 for the foreign/cross-border proposition while BL7 retains domestic regulatory ownership.
+- BL8 discovers domestic product approval/market-placement state is material → late-route BL7; customs/border status does not prove domestic permission.
 - BL3 obligations unit establishes material non-performance/deviation → activate BL4; BL3 does not label the state breach itself.
 
 ## Specialist depth
@@ -240,7 +255,7 @@ Examples:
 
 - BL8 → HS classification / preferential origin specialist;
 - BL5 → transfer-pricing specialist;
-- BL7 → privacy / food / medical / sector-licensing specialist.
+- BL7 → privacy / food / medical / product-safety / competition / sector-licensing specialist.
 
 The specialist returns candidate depth to the owner; the owner promotes/conditions/rejects the result.
 
