@@ -118,19 +118,35 @@ Do not load all four BL4 units by default.
 
 ## BL5 — Tax / Financial Legal Consequences
 
+Start with:
+
 `bl5-tax/core.md`
 
-Activate for:
+Then JIT-load only the capability needed:
 
-- tax characterization;
-- taxpayer/withholder propositions;
-- VAT/CIT/PIT/withholding or other tax consequences when material;
-- documentary/timing conditions;
-- tax-aware transaction economics/structuring feedback.
+- `bl5-tax/characterization-events-roles.md` — tax characterization of resolved business events, taxpayer/payer/recipient/withholder roles, candidate tax regimes, and upstream classification dependencies;
+- `bl5-tax/base-method-rate-timing.md` — taxable base, computation/withholding method, current rate/band/threshold, proposition-specific tax timing, and historical/current rule differences;
+- `bl5-tax/documentation-invoice-evidence.md` — invoice/document/payment/evidence conditions for a specific tax position, including VAT-credit/deduction/deductibility support without collapsing them into accounting recognition;
+- `bl5-tax/incentives-structuring-economics.md` — incentive/exemption/preference entitlement and bounded tax-economic `FEEDBACK` to upstream owners across already lawful options.
 
-BL5 consumes upstream transaction/employment/ownership classifications. It may signal contradictions but must not reconstruct those classifications.
+Activate BL5 when a decision depends on statutory tax characterization/role, tax computation/timing, documentary eligibility, incentive entitlement, or tax consequences that materially change the economics of an upstream business option.
 
-Tax economics that make a structure unattractive are normally `FEEDBACK`, not automatic invalidation of BL2/BL3 state.
+BL5 sibling units are not a mandatory pipeline. Consume already committed sibling propositions from shared state without loading the sibling unit unless that proposition is unresolved, disputed, stale, contradictory, or material to reopen.
+
+BL5 consumes upstream corporate/transaction/employment/cross-border classifications. It must not reconstruct them merely to reach a tax result.
+
+Within BL5:
+
+- contractual tax allocation remains BL3 content; statutory taxpayer/withholder/tax treatment is BL5;
+- employee/contractor classification remains BL6; BL5 consumes the committed/conditioned classification for tax/contribution consequences;
+- foreign-payment/investment/trade classification remains BL8; BL5 consumes it for tax consequences;
+- invoice validity, VAT credit, tax deductibility, and accounting recognition are separate propositions;
+- tax-document defects do not silently erase BL3 transaction/payment state;
+- tax economics that make an option unattractive normally create `FEEDBACK` to BL2/BL3/BL6/BL8, not automatic invalidation.
+
+BL5 does **not** own bookkeeping/accounting entries, general financial reporting, or full financial analysis.
+
+Do not load all four BL5 units by default.
 
 ## BL6 — Employment / People-side Business Law
 
