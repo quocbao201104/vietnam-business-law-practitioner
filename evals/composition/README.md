@@ -24,7 +24,12 @@ BL2 knowledge-synthesis JIT oracle:
 - `bl2-jit-fixtures-v0.1.md` — BL2-JIT-01 through BL2-JIT-04, including the BL2-JIT-02 voting-state perturbation;
 - `bl2-jit-oracles-v0.1.json` — machine-checkable BL2 JIT read/event oracle bound to repaired semantic candidate `6dec6a6172f99a44353f1f29561ed3015202b6fc`.
 
-The older RF oracle is **not evidence for BL1/BL2 internal knowledge-unit routing**. Each synthesis layer must be evaluated against its own candidate-bound JIT oracle.
+BL3 knowledge-synthesis JIT oracle:
+
+- `bl3-jit-fixtures-v0.1.md` — BL3-JIT-01 through BL3-JIT-04, including the BL3-JIT-03 late-delivery perturbation;
+- `bl3-jit-oracles-v0.1.json` — machine-checkable BL3 JIT read/event oracle bound to repaired semantic candidate `1ce89ad5f624d541b8ebeb4673b10b0ef4ae95ba`.
+
+The older RF oracle is **not evidence for BL1/BL2/BL3 internal knowledge-unit routing**. Each synthesis layer must be evaluated against its own candidate-bound JIT oracle.
 
 `ct-v0.1.md` and `vertical-slices-v0.1.md` are retained only as superseded historical markers.
 
@@ -71,6 +76,8 @@ For BL1 knowledge synthesis this is `bl1-jit-oracles-v0.1.json`.
 
 For BL2 knowledge synthesis this is `bl2-jit-oracles-v0.1.json`.
 
+For BL3 knowledge synthesis this is `bl3-jit-oracles-v0.1.json`.
+
 ### Level 3 — held-out / perturbation + independent review
 
 Run held-out/perturbed cases after the relevant Level 2 path tests pass, then perform independent freeze review.
@@ -82,5 +89,7 @@ The semantic architecture has passed manual trace preflight.
 BL1 knowledge synthesis v0.1 has an accepted decomposition with local repairs and a dedicated JIT selectivity oracle; runtime JIT evidence remains **NOT YET PROVEN**.
 
 BL2 knowledge synthesis v0.1 has an accepted decomposition with local ownership-boundary repairs and a dedicated JIT/internal-dependency oracle; runtime JIT evidence remains **NOT YET PROVEN**.
+
+BL3 knowledge synthesis v0.1 has an accepted decomposition with local formation/JIT/waiver/dispute-clause repairs and a dedicated JIT/internal-handoff oracle; runtime JIT evidence remains **NOT YET PROVEN**.
 
 Phase 4 also remains open until the broader RF/held-out runtime evidence gate is eventually completed.
