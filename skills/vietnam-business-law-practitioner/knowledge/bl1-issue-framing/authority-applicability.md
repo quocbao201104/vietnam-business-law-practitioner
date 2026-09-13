@@ -20,9 +20,11 @@ Load this BL1 unit only when the **authority problem itself changes or may chang
 
 - source provenance versus legal force must be distinguished before selecting the correct route/owner;
 - lifecycle, amendment, suspension, replacement, transition, or temporal status makes the route unclear;
-- conflicting authority or source unavailability prevents BL1 from trusting the current route hypothesis;
+- conflicting authority or unresolved final authority support prevents BL1 from trusting the current route hypothesis;
 - several authority types/instruments must be distinguished to know which owner or regime must be activated;
 - authority freshness/status creates a meta-level routing problem rather than merely an owner-specific verification task.
+
+A single unavailable/drifting/lagging source attempt does **not** by itself activate or keep BL1 unresolved if the Authority Resolver reaches a sufficient final result through fallback.
 
 Do **not** load this unit merely because a downstream legal proposition depends on current or historical law.
 
@@ -64,6 +66,21 @@ When this unit is activated, capture:
 
 A source hosted by a government body may contain legislation, guidance, Q&A, announcement, administrative practice, or explanatory material. Identify what the source legally is.
 
+### Source-attempt status ≠ resolver outcome
+
+Individual retrieval attempts may have:
+
+- `SUCCEEDED`
+- `SOURCE_UNAVAILABLE`
+- `SOURCE_DRIFT`
+- `SOURCE_LAGGING`
+
+These are `source_attempt.attempt_status` values only.
+
+A failed/lagging adapter may coexist with a final resolver `RESOLVED` result when another sufficient official route succeeds.
+
+Do not promote an attempt-local state such as `SOURCE_UNAVAILABLE` into the proposition-level resolver outcome.
+
 ### Legal force ≠ lifecycle
 
 A binding instrument can be future-effective, historical, amended, superseded, suspended, or uncertain for the relevant period.
@@ -92,21 +109,26 @@ Some propositions are controlled by one instrument. Others require coordinated r
 4. **Bind temporal anchors.** Ask what authority status matters at the relevant event/action date(s).
 5. **Identify required authority class.** Determine whether routing depends on binding law, treaty, judicial authority, regulator guidance, or explanatory material.
 6. **Call Authority Resolver when the BL1 meta question is material.** Use `../../schemas/authority-resolver.md`.
-7. **Separate result dimensions.** Preserve source provenance, legal force, lifecycle, temporal scope, freshness, source version/amendment context, and resolution status.
+7. **Separate result dimensions.** Preserve source-attempt status separately from source provenance, legal force, lifecycle, temporal scope, freshness, source version/amendment context, and final `resolution_status`.
 8. **Return route-relevant status to BL1 and substantive authority result to the owner.** The owner decides `APPLICABLE_TO_CASE` or records uncertainty.
 9. **Use minimum sufficient authority set.** Stop when the framing/routing question is adequately supported; do not collect decorative citations.
 10. **Re-resolve when necessary.** Authority changes, stale freshness, changed temporal anchors, or reclassification can reopen a previously settled route.
 
 ## Authority resolution states
 
-The resolver may return states such as:
+The final resolver `resolution_status` uses the canonical proposition-level outcomes from `../../schemas/authority-resolver.md`:
 
 - `RESOLVED`
 - `PARTIALLY_RESOLVED`
 - `CONFLICTING_AUTHORITY`
-- `SOURCE_UNAVAILABLE`
+- `DOCUMENT_IDENTITY_UNRESOLVED`
+- `CURRENTNESS_UNRESOLVED`
+- `PROVISION_UNRESOLVED`
+- `CONSOLIDATION_UNRESOLVED`
 - `INSUFFICIENT_AUTHORITY`
 - `TEMPORAL_SCOPE_UNRESOLVED`
+
+Do not place `SOURCE_UNAVAILABLE`, `SOURCE_DRIFT`, or `SOURCE_LAGGING` in this final-result layer; those describe individual source attempts.
 
 Do not coerce unresolved authority into a binary route or legal conclusion.
 
@@ -170,6 +192,7 @@ Do not resolve conflict by source count or convenience.
 Record enough provenance to reconstruct why the authority affected routing:
 
 - source identity and link/reference;
+- source-attempt status where material;
 - authority type/legal force;
 - relevant passage;
 - lifecycle/effective period;
@@ -185,7 +208,8 @@ A BL1 authority handoff should contain only route-relevant authority state:
 - candidate accountable owner;
 - authority requirement;
 - temporal anchor(s);
-- candidate authority/source status;
+- final authority resolution status;
+- material source-attempt condition where relevant;
 - unresolved authority issue;
 - freshness requirement where it affects routing;
 - affected action(s).
@@ -203,7 +227,8 @@ The accountable owner then calls or consumes Authority Resolver as needed and re
 - secondary source silently replacing primary authority;
 - resolver deciding substantive case applicability;
 - searching after a conclusion only to confirm memory;
-- ignoring source unavailability/conflict/partial resolution;
+- treating one `SOURCE_UNAVAILABLE` / `SOURCE_DRIFT` / `SOURCE_LAGGING` attempt as the final resolver outcome;
+- ignoring final authority conflict/partial resolution;
 - letting BL1 become a hidden substantive owner because it found the source.
 
 ## Escalation
