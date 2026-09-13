@@ -1,4 +1,4 @@
-# Runtime Composition — Semantic Contract v0.4
+# Runtime Composition — Semantic Contract v0.5
 
 This contract defines how BL1–BL8, live authority, and JIT specialists compose at runtime. It is normative for routing, ownership, invalidation, convergence, and synthesis.
 
@@ -321,23 +321,49 @@ Examples:
 - BL2 owns corporate cap table and corporate control; BL8 owns foreign-investment control tests and market-access consequences.
 - BL3 owns the existence/content of a dispute-resolution clause; BL8 owns cross-border governing-law/treaty/international-enforcement overlay; BL4 owns dispute posture, invocation, deadlines, and remedies under the resolved regime/forum.
 
-## 14. Composition conflict
+## 14. Composition conflict lifecycle
 
-The synthesizer cannot choose between conflicting specialist propositions.
+The synthesizer cannot choose between materially conflicting owned propositions.
 
-If current owned propositions are materially inconsistent, create:
+If current owned propositions are materially inconsistent, create one `COMPOSITION_CONFLICT` record:
 
 ```text
 COMPOSITION_CONFLICT
 - conflict_id
-- proposition_a
-- proposition_b
+- proposition_ids
 - owners
 - reason
 - affected_actions
+- status
 ```
 
-Return the conflict to the owners. Affected actions cannot be `READY` until the conflict is resolved or safely conditioned by the accountable owner(s).
+Conflict status is one of:
+
+- `ACTIVE`
+- `RESOLVED`
+- `TERMINAL_UNRESOLVED`
+
+A new conflict starts as `ACTIVE` and is returned to the accountable owners. While `ACTIVE`, the runtime must perform any still-available material resolution step before convergence, such as owner re-review, authority resolution/re-resolution, contradiction handling, reclassification review, late routing, or an owner-bound specialist call.
+
+### Resolved conflict
+
+Set the conflict to `RESOLVED` only when the relevant owners have made the state coherent enough that the conflict no longer controls affected actions. Record the resolution basis and recompute affected readiness.
+
+### Terminal unresolved conflict
+
+`TERMINAL_UNRESOLVED` is an explicit endpoint for the current inputs; it is **not** a substantive resolution.
+
+A conflict may enter `TERMINAL_UNRESOLVED` only when:
+
+1. the relevant owners have reviewed the conflict against the current shared state;
+2. no pending late-route, contradiction, reclassification, stale/invalidated dependency, authority re-resolution, or available specialist step can still materially resolve it in the current run;
+3. the remaining uncertainty, missing external fact/authority, or required human judgment is explicit;
+4. the affected action IDs are explicit; and
+5. every affected action is recomputed to `VERIFY_BEFORE_ACTION` or `LEGAL_REVIEW_REQUIRED`, unless an independent supported blocker justifies `DO_NOT_PROCEED`.
+
+A `TERMINAL_UNRESOLVED` conflict cannot support `READY` or `READY_WITH_CONDITIONS` and does not authorize the synthesizer to choose a preferred owner conclusion.
+
+Do not terminalize a conflict merely to stop a difficult loop. If a material internal resolution step is still available, the conflict remains `ACTIVE`.
 
 ## 15. Per-action readiness semantics
 
@@ -353,25 +379,31 @@ Use:
 
 ### READY
 
-Use only when all material prerequisites are positively resolved, all required authority freshness conditions are satisfied, there is no unresolved material condition/conflict/stale dependency, and no blocking proposition applies.
+Use only when all material prerequisites are positively resolved, all required authority freshness conditions are satisfied, there is no `ACTIVE` or `TERMINAL_UNRESOLVED` composition conflict affecting the action, no unresolved material condition/stale dependency remains, and no blocking proposition applies.
 
 ### READY_WITH_CONDITIONS
 
 Use when the action may lawfully proceed after one or more explicit, objectively identifiable conditions are satisfied and the legal pathway for satisfying them is itself sufficiently resolved.
 
-Do not use this state when the condition's legal effect or applicability is still unresolved.
+Do not use this state when the condition's legal effect or applicability is still unresolved or when an `ACTIVE` / `TERMINAL_UNRESOLVED` conflict affects the action.
 
 ### VERIFY_BEFORE_ACTION
 
 Use when a material fact, classification, authority applicability/freshness question, route, or composition conflict remains unresolved and could change whether/how the action may proceed.
 
+A `TERMINAL_UNRESOLVED` conflict may converge here when the remaining issue is explicit and requires external verification/input before action.
+
 ### LEGAL_REVIEW_REQUIRED
 
 Use when the architecture can state the current position/options but the action is materially irreversible/high-impact or the unresolved issue requires specialist human judgment beyond safe runtime resolution. This is not a substitute for analysis.
 
+A `TERMINAL_UNRESOLVED` conflict may converge here when the unresolved conflict requires human legal judgment rather than another available runtime step.
+
 ### DO_NOT_PROCEED
 
 Use when a currently supported blocking proposition prohibits the action or a required legal prerequisite is definitively absent and cannot be cured before the proposed action.
+
+Unresolved conflict alone does not justify `DO_NOT_PROCEED`.
 
 The synthesizer may derive readiness only from explicit proposition/condition links to the action. It may not invent blockers or conditions.
 
@@ -382,13 +414,14 @@ The controlled loop has converged for a requested action only when all of the fo
 1. no pending `LATE_ROUTE_SIGNAL` affects that action;
 2. no pending `CONTRADICTION_SIGNAL` or `RECLASSIFICATION_REVIEW` affects a prerequisite proposition;
 3. no `STALE` / `INVALIDATED` proposition remains in that action's dependency closure;
-4. no unresolved `COMPOSITION_CONFLICT` affects the action;
-5. all authority results required for readiness satisfy their freshness requirement or are explicitly marked unresolved and reflected in readiness;
-6. every material proposition in the action's dependency closure has an accountable owner and current status;
-7. the action has an explicit readiness state derived from those prerequisites;
-8. every material authority-backed prerequisite satisfies the authority-aware convergence rule in Section 11A.
+4. no `ACTIVE` `COMPOSITION_CONFLICT` affects the action;
+5. every `TERMINAL_UNRESOLVED` conflict affecting the action records its remaining uncertainty/external input or review need and is reflected in `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or independently supported `DO_NOT_PROCEED` readiness;
+6. all authority results required for readiness satisfy their freshness requirement or are explicitly marked unresolved and reflected in readiness;
+7. every material proposition in the action's dependency closure has an accountable owner and current status;
+8. the action has an explicit readiness state derived from those prerequisites;
+9. every material authority-backed prerequisite satisfies the authority-aware convergence rule in Section 11A.
 
-A run may converge with `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`; convergence does not mean permission.
+A run may converge with `VERIFY_BEFORE_ACTION`, `LEGAL_REVIEW_REQUIRED`, or `DO_NOT_PROCEED`; convergence does not mean permission or substantive resolution of a terminal unresolved conflict.
 
 Emit `RUN_CONVERGED` only after this condition is met.
 
@@ -408,10 +441,10 @@ Path evidence should prove, where material:
 - specialist invocation and return path;
 - contradiction/reclassification transition;
 - dependency invalidation;
-- composition/conflict handling;
+- composition-conflict creation plus `RESOLVED` or `TERMINAL_UNRESOLVED` lifecycle where convergence depends on it;
 - per-action readiness;
 - convergence.
 
-A substantively plausible final answer produced through the wrong ownership/routing/authority path is an architecture failure.
+A substantively plausible final answer produced through the wrong ownership/routing/authority/conflict path is an architecture failure.
 
 Use `runtime-trace.md` for the observable event contract.
