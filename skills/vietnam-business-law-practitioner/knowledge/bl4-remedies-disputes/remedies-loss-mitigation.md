@@ -9,7 +9,7 @@ This unit owns **remedy availability and loss/recovery analysis**. It does not e
 ## Does not own
 
 - transaction formation/terms/obligations/performance — BL3;
-- breach/excuse/liability proposition — `breach-excuse-liability.md`;
+- breach/excuse/liability proposition or an exclusion/limitation clause's effect on whether liability exists — `breach-excuse-liability.md`;
 - notice/evidence-preservation/limitation workflow — `notice-evidence-deadlines.md`;
 - forum/invocation/procedure/dispute posture — `dispute-posture-procedure-settlement.md`;
 - statutory tax consequences — BL5;
@@ -28,7 +28,8 @@ Use when the user needs to know what can be done about an established or conditi
 - seek restitution/return/payment;
 - reduce loss or preserve recovery;
 - compare remedies or determine whether they can coexist;
-- quantify or evidence a recovery position.
+- quantify or evidence a recovery position;
+- determine the effect of a contractual cap/exclusion/limitation on available remedy or recoverable quantum after liability is otherwise established.
 
 Skip when remedy choice is not material to the current action or already committed in shared state.
 
@@ -104,9 +105,31 @@ Mitigation analysis should ask what reasonable steps were available and what con
 
 Even a legally available remedy may require notice, timing, cure opportunity, election, procedural step, or evidence preservation. Coordinate with `notice-evidence-deadlines.md` and dispute-procedure state where material.
 
-### Contractual limitation ≠ automatically enforceable
+### Exclusion / limitation ownership follows effect, not clause label
 
-BL3 owns the clause content. BL4 determines the remedy/liability consequence under the applicable regime. Do not assume a limitation/exclusion/penalty clause is fully effective merely because it exists.
+BL3 owns the clause content.
+
+`breach-excuse-liability.md` owns the clause's effect on **whether or to what scope liability exists**.
+
+This unit owns the clause's effect on **available remedy, recoverable amount, damages cap, or recovery limitation after liability is otherwise established**.
+
+Examples:
+
+```text
+Seller bears no liability for delay caused by event X.
+→ breach-excuse-liability.md
+```
+
+```text
+Total damages recoverable are capped at amount X.
+→ remedies-loss-mitigation.md
+```
+
+If one clause has both effects, represent them as separate propositions with separate owners. Do not let both units decide one proposition.
+
+### Contractual limitation ≠ automatically effective
+
+Do not assume a limitation/exclusion/penalty clause has the asserted recovery effect merely because BL3 established its text. Resolve its remedy/recovery effect under the applicable regime within this unit; liability-existence effects remain with `breach-excuse-liability.md`.
 
 ## Decision procedure
 
@@ -116,7 +139,7 @@ BL3 owns the clause content. BL4 determines the remedy/liability consequence und
 4. **Resolve prerequisites for each remedy.** Materiality, notice, cure, deadline, election, contractual trigger, forum, or other conditions.
 5. **Check coexistence/election issues.** Do not stack remedies automatically.
 6. **For monetary recovery, build a loss ledger.** Separate claimed item, amount, causal link, evidence, mitigation, duplication, and uncertainty.
-7. **Apply contractual/statutory limits live where material.** Do not guess ceilings, bases, or mandatory restrictions.
+7. **Apply contractual/statutory recovery limits live where material.** Resolve only remedy/quantum effects here; return liability-existence effects to `breach-excuse-liability.md`.
 8. **Assess mitigation.** Record reasonable steps taken/not taken and the legal consequence, if any.
 9. **Commit remedy status.** Available, available-with-conditions, unavailable, disputed, unresolved, or preserved-but-not-yet-exercisable.
 10. **Hand procedural execution to dispute/notice units where needed.** Remedy existence and remedy exercise are not the same proposition.
@@ -163,7 +186,7 @@ Potential evidence includes:
 - records of amounts saved/recovered/offset;
 - notices preserving or exercising remedies.
 
-Evidence strength must track the specific remedy/loss proposition.
+Evidence strength must track the specific remedy/loss proposition. `notice-evidence-deadlines.md` may preserve and map the evidence, but this unit owns whether it is sufficient to resolve the remedy/loss proposition.
 
 ## Live authority triggers
 
@@ -175,7 +198,7 @@ Use Authority Resolver where the result depends on:
 - damages categories/causation/proof;
 - interest rules;
 - mitigation consequences;
-- enforceability/effect of exclusion/limitation clauses;
+- effect of exclusion/limitation clauses on remedy/recovery/quantum;
 - historical remedy rules at the relevant event date.
 
 Do not hardcode penalty ceilings, damage formulas, default interest, limitation bases, or statutory remedy lists as stable knowledge.
@@ -186,17 +209,19 @@ Do not hardcode penalty ceilings, damage formulas, default interest, limitation 
 
 Consume the committed liability/materiality/excuse proposition. If new remedy evidence contradicts that upstream state, emit `CONTRADICTION_SIGNAL` rather than rewriting it.
 
+If an exclusion/limitation term may eliminate or narrow liability itself, return that effect to the breach/liability owner. Keep only remedy/recovery effects here.
+
 ### From BL3
 
-Consume remedy clauses, limitation/exclusion terms, payment terms, termination clauses, and changed transaction state. BL4 decides their remedy consequence.
+Consume remedy clauses, limitation/exclusion terms, payment terms, termination clauses, and changed transaction state. BL4 decides their remedy consequence according to the ownership-by-effect rule.
 
 ### To notice/evidence/deadlines
 
-Send exact remedy prerequisites requiring notice, cure, evidence preservation, election, or deadline tracking.
+Send exact remedy prerequisites requiring notice, cure, evidence preservation, election, or deadline tracking. This unit retains ownership of whether preserved evidence proves the remedy/loss proposition.
 
 ### To dispute posture/procedure
 
-Provide available/conditioned remedies and unresolved procedural prerequisites. That unit owns how/where/when the claim is pursued under the resolved forum/regime.
+Provide available/conditioned remedies and unresolved procedural prerequisites. That unit owns how/where the claim is pursued under the resolved forum/regime; deadline timing propositions remain owned by `notice-evidence-deadlines.md`.
 
 ### To BL5
 
@@ -214,7 +239,8 @@ Consume cross-border regime/enforcement constraints where they change remedy ava
 - claimed invoice amount accepted as recoverable loss;
 - causation skipped;
 - mitigation ignored or applied as hindsight punishment;
-- contractual cap/exclusion assumed enforceable from text alone;
+- liability-existence effect and recovery-cap effect of one clause collapsed into one proposition;
+- contractual cap/exclusion assumed effective from text alone;
 - penalty ceiling/base guessed from memory;
 - stacking mutually inconsistent remedies without analysis;
 - BL4 rewriting BL3 term/change state to make a remedy fit;
