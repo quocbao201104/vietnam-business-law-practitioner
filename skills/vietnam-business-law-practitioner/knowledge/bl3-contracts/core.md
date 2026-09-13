@@ -8,11 +8,11 @@ This `core.md` is a **JIT router**, not the full BL3 handbook. Load only the cap
 
 BL3 owns propositions about:
 
-- formation and transaction state;
+- formation and formation/effectiveness state;
 - governing document stack and contractual term content;
 - obligations, conditions, due state, and performance state;
 - variation, waiver, later agreement, settlement terms that change obligations, and course-of-dealing effects;
-- existence/content of dispute-resolution clauses.
+- existence/content and contract-law formation/incorporation/validity/effect of dispute-resolution clauses as contractual terms.
 
 BL3 does **not** own the whole legal position merely because a contract exists.
 
@@ -38,7 +38,36 @@ BL3 does **not** own the whole legal position merely because a contract exists.
 - contractual allocation ≠ statutory liability;
 - amendment ≠ waiver;
 - course of dealing ≠ automatic contract rewrite;
-- dispute-clause content ≠ governing-law/treaty overlay ≠ dispute procedure/enforcement.
+- dispute-clause contractual existence/effect ≠ governing-law/treaty overlay ≠ invocation/procedure/enforcement.
+
+## JIT sibling-dependency rule
+
+BL3 capability units are **not a mandatory pipeline**.
+
+A sibling-owned proposition may be consumed from shared state without loading that sibling knowledge unit when the proposition is already reliably established and is not material to reopen.
+
+Load a sibling capability only when its owned proposition is:
+
+- unresolved;
+- disputed;
+- stale;
+- contradicted by new evidence; or
+- otherwise material to the current decision under the canonical materiality gate.
+
+Examples:
+
+```text
+Executed single contract; payment term undisputed; delivery date undisputed.
+Question: was payment due/performed?
+→ obligations-conditions-performance only
+```
+
+```text
+Executed MSA + Order Form; formation undisputed; document precedence disputed.
+→ document-stack-terms only
+```
+
+Do not load formation or document-stack merely to restate propositions already committed in shared state.
 
 ## JIT capability routing
 
@@ -50,7 +79,7 @@ Load `formation-transaction-state.md` when the question depends on:
 - draft/offer/order/acceptance sequence;
 - formation versus effectiveness/conditions;
 - contract-law form/electronic assent issues;
-- current transaction state.
+- formation/effectiveness state.
 
 ### Document stack / terms / interpretation
 
@@ -60,7 +89,7 @@ Load `document-stack-terms.md` when the question depends on:
 - incorporation/precedence;
 - negotiated versus standard/external terms;
 - interpretation of a material clause;
-- existence/content of a dispute-resolution clause.
+- existence/content or contract-law formation/incorporation/effect of a dispute-resolution clause.
 
 ### Obligations / conditions / performance
 
@@ -76,7 +105,7 @@ Load `obligations-conditions-performance.md` when the question depends on:
 Load `variation-waiver-settlement.md` when the question depends on:
 
 - amendment/later agreement;
-- waiver/accommodation;
+- waiver/accommodation affecting contractual term/obligation/state;
 - course of dealing/conduct;
 - settlement terms that change transaction/obligation state.
 
@@ -116,6 +145,8 @@ BL3 consumes upstream propositions rather than reconstructing them.
 - BL8 resolves governing-law/treaty/CISG and other cross-border propositions where material.
 - BL7 resolves public-law permission/compliance.
 
+For a domestic BL3 proposition, BL3 remains the substantive owner and resolves the applicable contract-law authority for that proposition using Authority Resolver where required. BL1 may route a candidate regime but does not decide substantive contract-law applicability for BL3.
+
 If an upstream proposition is unresolved, BL3 keeps dependent transaction propositions conditional or emits the appropriate signal. It does not silently solve the upstream issue.
 
 ## Live authority behavior
@@ -127,6 +158,7 @@ Stable BL3 knowledge defines the distinctions and proof path. Use Authority Reso
 - electronic transaction/signature issues;
 - mandatory contract rules affecting obligations/performance;
 - variation/waiver/settlement effect;
+- contract-law validity/effect of a dispute-resolution clause as a contractual term;
 - historical contract law at the relevant event date.
 
 Do not hardcode article numbers, category-specific formalities, statutory deadlines, or current mandatory terms.
@@ -134,11 +166,31 @@ Do not hardcode article numbers, category-specific formalities, statutory deadli
 ## Handoff rules
 
 - BL2 → BL3: committed/conditioned authority/approval/entity propositions; BL3 decides transaction effect within its ownership.
-- BL3 → BL4: committed obligation/performance and dispute-clause-content propositions; BL4 owns breach/remedy/procedure.
+- BL3 → BL4: committed obligation/performance and dispute-clause contractual propositions; BL4 owns breach/remedy/invocation/procedure.
 - BL3 → BL5: commercial payment/tax/cost allocation facts only; BL5 owns statutory tax treatment.
 - BL3 ↔ BL7: contract/consent/allocation does not replace regulatory permission/compliance.
-- BL8 → BL3: resolved/conditioned governing-law/treaty/CISG proposition where material; BL3 applies it to contract formation/content.
+- BL8 → BL3: resolved/conditioned governing-law/treaty/CISG proposition where a cross-border overlay is material; BL3 applies it to contract formation/content.
 - BL3 → BL8: exact governing-law/dispute/payment/trade clause content and cross-border facts; BL8 owns overlay consequences.
+
+### Waiver boundary with BL4
+
+BL3 owns whether agreement or conduct changed, waived, supplemented, or conditioned a **contractual term, obligation, or transaction state**.
+
+BL4 owns the consequence of that committed BL3 waiver/change for:
+
+- breach or excuse;
+- claim/remedy availability;
+- damages;
+- limitation/deadline;
+- procedural right/objection;
+- settlement/dispute posture.
+
+Use:
+
+```text
+BL3: what changed or was waived contractually?
+→ BL4: what does that committed state mean for claim/remedy/procedure?
+```
 
 If downstream evidence contradicts BL3-owned transaction state, emit `CONTRADICTION_SIGNAL`; downstream owners must not reconstruct BL3 state.
 
@@ -150,10 +202,14 @@ If downstream evidence contradicts BL3-owned transaction state, emit `CONTRADICT
 - every website term treated as incorporated;
 - every clause treated as an obligation;
 - obligation due/performance/breach collapsed;
+- formation unit used to own performance/change/remedy lifecycle;
+- sibling units loaded as a mandatory BL3 pipeline despite committed shared state;
 - every email treated as amendment;
 - one accommodation treated as permanent waiver;
 - BL3 reconstructing BL2 authority/approval;
+- BL3 treating BL1 route hypothesis as resolved domestic contract-law applicability;
 - BL3 deciding BL7 permission or BL8 governing-law/treaty propositions;
 - commercial tax/customs allocation treated as statutory conclusion;
-- dispute clause content collapsed into forum/procedure/enforcement;
+- dispute-clause contractual effect collapsed into forum/procedure/enforcement;
+- contractual waiver collapsed into waiver of claim/remedy/procedural rights without BL4;
 - loading all contract knowledge for a narrow transaction question.
