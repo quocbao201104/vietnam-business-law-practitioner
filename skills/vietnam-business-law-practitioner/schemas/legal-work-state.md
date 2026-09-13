@@ -1,4 +1,4 @@
-# Legal Work State — Semantic Contract v0.5
+# Legal Work State — Semantic Contract v0.6
 
 This is a semantic contract, not a requirement to emit JSON or persist every field for every request.
 
@@ -337,6 +337,8 @@ Readiness states:
 
 A material unresolved authority/applicability question normally prevents `READY` / `READY_WITH_CONDITIONS` for an action that depends on it. Preserve the uncertainty explicitly rather than inferring permission from missing contrary authority.
 
+A `COMPOSITION_CONFLICT` with status `ACTIVE` or `TERMINAL_UNRESOLVED` also prevents `READY` / `READY_WITH_CONDITIONS` for every affected action. Terminal unresolved conflict is an explicit non-READY endpoint, not a permission state.
+
 ## Risks
 
 Separate, where useful:
@@ -391,6 +393,32 @@ If contradictory evidence appears:
 
 ## Composition conflict
 
-If current owned propositions conflict materially, create a `COMPOSITION_CONFLICT` with stable ID, involved propositions/owners, reason, and affected actions.
+If current owned propositions conflict materially, create a `COMPOSITION_CONFLICT` with stable identity. The conflict record should preserve:
 
-The synthesizer may not choose the preferred specialist conclusion.
+- `conflict_id`;
+- involved proposition IDs;
+- accountable owners;
+- reason;
+- affected action IDs;
+- `status`;
+- opened/current `state_revision`;
+- resolution basis when resolved;
+- remaining uncertainty / required external input or review when terminal unresolved.
+
+Conflict status is one of:
+
+- `ACTIVE`
+- `RESOLVED`
+- `TERMINAL_UNRESOLVED`
+
+A new conflict starts `ACTIVE`. The synthesizer may identify/record the conflict but may not choose between the owned propositions.
+
+The relevant owners must review an `ACTIVE` conflict and perform any still-available material resolution step under the runtime-composition contract. Substantive proposition changes remain owner-scoped and revision-aware.
+
+Set `RESOLVED` only when the owners' current proposition/condition state is coherent enough that the conflict no longer controls the affected actions. Record the resolution basis and revision.
+
+Set `TERMINAL_UNRESOLVED` only when owner review is complete, no material internal resolution step remains available in the current run, and the unresolved external fact/authority/human judgment is explicit. The conflict record must identify affected actions and the remaining verification/review need.
+
+Every affected action must then be recomputed to `VERIFY_BEFORE_ACTION` or `LEGAL_REVIEW_REQUIRED`, unless an independent supported blocker justifies `DO_NOT_PROCEED`.
+
+`TERMINAL_UNRESOLVED` is not equivalent to `RESOLVED`; it cannot support `READY` or `READY_WITH_CONDITIONS`. A conflict must not be terminalized merely to silence an available routing, authority, reclassification, contradiction, stale-state, or specialist step.
