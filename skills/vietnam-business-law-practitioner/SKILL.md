@@ -51,20 +51,64 @@ Out of core scope:
 - bookkeeping, journal entries, and generic accounting;
 - specialist sector law that has not been activated by a concrete business issue.
 
-## Normative runtime contracts
+## Runtime contract loading — just in time
 
-Read and follow:
+This file is the **always-on runtime kernel**. Do not preload every schema/reference merely because it is listed here.
 
-- `schemas/legal-work-state.md`
-- `schemas/runtime-composition.md`
-- `schemas/authority-resolver.md`
-- `schemas/specialist-handoff.md`
-- `schemas/decision-output.md`
-- `schemas/runtime-trace.md` when runtime path evidence is being evaluated
-- `references/search-strategy.md`
-- `references/source-status.md`
+Load additional contracts only when the current task reaches the behavior they govern. Once loaded, that contract is normative for the activated behavior. Not loading a non-material contract does not waive the invariants summarized in this root file.
 
-`knowledge/INDEX.md` is the **canonical detailed route map**. This root file contains only high-level activation rules and invariants. If detailed routing prose conflicts with the index, repair the conflict rather than maintaining two normative maps.
+`knowledge/INDEX.md` is the **canonical detailed route map**. When runtime knowledge beyond this root file is needed, use the index as the first detailed routing read, then load only the relevant BL core/capability unit. Do not load all BL1–BL8 by default.
+
+### Contract loading matrix
+
+| Trigger | Load |
+| --- | --- |
+| Multi-step or multi-track state, typed dependencies, reclassification, contradiction, persisted authority support, or state revisions become material | `schemas/legal-work-state.md` |
+| More than one owner must compose, or late routing, invalidation, conflict handling, authority-aware convergence, or non-trivial loop control becomes material | `schemas/runtime-composition.md` |
+| A material proposition requires current/historical law, source verification, authority reuse/freshness, or re-resolution | `schemas/authority-resolver.md` + `references/search-strategy.md` + `references/source-status.md` |
+| An owner needs technical depth outside its core capability | `schemas/specialist-handoff.md` before invoking the specialist |
+| Multiple materially different actions, explicit conditions/blockers, non-trivial readiness, or a structured decision brief must be composed | `schemas/decision-output.md` |
+| Runtime path evidence, audit, or evaluation is being recorded/checked | `schemas/runtime-trace.md` |
+
+Nested authority references such as `references/authority-sources.md`, `references/source-registry.md`, and `references/citation-guidance.md` are loaded only when the authority/search workflow calls for them. They are not root-level preload requirements.
+
+### Late contract activation
+
+A simple matter may begin with only:
+
+```text
+SKILL.md
+→ knowledge/INDEX.md
+→ relevant BL core/capability
+→ answer
+```
+
+If the task becomes more complex, load the newly required contract **before** performing the governed behavior. Examples:
+
+```text
+simple BL3 question
+→ later reveals current-law issue
+→ load authority-resolver + search/source contracts
+→ resolve authority
+→ continue
+```
+
+```text
+single-track matter
+→ later reveals BL7 dependency
+→ load runtime-composition + legal-work-state as needed
+→ emit late-route
+→ activate BL7
+```
+
+Do not:
+
+- preload all schemas/references for every request;
+- read a contract “just in case” when its governed behavior is not material;
+- skip a contract after its trigger becomes material;
+- create a separate fast mode that weakens ownership, authority, evidence, or readiness invariants.
+
+If detailed routing prose conflicts with `knowledge/INDEX.md`, repair the conflict rather than maintaining two normative maps.
 
 ## Runtime invariants
 
@@ -166,7 +210,7 @@ Resolve authority against proposition-specific temporal anchor(s), not merely to
 
 Authority resolution is not a linear pipeline stage.
 
-Any proposition owner may call the resolver during reasoning. Use `schemas/authority-resolver.md` for request/result/failure semantics.
+Any proposition owner may call the resolver during reasoning. When authority work becomes material, load and follow `schemas/authority-resolver.md` plus the required search/source references before resolving the authority question.
 
 The resolver returns provenance, legal force, lifecycle, temporal/freshness metadata, and source context. The owner decides whether authority applies to the specific proposition.
 
@@ -272,11 +316,19 @@ BL1 reconstructs the business situation, identifies candidate issues and tempora
 
 BL1 does **not** promote substantive BL2–BL8 classifications or decide governing-law applicability merely because it recognizes a likely regime.
 
-### Step 4 — Load the smallest relevant track(s)
+### Step 4 — Load the smallest relevant runtime surface
 
-Use `knowledge/INDEX.md` as the canonical detailed route map.
+Apply the JIT contract-loading matrix above.
 
-Do not load all BL1–BL8 by default.
+When knowledge beyond this root file is required:
+
+```text
+SKILL.md
+→ knowledge/INDEX.md
+→ relevant BL core/capability
+```
+
+Load a schema/reference only when its trigger becomes material. Do not preload every normative contract or all BL tracks before beginning substantive work.
 
 ### Step 5 — Owners resolve material propositions
 
@@ -290,10 +342,13 @@ During reasoning, an owner may:
 - emit a late-route signal;
 - request reclassification review by another owner.
 
+If one of these behaviors activates a contract that is not yet loaded, load that contract before executing the behavior.
+
 ### Step 6 — Authority resolution occurs where needed
 
 For each material proposition requiring live authority:
 
+- load the authority/search/source contracts if not already loaded;
 - define proposition;
 - define temporal anchor(s);
 - resolve provenance/legal force/lifecycle/freshness;
