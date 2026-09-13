@@ -1,0 +1,196 @@
+# BL2 — Corporate Approval / Conflict / Governance
+
+## Owns
+
+Determining whether a corporate action or transaction requires an internal approval, reserved-matter decision, conflict process, or related-party governance step, and whether that requirement has been satisfied.
+
+This unit owns **internal corporate decision validity/state**. It is separate from representation/signing authority and separate from the contract's substantive terms.
+
+## Does not own
+
+- external representation/signing authority — `authority-representation.md`;
+- contract formation/content/performance — BL3;
+- tax consequences — BL5;
+- market/sector regulatory permission — BL7;
+- foreign-investment approval/market-access procedures — BL8.
+
+## Activate when
+
+Use when a material action may involve:
+
+- a reserved matter;
+- board/member/shareholder/owner approval;
+- significant asset/financing/corporate action;
+- related-party or conflict-of-interest transaction;
+- self-dealing or overlapping interests;
+- corporate approval thresholds/conditions;
+- approval timing, quorum, voting, abstention, disclosure, or documentation questions;
+- transaction validity or action readiness that depends on internal governance.
+
+## Required state
+
+Where material, capture:
+
+- entity/corporate form and relevant date;
+- proposed action/transaction;
+- transaction parties and relationships;
+- decision-maker(s);
+- representation/authority proposition if already resolved;
+- charter/governance documents;
+- ownership/voting state relevant to approval;
+- conflict/related-party facts;
+- resolutions/minutes/consents/approvals;
+- conditions, quorum/voting or procedural facts where material;
+- any post-transaction confirmation/ratification evidence if relevant.
+
+## Core distinctions
+
+### Representation ≠ corporate approval
+
+A person may be authorized to represent/sign for the entity while the transaction still requires a separate internal approval.
+
+Do not infer:
+
+```text
+signatory authority satisfied
+→ internal corporate approval satisfied
+```
+
+### Approval requirement ≠ approval obtained
+
+First determine whether an approval is required; then separately determine whether the approval was validly obtained and remained effective for the action taken.
+
+### Conflict signal ≠ invalid transaction
+
+A related-party relationship, shared ownership, family relationship, management overlap, personal interest, or other conflict signal activates governance analysis. It does not itself establish invalidity, prohibition, or remedy.
+
+### Economic importance ≠ legal reserved matter
+
+A transaction can be commercially important without triggering a particular statutory/charter approval, and a legally reserved matter may be triggered even when management views the transaction as routine.
+
+Resolve the actual governance source rather than using intuition about importance.
+
+### Corporate approval ≠ regulatory approval
+
+Board/member/shareholder/owner consent does not establish that a regulator, licensing authority, competition authority, investment authority, or other public body permits the action.
+
+Route public-law questions to BL7/BL8.
+
+### Corporate approval ≠ contract validity in every respect
+
+BL2 resolves internal approval state. BL3 determines the transaction/contract position under the resolved authority/approval dependencies and applicable legal regime.
+
+## Decision procedure
+
+1. **Define the exact corporate action.** Avoid asking abstractly whether `the company approved the deal`.
+2. **Consume entity/authority state.** Do not reconstruct entity identity or signing authority here.
+3. **Identify candidate governance source.** Law, charter, member/shareholder agreement where legally relevant, board/member rules, reserved-matter list, prior resolution, or transaction-specific governance document.
+4. **Detect conflict/related-party signals.** Map relationships and interests without pre-judging legal consequence.
+5. **Resolve whether approval is required.** Bind the proposition to the relevant date and corporate state.
+6. **Resolve the proper approving body/person and procedure.** Verify current/historical authority where procedure is material.
+7. **Evaluate evidence that approval occurred.** Resolution, consent, minutes, written decision, voting evidence, disclosure/abstention evidence, or other applicable proof.
+8. **Separate procedural defect from consequence.** If an approval process appears defective, do not invent the legal effect; resolve the applicable consequence under current/historical authority.
+9. **Commit the approval proposition.** Supported, supported with conditions, unresolved, disputed, or defective subject to legal consequence analysis.
+10. **Hand off downstream.** BL3 consumes approval state for transaction conclusions; BL8 consumes corporate facts when foreign-investment procedures are separately triggered.
+
+## Conflict / related-party analysis
+
+Do not use a single label `related party` as the conclusion.
+
+Separate at least:
+
+- factual relationship between actors;
+- legal definition/test applicable to the proposition;
+- disclosure requirement;
+- participation/abstention restriction if any;
+- approving body/process;
+- effect of non-compliance;
+- downstream transaction consequence.
+
+Different regimes may define related/conflicted actors differently. Verify the definition relevant to the exact governance proposition.
+
+## Approval proposition design
+
+Prefer explicit propositions such as:
+
+- `P-BL2-GOV-01: Transaction T required approval by corporate body B at date D.`
+- `P-BL2-GOV-02: Required approval was documented before execution.`
+- `P-BL2-GOV-03: Conflict procedure remains unresolved because relationship R may trigger disclosure/abstention rules.`
+
+Avoid broad statements like `the board approved everything` or `related-party deal is invalid`.
+
+## Evidence requirements
+
+Potential evidence includes:
+
+- charter/bylaws/governance rules;
+- member/shareholder agreements where legally relevant;
+- board/member/shareholder resolutions;
+- written owner decisions;
+- meeting notices, minutes, attendance/quorum/voting records;
+- conflict disclosures;
+- abstention/participation records;
+- transaction schedules/materials presented for approval;
+- post-action confirmation/ratification evidence where legally relevant.
+
+Use only evidence needed for the proposition. Do not demand a corporate-data room for routine questions.
+
+## Live authority triggers
+
+Live authority is normally required when the result depends on:
+
+- current statutory reserved matters;
+- approval thresholds;
+- quorum/voting/procedure;
+- related-party/conflict definitions;
+- disclosure/abstention rules;
+- legal consequence of missing/defective approval;
+- historical governance rules at the transaction date.
+
+Do not hardcode numeric thresholds, voting percentages, current procedural formalities, or article numbers as stable knowledge.
+
+## Cross-track handoffs
+
+### From authority / representation
+
+Consume the resolved signatory/representation proposition. Do not treat it as internal approval.
+
+### To BL3
+
+Provide:
+
+- whether approval was required;
+- whether it was obtained;
+- unresolved conditions/defects;
+- temporal anchor;
+- authority/evidence support.
+
+BL3 decides transaction formation/content/effect under the applicable regime.
+
+### To BL5
+
+If tax consequences depend on related-party/ownership facts, provide those facts/classifications only. BL5 owns tax treatment.
+
+### To BL7
+
+Send competition/market-conduct/regulatory conflict issues only when the facts trigger a public-law proposition.
+
+### To BL8
+
+Provide corporate ownership/control and approval facts. BL8 separately owns foreign-investment market-access/control tests and investment procedures.
+
+## Failure modes
+
+- signature treated as sufficient corporate approval;
+- legal representative treated as unlimited corporate decision-maker;
+- conflict/related-party status treated as automatic invalidity;
+- commercial materiality substituted for actual reserved-matter rule;
+- board/member/shareholder approval treated as regulatory permission;
+- current governance rule applied to historical transaction without temporal check;
+- voting/threshold numbers recalled from memory;
+- BL3 silently deciding internal corporate approval itself;
+- foreign-investment approval conflated with ordinary corporate approval.
+
+## Escalation
+
+Increase verification for major ownership/asset/financing actions, conflicted or related-party transactions, disputed approvals, defective minutes/resolutions, minority-owner disputes, transactions already signed without clear approval, or actions whose validity/remedy exposure materially depends on governance procedure.
