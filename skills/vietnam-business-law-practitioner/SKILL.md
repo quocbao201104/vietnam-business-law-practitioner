@@ -63,12 +63,14 @@ Load additional contracts only when the current task reaches the behavior they g
 
 | Trigger | Load |
 | --- | --- |
-| Multi-step or multi-track state, typed dependencies, reclassification, contradiction, persisted authority support, or state revisions become material | `schemas/legal-work-state.md` |
+| Shared or revision-sensitive state must survive, re-enter, or reconcile across an owner, authority, specialist, dependency, reclassification, contradiction, or material state-mutation boundary | `schemas/legal-work-state.md` |
 | More than one owner must compose, or late routing, invalidation, conflict handling, authority-aware convergence, or non-trivial loop control becomes material | `schemas/runtime-composition.md` |
-| A material proposition requires current/historical law, source verification, authority reuse/freshness, or re-resolution | `schemas/authority-resolver.md` + `references/search-strategy.md` + `references/source-status.md` |
-| An owner needs technical depth outside its core capability | `schemas/specialist-handoff.md` before invoking the specialist |
+| A material proposition requires current/historical law, source verification, authority reuse/freshness, or re-resolution and the result will support an owned proposition/action | `schemas/legal-work-state.md` + `schemas/authority-resolver.md` + `references/search-strategy.md` + `references/source-status.md` |
+| An owner needs technical depth outside its core capability | `schemas/legal-work-state.md` + `schemas/specialist-handoff.md` before the first `SPECIALIST_CALL` |
 | Multiple materially different actions, explicit conditions/blockers, non-trivial readiness, or a structured decision brief must be composed | `schemas/decision-output.md` |
 | Runtime path evidence, audit, or evaluation is being recorded/checked | `schemas/runtime-trace.md` |
+
+Do not interpret ordinary multi-step reasoning as a state-contract trigger by itself. The trigger is a material shared/revision-sensitive state boundary, not merely the fact that an answer takes several reasoning steps.
 
 Nested authority references such as `references/authority-sources.md`, `references/source-registry.md`, and `references/citation-guidance.md` are loaded only when the authority/search workflow calls for them. They are not root-level preload requirements.
 
@@ -88,9 +90,20 @@ If the task becomes more complex, load the newly required contract **before** pe
 ```text
 simple BL3 question
 → later reveals current-law issue
-→ load authority-resolver + search/source contracts
+→ load legal-work-state + authority-resolver + search/source contracts
 → resolve authority
+→ write authority result/support state
+→ owner applicability
 → continue
+```
+
+```text
+single-owner BL7 matter
+→ later requires specialist depth
+→ load legal-work-state + specialist-handoff
+→ SPECIALIST_CALL
+→ specialist return
+→ owner integrates result through shared state
 ```
 
 ```text
@@ -210,9 +223,9 @@ Resolve authority against proposition-specific temporal anchor(s), not merely to
 
 Authority resolution is not a linear pipeline stage.
 
-Any proposition owner may call the resolver during reasoning. When authority work becomes material, load and follow `schemas/authority-resolver.md` plus the required search/source references before resolving the authority question.
+Any proposition owner may call the resolver during reasoning. When authority work becomes material and its result will support an owned proposition/action, load and follow `schemas/legal-work-state.md`, `schemas/authority-resolver.md`, and the required search/source references before resolving or integrating the authority question.
 
-The resolver returns provenance, legal force, lifecycle, temporal/freshness metadata, and source context. The owner decides whether authority applies to the specific proposition.
+The resolver returns provenance, legal force, lifecycle, temporal/freshness metadata, and source context. Write that result/support state under the Legal Work State contract before the owner uses it to promote the proposition; the owner then decides whether authority applies to the specific proposition.
 
 Re-resolve when freshness, temporal anchor, classification, or authority-change signals make an older result unsafe.
 
@@ -226,9 +239,9 @@ BL3 establishes what was required and what occurred. BL4 determines whether the 
 
 ### 13. Specialist depth stays under an owner
 
-A JIT specialist may only be called under a BL owner. It returns candidate technical findings + authority + uncertainty to that owner.
+A JIT specialist may only be called under a BL owner. Before the first `SPECIALIST_CALL`, load both `schemas/legal-work-state.md` and `schemas/specialist-handoff.md` so the handoff carries current revision/object identity and the return can be integrated through owner-scoped state.
 
-The specialist does not bypass ownership, update another track's proposition, or synthesize the whole case.
+The specialist returns candidate technical findings + authority + uncertainty to that owner. It does not bypass ownership, update another track's proposition, or synthesize the whole case.
 
 ### 14. Signals, constraints, and feedback are not automatic invalidation
 
@@ -342,18 +355,19 @@ During reasoning, an owner may:
 - emit a late-route signal;
 - request reclassification review by another owner.
 
-If one of these behaviors activates a contract that is not yet loaded, load that contract before executing the behavior.
+If one of these behaviors activates a contract that is not yet loaded, load the complete coupled contract set from the matrix before executing the behavior.
 
 ### Step 6 — Authority resolution occurs where needed
 
 For each material proposition requiring live authority:
 
-- load the authority/search/source contracts if not already loaded;
+- load `schemas/legal-work-state.md` plus the authority/search/source contracts if not already loaded;
 - define proposition;
 - define temporal anchor(s);
 - resolve provenance/legal force/lifecycle/freshness;
+- write the authority result/support link into shared state;
 - return result to owner;
-- owner decides case applicability.
+- owner decides case applicability at the current state revision.
 
 Use the minimum sufficient authority set, not a citation quota.
 
