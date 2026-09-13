@@ -21,7 +21,7 @@ BL6 does **not** own every consequence of an employment fact merely because the 
 
 - corporate entity/decision-maker authority or approval — BL2;
 - ordinary commercial-contract propositions outside the employment relationship — BL3;
-- dispute remedies, limitation/deadline and procedure — BL4;
+- claim/dispute preservation timing, limitation, filing/challenge deadlines, remedies and procedure — BL4;
 - tax, withholding, BHXH and other contribution consequences — BL5;
 - privacy/data/monitoring, sector regulation or other public-law compliance — BL7;
 - foreign-investment/FX/trade/cross-border propositions — BL8.
@@ -36,7 +36,9 @@ BL6 does **not** own every consequence of an employment fact merely because the 
 - desired outcome ≠ legal ground/pathway;
 - restructuring ≠ poor performance ≠ misconduct;
 - management instruction ≠ unlimited unilateral-change power;
+- employment-action notice/process timing ≠ claim/dispute filing or limitation timing;
 - termination ≠ all obligations end;
+- confidentiality during employment ≠ post-employment survival/effect;
 - confidentiality ≠ non-compete ≠ non-solicit;
 - worker consent ≠ privacy/regulatory compliance;
 - employment classification ≠ tax/contribution consequence;
@@ -59,7 +61,7 @@ Load `engagement-terms-work-state.md` when classification is sufficiently resolv
 
 - hiring/probation/onboarding terms;
 - role/remuneration/workplace/schedule/leave/current employment state;
-- employment-specific term validity/effect;
+- employment-specific term validity/effect during ongoing employment, including current confidentiality duties;
 - a proposed change to ongoing employment terms/state.
 
 ### Performance / conduct / employer action
@@ -78,8 +80,9 @@ Load `restructuring-separation-protection.md` when the question depends on:
 - restructuring/redundancy/organizational change;
 - unilateral or mutual separation;
 - whether an upstream performance/conduct pathway can support final separation;
+- substantive employment-action notice/process/consultation timing required to lawfully take the separation action;
 - final employment state and continuing obligations;
-- confidentiality, return of property/access, non-solicit/non-compete or other post-employment protection.
+- survival/effect after separation of confidentiality, return of property/access, non-solicit/non-compete or other post-employment protection.
 
 Do not load all four units by default.
 
@@ -100,6 +103,11 @@ Employee relationship already committed; user asks only whether proposed pay/wor
 
 ```text
 Performance issue already committed; user asks whether final separation is supportable
+→ restructuring-separation-protection
+```
+
+```text
+Current confidentiality duty already committed; user asks whether it survives after exit
 → restructuring-separation-protection
 ```
 
@@ -140,6 +148,32 @@ performance-conduct-employer-action
 
 The separation unit must not invent a performance/misconduct ground because the employer wants to terminate.
 
+### Confidentiality ownership follows temporal scope
+
+```text
+current confidentiality duty/content/effect during ongoing employment
+→ engagement-terms-work-state
+
+survival/effect after separation and post-employment protection
+→ restructuring-separation-protection
+```
+
+The separation unit consumes any committed current-term proposition rather than reconstructing the ongoing term merely because survival is now material.
+
+### Employment-action timing ≠ dispute timing
+
+BL6 owns substantive timing that is a prerequisite to lawfully take an employment action, including employment-path notice, consultation, process, cure or similar action-specific timing where material.
+
+BL4 owns claim/dispute-preservation timing after or because an employment issue is challenged, including limitation, filing, challenge, escalation and other procedural deadlines.
+
+```text
+How much employment-path notice/process time is required before termination?
+→ BL6
+
+How long does the worker have to file/challenge the termination?
+→ BL4
+```
+
 ### Tax/BHXH consequences do not flow backward into classification
 
 BL5 consumes BL6 relationship/employer state for tax, withholding, BHXH or other contribution consequences.
@@ -173,19 +207,30 @@ When new non-tax facts/evidence materially contradict the committed state:
 ```text
 CONTRADICTION_SIGNAL / CLASSIFICATION_SIGNAL
 → RECLASSIFICATION_REVIEW
-→ prior committed state remains visible during review
-→ dependent actions may become VERIFY_BEFORE_ACTION
+→ prior committed state remains current during review
+→ competing candidate remains explicit
+→ exact DEPENDS_ON dependents are identified
+→ materially dependent actions may become VERIFY_BEFORE_ACTION
 → RECLASSIFICATION_COMMITTED only after BL6 resolves the review
 ```
 
-Do not promote a competing classification merely because it creates a preferred tax, termination or business outcome.
+On commit, mirror the normative runtime contract:
+
+```text
+previous classification → SUPERSEDED
+new classification → RESOLVED
+only exact DEPENDS_ON dependents → STALE / INVALIDATED → RECOMPUTE as required
+SIGNALS / FEEDBACK → review trigger only, never global invalidation
+```
+
+Do not globally invalidate employment/tax state. Do not promote a competing classification merely because it creates a preferred tax, termination or business outcome.
 
 ## Upstream / cross-track dependency rules
 
 BL6 consumes other owners' propositions rather than reconstructing them:
 
 - BL2 owns corporate actor/authority/approval state;
-- BL4 owns claim/remedy/deadline/procedure once an employment issue becomes a dispute;
+- BL4 owns claim/remedy/dispute-preservation timing and procedure once an employment issue becomes a dispute;
 - BL5 owns tax/contribution consequences;
 - BL7 owns privacy/data/monitoring and other regulatory compliance;
 - BL8 owns cross-border/investment/FX/trade propositions where material.
@@ -200,11 +245,11 @@ Stable BL6 knowledge defines decision structure and ownership. Use Authority Res
 - required employment terms or worker protections;
 - probation, pay, working-time, leave or change rules;
 - performance-management/disciplinary process;
-- restructuring/separation pathways and required process;
+- restructuring/separation pathways and substantive employment-action timing/process;
 - post-employment confidentiality/restrictive obligations;
 - historical rules at the relevant work/action/separation date.
 
-Do not hardcode wage figures, probation limits, working-hour limits, leave entitlements, notice periods, severance/payment formulas, discipline steps, protected categories, restrictive-covenant rules, forms, or article numbers.
+Do not hardcode wage figures, probation limits, working-hour limits, leave entitlements, employment-action notice periods, severance/payment formulas, discipline steps, protected categories, restrictive-covenant rules, forms, or article numbers.
 
 Before an irreversible employer action, re-resolve stale authority when a legal change could materially affect ground, process, option set or action readiness.
 
@@ -213,7 +258,7 @@ Before an irreversible employer action, re-resolve stale authority when a legal 
 - BL2 → BL6: committed entity/authority/approval state where material; BL6 owns the employment proposition.
 - BL6 → BL5: committed/conditioned relationship, employer, pay and separation facts; BL5 owns tax/withholding/BHXH/contribution consequences only.
 - BL6 ↔ BL7: BL6 owns employment merits/pathway; BL7 owns privacy/data/monitoring/regulatory compliance.
-- BL6 → BL4: committed employment merits/pathway/state when challenged; BL4 owns dispute posture/remedies/deadlines/procedure.
+- BL6 → BL4: committed employment merits/pathway/state when challenged; BL4 owns dispute posture/remedies and claim/dispute-preservation timing/procedure.
 - BL5 → BL6: tax economics normally return as `FEEDBACK`; only new non-tax facts/evidence may justify classification review.
 
 ## Failure modes
@@ -225,9 +270,12 @@ Before an irreversible employer action, re-resolve stale authority when a legal 
 - misconduct treated as automatic dismissal;
 - desired `remove employee` outcome used to invent a ground;
 - restructuring used to disguise performance/misconduct termination;
+- current confidentiality and post-employment survival/effect given duplicate ownership;
+- employment-action notice/process timing confused with claim/dispute filing or limitation timing;
 - monitoring evidence pursued without BL7 where material;
 - NDA treated as automatic non-compete;
 - tax/BHXH economics used to reclassify worker/employer state;
+- reclassification causing global invalidation instead of exact DEPENDS_ON recompute;
 - BL4 dispute procedure absorbed into employment merits;
 - current employment rules recalled from memory;
 - loading the whole employment handbook for a narrow classification, term or action question.
