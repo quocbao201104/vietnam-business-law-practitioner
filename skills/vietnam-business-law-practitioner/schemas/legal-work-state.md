@@ -1,4 +1,4 @@
-# Legal Work State — Semantic Contract v0.2
+# Legal Work State — Semantic Contract v0.3
 
 This is a semantic contract, not a requirement to emit JSON or persist every field for every request.
 
@@ -209,9 +209,12 @@ Lifecycle status may include:
 - `FUTURE_EFFECTIVE`
 - `HISTORICAL`
 - `AMENDED`
+- `PARTIALLY_EFFECTIVE`
 - `SUPERSEDED`
 - `SUSPENDED`
 - `UNCERTAIN`
+
+`PARTIALLY_EFFECTIVE` requires proposition/provision-level resolution before relying on a current-looking document-level status.
 
 Authority/legal-force type may include:
 
