@@ -1,10 +1,8 @@
-# Knowledge Routing Index — Canonical Detailed Route Map v0.2
+# Knowledge Routing Index — Canonical Detailed Route Map v0.3
 
 This file is the **single canonical detailed route map** for BL1–BL8. `SKILL.md` contains only high-level activation rules.
 
-This preflight intentionally implements one thin `core.md` per BL track. Split a core into deeper decision units only after runtime/eval evidence shows the boundary is stable and recurring depth is needed.
-
-Load the smallest relevant owner(s). Do not load all tracks by default.
+Load the smallest relevant owner(s) and knowledge unit(s). Do not load all tracks or all units by default.
 
 ## Route status
 
@@ -19,11 +17,22 @@ BL1 creates the initial route hypothesis. Any active owner may emit `LATE_ROUTE_
 
 ## BL1 — Legal Issue Framing / Regime Selection
 
+Start with:
+
 `bl1-issue-framing/core.md`
 
-Activate for non-trivial issue framing, initial route hypotheses, temporal/foreign/mandatory-law detection, and reclassification orchestration.
+Then JIT-load only the capability needed:
+
+- `bl1-issue-framing/issue-framing.md` — convert a business story into candidate actions, material legal questions, owners, fact/evidence state, and missing conditions;
+- `bl1-issue-framing/regime-routing.md` — candidate regime stacks, special/mandatory layers, cross-track routing, foreign-element detection, substantive/procedural separation;
+- `bl1-issue-framing/temporal-applicability.md` — proposition-specific temporal anchors, historical/current/future-effective regimes, amendment/replacement/suspension/transition issues;
+- `bl1-issue-framing/authority-applicability.md` — source provenance, legal force, lifecycle, applicability, freshness, conflicting authority, and minimum sufficient authority set.
+
+Activate BL1 for non-trivial framing, route hypotheses, temporal/foreign/mandatory-law detection, and reclassification orchestration.
 
 BL1 does **not** promote substantive BL2–BL8 classifications or decide that a candidate governing regime actually applies.
+
+Do not load all four BL1 units by default.
 
 ## BL2 — Entity / Authority / Ownership / Governance
 
