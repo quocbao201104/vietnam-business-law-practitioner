@@ -55,19 +55,22 @@ Do not load all four BL2 units by default.
 
 ## BL3 — Contracts / Commercial Transactions
 
+Start with:
+
 `bl3-contracts/core.md`
 
-Activate for:
+Then JIT-load only the capability needed:
 
-- formation/assent;
-- contract/document stack;
-- transaction terms;
-- contractual obligations;
-- performance state;
-- variation/settlement effect on transaction state;
-- existence/content of dispute-resolution clauses.
+- `bl3-contracts/formation-transaction-state.md` — agreement/assent, draft/offer/order/acceptance sequence, formation versus effectiveness/conditions, electronic/form issues, and current transaction state;
+- `bl3-contracts/document-stack-terms.md` — document/version stack, incorporation, precedence, negotiated/standard terms, material clause interpretation, and existence/content of dispute-resolution clauses;
+- `bl3-contracts/obligations-conditions-performance.md` — obligations, triggers/conditions, due state, performance/acceptance state, and performance evidence;
+- `bl3-contracts/variation-waiver-settlement.md` — amendment, waiver, later agreement, course of dealing/conduct, and settlement terms that change transaction/obligation state.
 
-Does not decide signatory authority (BL2), breach/remedies (BL4), tax liability (BL5), regulatory permission (BL7), or cross-border governing-law/treaty applicability (BL8).
+Activate BL3 when a decision depends on what transaction exists, what terms/documents govern, what each party must do, what performance state exists, whether the deal changed, or what a dispute-resolution clause says.
+
+BL3 does **not** decide entity/signatory authority or corporate approval (BL2), breach/remedies/procedure (BL4), statutory tax liability (BL5), public-law permission/compliance (BL7), or governing-law/treaty/CISG/cross-border overlay (BL8).
+
+Do not load all four BL3 units by default.
 
 ## BL4 — Breach / Remedies / Evidence / Disputes
 
