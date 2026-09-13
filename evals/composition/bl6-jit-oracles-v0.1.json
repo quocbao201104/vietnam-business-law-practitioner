@@ -1,0 +1,110 @@
+{
+  "schema_version": "0.1",
+  "candidate_sha": "1c199a5771a1f22f38285bff1ebee84785c25786",
+  "fixtures": {
+    "BL6-JIT-01": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/relationship-classification.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/engagement-terms-work-state.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/performance-conduct-employer-action.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/restructuring-separation-protection.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL6"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "proposition_id": "P-BL6-REL"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "basis": "LABEL_EQUALS_CLASSIFICATION"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "basis": "PAYMENT_FORMAT_EQUALS_CLASSIFICATION"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "basis": "TAX_RESULT_EQUALS_CLASSIFICATION"}
+      ]
+    },
+    "BL6-JIT-02": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/engagement-terms-work-state.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/relationship-classification.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/performance-conduct-employer-action.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/restructuring-separation-protection.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL6"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "proposition_id": "P-BL6-STATE"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "RECOMPUTE", "proposition_id": "P-BL6-REL"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "basis": "MANAGEMENT_INSTRUCTION_UNLIMITED_CHANGE"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "basis": "CURRENT_CONFIDENTIALITY_IMPLIES_POST_EMPLOYMENT_SURVIVAL"}
+      ]
+    },
+    "BL6-JIT-03": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/performance-conduct-employer-action.md"
+      ],
+      "forbidden_reads": [
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/relationship-classification.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/engagement-terms-work-state.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/restructuring-separation-protection.md"
+      ],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL6"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "proposition_id": "P-BL6-ACT"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "forbidden_events": [
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "basis": "POOR_PERFORMANCE_EQUALS_MISCONDUCT"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL6", "basis": "DESIRED_DISMISSAL_CREATES_GROUND"},
+        {"event": "OWNER_ASSIGN", "owner": "BL4", "proposition_id": "P-BL6-EMPLOYMENT_ACTION_TIMING"}
+      ]
+    },
+    "BL6-JIT-04": {
+      "required_reads": [
+        "skills/vietnam-business-law-practitioner/SKILL.md",
+        "skills/vietnam-business-law-practitioner/knowledge/INDEX.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/core.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl6-employment/relationship-classification.md",
+        "skills/vietnam-business-law-practitioner/knowledge/bl5-tax/core.md"
+      ],
+      "forbidden_reads": [],
+      "event_sequence": [
+        {"event": "ACTIVATE", "track": "BL6"},
+        {"event": "CLASSIFICATION_SIGNAL"},
+        {"event": "RECLASSIFICATION_REVIEW", "owner": "BL6"},
+        {"event": "ACTION_READINESS", "state": "VERIFY_BEFORE_ACTION"},
+        {"event": "RECLASSIFICATION_COMMITTED", "owner": "BL6"},
+        {"event": "PROPOSITION_STATUS", "proposition_id": "P-BL6-REL-OLD", "status": "SUPERSEDED"},
+        {"event": "PROPOSITION_STATUS", "proposition_id": "P-BL6-REL-NEW", "status": "RESOLVED"},
+        {"event": "STALE", "proposition_id": "P-BL5-TAX"},
+        {"event": "INVALIDATE", "proposition_id": "P-BL5-TAX"},
+        {"event": "RECOMPUTE", "owner": "BL5", "proposition_id": "P-BL5-TAX"},
+        {"event": "RUN_CONVERGED"}
+      ],
+      "required_events": [
+        {"event": "DEPENDENCY_ADD", "edge_type": "DEPENDS_ON", "proposition_id": "P-BL5-TAX"}
+      ],
+      "forbidden_events": [
+        {"event": "RECLASSIFICATION_COMMITTED", "basis": "TAX_ECONOMICS"},
+        {"event": "PROPOSITION_STATUS", "owner": "BL5", "proposition_id": "P-BL6-REL-NEW"},
+        {"event": "INVALIDATE", "owner": "BL2"},
+        {"event": "INVALIDATE", "owner": "BL3"},
+        {"event": "INVALIDATE", "proposition_id": "P-BL6-UNRELATED"},
+        {"event": "INVALIDATE", "edge_type": "FEEDBACK"},
+        {"event": "INVALIDATE", "edge_type": "SIGNALS"}
+      ]
+    }
+  }
+}
