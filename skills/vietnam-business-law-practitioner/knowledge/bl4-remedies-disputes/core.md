@@ -12,7 +12,7 @@ BL4 owns propositions about:
 - remedy availability and exercise conditions;
 - damages/loss/causation/mitigation, penalty, interest, and other recovery questions;
 - notice, objection, reservation of rights, evidence preservation, limitation/deadline state;
-- dispute posture, invocation, procedure, urgent protection, and settlement posture under a resolved/conditioned forum/regime;
+- dispute posture, invocation, filing mechanics/procedural sequence, urgent protection, and settlement posture under a resolved/conditioned forum/regime;
 - claim/remedy/procedural consequences of contractual changes/waivers already committed by BL3.
 
 BL4 does **not** own the whole dispute merely because performance went wrong.
@@ -40,6 +40,7 @@ BL4 does **not** own the whole dispute merely because performance went wrong.
 - loss ≠ causation;
 - negotiation ≠ deadline suspension;
 - evidence exists ≠ fact resolved;
+- evidence preservation/mapping ≠ evidentiary sufficiency on the merits;
 - contractual waiver/change (BL3) ≠ claim/remedy/procedural consequence (BL4);
 - dispute-clause contractual existence/effect (BL3) ≠ cross-border overlay (BL8) ≠ invocation/procedure/remedies (BL4).
 
@@ -52,7 +53,7 @@ Load `breach-excuse-liability.md` when the question depends on:
 - whether a BL3 performance deviation is breach;
 - materiality/attribution;
 - force majeure, hardship, changed circumstances, third-party failure, or another defense/excuse;
-- contractual/statutory risk allocation affecting liability.
+- contractual/statutory risk allocation affecting **whether or to what scope liability exists**.
 
 ### Remedies / loss / mitigation
 
@@ -61,29 +62,67 @@ Load `remedies-loss-mitigation.md` when the question depends on:
 - termination/cancellation/performance/payment or another remedy;
 - penalty, damages, interest, restitution, or monetary recovery;
 - loss, causation, proof, mitigation, duplication, or remedy limits;
-- whether several remedies can coexist or require election/conditions.
+- whether several remedies can coexist or require election/conditions;
+- contractual caps/exclusions/limitations affecting **available remedy or recoverable quantum after liability is established**.
 
 ### Notice / evidence / deadlines
 
 Load `notice-evidence-deadlines.md` when the question depends on:
 
 - notice/default/cure/objection/reservation;
-- evidence preservation;
+- evidence preservation, custody/location, integrity risk, or deletion/expiry risk;
 - limitation/prescription/contractual time bars;
-- filing/escalation windows;
+- trigger/clock/tolling/suspension/extension/expiry or filing window;
 - preserving a remedy or procedural option while negotiating.
+
+This unit owns **WHEN** a claim/action must or may be taken, not how/where the filing is procedurally made.
 
 ### Dispute posture / procedure / settlement
 
 Load `dispute-posture-procedure-settlement.md` when the question depends on:
 
 - invoking a committed dispute-resolution clause;
-- arbitration/court/other forum procedure under the resolved regime;
+- arbitration/court/other forum filing mechanics and procedural sequence under the resolved regime;
 - dispute escalation/defense/urgent protection;
 - settlement posture;
 - procedural consequences of a committed BL3 waiver/change/settlement.
 
+This unit consumes committed timing state and owns **HOW/WHERE** to proceed. It does not duplicate the deadline trigger/clock/expiry proposition.
+
 Do not load all four units by default.
+
+## Ownership-by-effect rule for exclusions / limitations
+
+BL3 owns clause content.
+
+Within BL4, proposition ownership follows the clause's **effect**, not its label:
+
+```text
+Does the clause eliminate/narrow liability itself?
+→ breach-excuse-liability.md
+
+Does the clause cap/limit remedy or recoverable quantum after liability?
+→ remedies-loss-mitigation.md
+```
+
+If one clause has both effects, create two explicit propositions with separate owners. Do not let both units decide the same proposition.
+
+## Evidence-preservation boundary
+
+`notice-evidence-deadlines.md` may preserve and map evidence, including custody, source, integrity/authenticity risk, and deletion/expiry risk.
+
+The proposition owner decides whether that evidence is sufficient to resolve its proposition:
+
+```text
+CCTV deletion risk
+→ notice-evidence-deadlines
+
+Does CCTV prove breach causation?
+→ breach-excuse-liability
+
+Does invoice prove recoverable damages?
+→ remedies-loss-mitigation
+```
 
 ## Sibling JIT rule
 
@@ -101,8 +140,15 @@ Breach/liability already committed; user asks only about damages evidence
 ```
 
 ```text
-Remedy already known; user asks whether a notice deadline expires tomorrow
+Remedy already known; user asks whether a notice/filing deadline expires tomorrow
 → notice-evidence-deadlines
+```
+
+```text
+Deadline already committed; user asks how to commence arbitration
+→ dispute-posture-procedure-settlement
+→ consume deadline proposition
+→ do not reopen notice-evidence-deadlines unless timing itself becomes unresolved/stale/material
 ```
 
 Do not force:
@@ -132,7 +178,7 @@ Breach already established. Can we terminate and claim damages?
 ```text
 We are negotiating but limitation may expire.
 → notice-evidence-deadlines
-→ dispute-posture-procedure-settlement only if filing/escalation decision becomes material
+→ dispute-posture-procedure-settlement only if filing/escalation mechanics become material
 ```
 
 ```text
@@ -180,10 +226,13 @@ Do not hardcode penalty ceilings, interest rates, limitation periods, filing win
 - every breach treated as termination right;
 - force-majeure keyword matching;
 - penalty, damages, and interest collapsed;
+- one exclusion/limitation proposition owned by both liability and remedies units;
 - claimed loss accepted without causation/proof;
 - mitigation ignored;
 - notice treated as paperwork;
 - negotiation assumed to suspend deadlines;
+- deadline trigger/clock duplicated inside dispute procedure;
+- evidence preservation unit used as universal evidence-merits judge;
 - dispute-clause content reconstructed inside BL4;
 - governing law/forum/procedure/enforcement collapsed;
 - BL4 rewriting BL3 obligations during settlement;
