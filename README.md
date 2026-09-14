@@ -12,12 +12,12 @@
 
 A research-first Agent Skill for legally grounded business decisions in Vietnam — built to separate durable legal reasoning from rules that must be verified against current authority.
 
-[![Version: v0.1.0](https://img.shields.io/badge/version-v0.1.0-0a7.svg)](#status)
+[![Version: v0.2.0](https://img.shields.io/badge/version-v0.2.0-0a7.svg)](#status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Jurisdiction: Vietnam](https://img.shields.io/badge/jurisdiction-Vietnam-da251d.svg)](#what-it-can-help-with)
 [![Format: Agent Skill](https://img.shields.io/badge/format-Agent%20Skill-6f42c1.svg)](skills/vietnam-business-law-practitioner/SKILL.md)
 
-**[What it can help with](#what-it-can-help-with) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Live-law verification](#live-law-verification) · [Research & evaluation](#research-and-evaluation)**
+**[What it can help with](#what-it-can-help-with) · [Quick start](#quick-start) · [How it works](#how-it-works) · [Live-law verification](#live-law-verification) · [Research & evaluation](#research-and-evaluation) · [Roadmap](ROADMAP.md) · [Changelog](CHANGELOG.md)**
 
 <sub><strong>Business decisions · Legal propositions · Authority · Evidence · Action readiness</strong></sub>
 
@@ -296,13 +296,15 @@ Passing a mechanical evaluation does not establish that a generated legal answer
 
 ## Status
 
-Plugin manifests: **v0.1.0**.
+Plugin manifests: **v0.2.0**.
 
-The repository is ready for **early dogfooding**. The core practitioner architecture, BL1–BL8 ownership model, capability-level JIT routing, live-law authority resolution, shared legal state, composition contracts, and per-action readiness model are in place.
+The repository is ready for **early dogfooding**. The core practitioner architecture, BL1–BL8 ownership model, capability-level JIT routing, live-law authority resolution, shared legal state, composition contracts, per-action readiness model, revision-safe composition-conflict lifecycle, and topology-neutral semantic ownership rules are in place.
 
 Runtime validation is ongoing. Real usage may still expose routing failures, missing authority dependencies, composition defects, stale-source assumptions, or cases where current abstractions are too broad or too narrow.
 
 The project favors **local repair over architecture expansion**: a new track, primitive, specialist module, or shared state field should be added only when a concrete decision-relevant failure cannot be repaired cleanly within the existing ownership model.
+
+See [v0.2.0 release notes](docs/releases/v0.2.0.md), the [Changelog](CHANGELOG.md), and the [Roadmap](ROADMAP.md).
 
 ## Responsible use
 
