@@ -17,6 +17,9 @@
     "longDescription": "Analyze Vietnamese business and commercial legal questions using stable practitioner reasoning, proposition ownership, controlled specialist routing, preserved uncertainty, and current or historically applicable authority verification.",
     "developerName": "quocbao201104",
     "category": "Productivity",
+    "composerIcon": "./assets/logo-vector-20260914/png/symbol-color-512.png",
+    "logo": "./assets/logo-vector-20260914/png/symbol-color-512.png",
+    "logoDark": "./assets/logo-vector-20260914/png/symbol-white-512.png",
     "capabilities": [],
     "websiteURL": "https://github.com/quocbao201104/vietnam-business-law-practitioner",
     "defaultPrompt": [

@@ -1,5 +1,11 @@
 <div align="center">
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/logo-vector-20260914/banner/readme-banner-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/logo-vector-20260914/banner/readme-banner-light.svg">
+  <img src="assets/logo-vector-20260914/banner/readme-banner-light.svg" alt="Vietnam Business Law Practitioner" width="100%">
+</picture>
+
 # Vietnam Business Law Practitioner
 
 **Stable reasoning. Live law.**

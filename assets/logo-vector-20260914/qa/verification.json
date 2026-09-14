@@ -1,0 +1,64 @@
+{
+  "symbol_geometry_and_alpha_identical": true,
+  "lockup_geometry_and_alpha_identical": true,
+  "svg_main_files": 6,
+  "banner_svg_files": 2,
+  "svg_embedded_images": 0,
+  "svg_distribution_text_elements": 0,
+  "png_symbol_rgba_files": 18,
+  "png_lockup_rgba_files": 3,
+  "png_sizes": [
+    32,
+    64,
+    128,
+    256,
+    512,
+    1024
+  ],
+  "ico_sizes": [
+    16,
+    32,
+    48
+  ],
+  "pdf_pages": 6,
+  "pdf_raster_images": 0,
+  "pdf_text_operators": 0,
+  "symbol_mask_iou": 0.9867154517309316,
+  "font_version": "Version 4.001;git-66647c0bb",
+  "font_sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+  "reference_sha256": "4ce2d773e612fafb4d3691529e2936d2cbe68e47b6e5a808925db5d8c5a71ebb",
+  "preexisting_assets_status": {
+    "assets\\brand\\concepts\\plugin-symbol.png": "missing_at_final_check",
+    "assets\\brand\\concepts\\preview.html": "missing_at_final_check",
+    "assets\\brand\\concepts\\readme-lockup.png": "missing_at_final_check",
+    "assets\\brand\\concepts\\README.md": "missing_at_final_check"
+  },
+  "reference_copy_unchanged": true,
+  "editable_vs_outlined_iou": 0.9999933353327335,
+  "word_optical_transforms": [
+    [
+      1.0766056102617894,
+      0,
+      0,
+      1.0002271591476988,
+      632.7804077071253,
+      390.6403162055336
+    ],
+    [
+      0.9611413553594894,
+      0,
+      0,
+      1.040418534594166,
+      631.5184907077154,
+      519.9973975276513
+    ],
+    [
+      1.1069610978365227,
+      0,
+      0,
+      1.0118577075098814,
+      628.7205526720422,
+      625.6245059288538
+    ]
+  ]
+}
